@@ -11,9 +11,6 @@ export const makeStore = (preloadedState?: Partial<RootState>) => {
   const store = configureStore({
     reducer: rootReducer,
 
-    // middleware: getDefaultMiddleware => {
-    //   return getDefaultMiddleware().concat(quotesApiSlice.middleware)
-    // },
     preloadedState,
   })
 

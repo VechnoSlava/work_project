@@ -1,10 +1,10 @@
 import { Providers } from "./providers"
-import { MainRouter } from "./routes/mainRouter"
+import { AppRoutes } from "./routes/appRoutes"
 
 function App() {
   return (
     <Providers>
-      <MainRouter />
+      <AppRoutes />
     </Providers>
   )
 }

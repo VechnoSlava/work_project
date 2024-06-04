@@ -1,10 +1,9 @@
 .container {
-  background-color: rgb(131, 89, 22);
+  /* background-color: rgb(131, 89, 22); */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 100%;
-  width: 40%;
+  width: 100%;
   padding: 10px;
 }
 
@@ -13,16 +12,17 @@ a {
   font-size: 1rem;
 }
 .activeLink {
-  color: lightyellow;
+  color: rgb(243, 243, 195);
   text-decoration: none;
 }
 
 .link {
-  color: rgb(13, 54, 131);
+  color: rgb(255, 255, 255);
   text-decoration: none;
 }
 
 button {
+  display: block;
   width: 30px;
   height: 30px;
   font-size: 14px;

@@ -4,7 +4,6 @@
   &__container {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     height: 60px;
   }
 
@@ -13,5 +12,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  &__navigation {
+    width: 50%;
+    display: flex;
   }
 }

@@ -4,13 +4,10 @@ import { HistoryPage } from "../../pages/historyPage"
 import { IdentificationPage } from "../../pages/identificationPage"
 import { ROUTES_PATH } from "../../shared/constants/routes"
 import { MainLayout } from "../layouts/mainLayout"
-// import { SlaveLayout } from "../layouts/slaveLayout"
-// import { selectWindow } from "../../entities/navigation/model/navigationWindowSlice"
-// import { useAppSelector } from "../store/hooks"
+import { SlaveHistoryPage } from "../../pages/slaveHistoryPage"
+import { SlaveMainPage } from "../../pages/slaveMainPage"
 
-export const MainRouter: React.FC = () => {
-  // const isSecondaryWindowOpen = useAppSelector(selectWindow)
-
+export const AppRoutes: React.FC = () => {
   return (
     <>
       <Routes>
@@ -22,7 +19,8 @@ export const MainRouter: React.FC = () => {
             element={<IdentificationPage />}
           />
         </Route>
-        {/* {isSecondaryWindowOpen && <SlaveLayout />} */}
+        <Route path={ROUTES_PATH.SLAVEMAIN} element={<SlaveMainPage />} />
+        <Route path={ROUTES_PATH.SLAVEHISTORY} element={<SlaveHistoryPage />} />
       </Routes>
     </>
   )
