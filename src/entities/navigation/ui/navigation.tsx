@@ -45,7 +45,7 @@ export const Navigation: React.FC = () => {
       >
         Режим идентификации
       </NavLink>
-      <button onClick={handleToggleWindow}>Secondary Window</button>
+      <button onClick={handleToggleWindow}>2</button>
     </nav>
   )
 }

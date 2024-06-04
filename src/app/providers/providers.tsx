@@ -1,6 +1,6 @@
+import type { FC } from "react"
 import { Provider } from "react-redux"
 import { BrowserRouter as Router } from "react-router-dom"
-import type { FC } from "react"
 import { store } from "../store/store"
 
 /** Провайдеры в которые будет обернуто наше приложение */
