@@ -3,11 +3,13 @@ import type { PayloadAction } from "@reduxjs/toolkit"
 import { ROUTES_PATH, type RoutePath } from "../../../shared/constants/routes"
 
 export interface PageState {
-  currentPage: RoutePath
+  currentMainPage: RoutePath
+  currentSlavePage: RoutePath | ""
 }
 
 const initialState: PageState = {
-  currentPage: ROUTES_PATH.MAIN,
+  currentMainPage: ROUTES_PATH.MAIN,
+  currentSlavePage: "",
 }
 
 export const navigationPageSlice = createAppSlice({
@@ -15,11 +17,11 @@ export const navigationPageSlice = createAppSlice({
   initialState,
   reducers: create => ({
     setPage: create.reducer((state, action: PayloadAction<RoutePath>) => {
-      state.currentPage = action.payload
+      state.currentMainPage = action.payload
     }),
   }),
   selectors: {
-    selectPage: state => state.currentPage,
+    selectPage: state => state.currentMainPage,
   },
 })
 

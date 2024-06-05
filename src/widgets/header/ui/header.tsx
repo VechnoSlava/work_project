@@ -2,6 +2,7 @@ import type { FC } from "react"
 import { Navigation } from "../../../entities/navigation/ui/navigation"
 import styles from "./header.module.scss"
 import IconLogo from "../../../shared/icons/logoIcon"
+import { SwitchSecondWindow } from "../../../features/switchSecondWindow"
 
 export const Header: FC = () => {
   console.log("render header")
@@ -15,6 +16,7 @@ export const Header: FC = () => {
         <div className={styles.header__navigation}>
           <Navigation />
         </div>
+        <SwitchSecondWindow />
       </div>
     </header>
   )

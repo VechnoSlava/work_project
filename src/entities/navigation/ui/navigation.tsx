@@ -2,15 +2,10 @@ import { NavLink } from "react-router-dom"
 import { useAppDispatch } from "../../../app/store/hooks"
 import { type RoutePath, ROUTES_PATH } from "../../../shared/constants/routes"
 import { setPage } from "../model/navigationPageSlice"
-import { toggleSecondaryWindow } from "../model/navigationWindowSlice"
 import styles from "./navigation.module.css"
 
 export const Navigation: React.FC = () => {
   const dispatch = useAppDispatch()
-
-  const handleToggleWindow = () => {
-    dispatch(toggleSecondaryWindow())
-  }
 
   const handlePageChange = (page: RoutePath) => {
     dispatch(setPage(page))
@@ -45,7 +40,6 @@ export const Navigation: React.FC = () => {
       >
         Режим идентификации
       </NavLink>
-      <button onClick={handleToggleWindow}>2</button>
     </nav>
   )
 }
