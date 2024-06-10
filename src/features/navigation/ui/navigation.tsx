@@ -4,7 +4,11 @@ import { type RoutePath, ROUTES_PATH } from "../../../shared/constants/routes"
 import { selectPage, setPage } from "../model/navigationPageSlice"
 import styles from "./navigation.module.css"
 import {
+  selectModeIdentification,
+  selectModeReference,
   selectWindow,
+  toggleIdentificationMode,
+  toggleReferenceMode,
   toggleSecondaryWindow,
 } from "../model/navigationWindowSlice"
 import { ToggleSwitch } from "../../../entities/switches/toggleSwitch"
@@ -22,7 +26,10 @@ import { useState } from "react"
 export const Navigation: React.FC = () => {
   const dispatch = useAppDispatch()
   const checkOpenedWindow = useAppSelector(selectWindow)
+  const checkIdentificationMode = useAppSelector(selectModeIdentification)
+  const checkReferenceMode = useAppSelector(selectModeReference)
   const currentPage = useAppSelector(selectPage)
+
   const [openMenu, setOpenMenu] = useState<null | HTMLElement>(null)
   const [selectedIndex, setSelectedIndex] = useState(0)
   const openedMenu = Boolean(openMenu)
@@ -30,6 +37,13 @@ export const Navigation: React.FC = () => {
 
   const handleToggleWindow = () => {
     dispatch(toggleSecondaryWindow())
+  }
+  const handleModeIdentification = () => {
+    dispatch(toggleIdentificationMode())
+  }
+
+  const handleModeReference = () => {
+    dispatch(toggleReferenceMode())
   }
 
   const handlePageChange = (
@@ -186,9 +200,17 @@ export const Navigation: React.FC = () => {
         />
         <ToggleSwitch
           nameSwitch="Режим идентификации"
-          checked={checkOpenedWindow}
-          onChange={handleToggleWindow}
+          checked={checkIdentificationMode}
+          onChange={handleModeIdentification}
           inputProps={{ "aria-label": "Режим идентификации" }}
+        />
+      </div>
+      <div className={styles.navigation__buttons}>
+        <ToggleSwitch
+          nameSwitch="Режим эталонов"
+          checked={checkReferenceMode}
+          onChange={handleModeReference}
+          inputProps={{ "aria-label": "Режим эталонов" }}
         />
       </div>
     </nav>

@@ -1,14 +1,16 @@
-import type { PayloadAction } from "@reduxjs/toolkit"
+// import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAppSlice } from "../../../app/store/createAppSlice"
 
 export interface WindowState {
   isSecondaryWindowOpen: boolean
-  secondaryWindowPath: string
+  isIdentificationMode: boolean
+  isReferenceMode: boolean
 }
 
 const initialState: WindowState = {
   isSecondaryWindowOpen: false,
-  secondaryWindowPath: "",
+  isIdentificationMode: false,
+  isReferenceMode: false,
 }
 
 export const navigationWindowSlice = createAppSlice({
@@ -18,18 +20,24 @@ export const navigationWindowSlice = createAppSlice({
     toggleSecondaryWindow: create.reducer(state => {
       state.isSecondaryWindowOpen = !state.isSecondaryWindowOpen
     }),
-    setSecondaryWindowPath: create.reducer(
-      (state, action: PayloadAction<string>) => {
-        state.secondaryWindowPath = action.payload
-      },
-    ),
+    toggleIdentificationMode: create.reducer(state => {
+      state.isIdentificationMode = !state.isIdentificationMode
+    }),
+    toggleReferenceMode: create.reducer(state => {
+      state.isReferenceMode = !state.isReferenceMode
+    }),
   }),
   selectors: {
     selectWindow: state => state.isSecondaryWindowOpen,
-    selectPath: state => state.secondaryWindowPath,
+    selectModeIdentification: state => state.isIdentificationMode,
+    selectModeReference: state => state.isReferenceMode,
   },
 })
 
-export const { toggleSecondaryWindow, setSecondaryWindowPath } =
-  navigationWindowSlice.actions
-export const { selectWindow, selectPath } = navigationWindowSlice.selectors
+export const {
+  toggleSecondaryWindow,
+  toggleIdentificationMode,
+  toggleReferenceMode,
+} = navigationWindowSlice.actions
+export const { selectWindow, selectModeIdentification, selectModeReference } =
+  navigationWindowSlice.selectors
