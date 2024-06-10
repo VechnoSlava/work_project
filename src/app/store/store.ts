@@ -1,8 +1,8 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit"
 import { combineSlices, configureStore } from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/query"
-import { navigationPageSlice } from "../../entities/navigation/model/navigationPageSlice"
-import { navigationWindowSlice } from "../../entities/navigation/model/navigationWindowSlice"
+import { navigationPageSlice } from "../../features/navigation/model/navigationPageSlice"
+import { navigationWindowSlice } from "../../features/navigation/model/navigationWindowSlice"
 
 //Добавляем слайсы в combineSlices
 const rootReducer = combineSlices(navigationPageSlice, navigationWindowSlice)
