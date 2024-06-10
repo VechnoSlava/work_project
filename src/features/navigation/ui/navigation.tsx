@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "../../../app/store/hooks"
 import { type RoutePath, ROUTES_PATH } from "../../../shared/constants/routes"
 import { selectPage, setPage } from "../model/navigationPageSlice"
@@ -8,8 +8,15 @@ import {
   toggleSecondaryWindow,
 } from "../model/navigationWindowSlice"
 import { ToggleSwitch } from "../../../entities/switches/toggleSwitch"
-import { Tabs, Tab, IconButton, Menu, MenuItem } from "@mui/material"
-import { RiLineHeight } from "react-icons/ri"
+import {
+  Tabs,
+  Tab,
+  Menu,
+  MenuItem,
+  List,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material"
 import { useState } from "react"
 
 export const Navigation: React.FC = () => {
@@ -17,7 +24,9 @@ export const Navigation: React.FC = () => {
   const checkOpenedWindow = useAppSelector(selectWindow)
   const currentPage = useAppSelector(selectPage)
   const [openMenu, setOpenMenu] = useState<null | HTMLElement>(null)
+  const [selectedIndex, setSelectedIndex] = useState(0)
   const openedMenu = Boolean(openMenu)
+  const navigate = useNavigate()
 
   const handleToggleWindow = () => {
     dispatch(toggleSecondaryWindow())
@@ -28,6 +37,9 @@ export const Navigation: React.FC = () => {
     newPage: RoutePath,
   ) => {
     dispatch(setPage(newPage))
+    if (event) {
+      navigate(newPage)
+    }
   }
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -38,6 +50,39 @@ export const Navigation: React.FC = () => {
     setOpenMenu(null)
   }
 
+  const handleMenuItemClick = (newPage: RoutePath, index: number) => {
+    handlePageChange(null, newPage)
+    setSelectedIndex(index)
+    navigate(newPage)
+    handleMenuClose()
+  }
+
+  const getCurrentPageLabel = () => {
+    switch (currentPage) {
+      case ROUTES_PATH.MAIN:
+        return "Текущая обстановка"
+      case ROUTES_PATH.HISTORY:
+        return "База данных"
+      default:
+        return ""
+    }
+  }
+  const getSecondaryPageLabel = () => {
+    switch (currentPage) {
+      case ROUTES_PATH.MAIN:
+        return "База данных"
+      case ROUTES_PATH.HISTORY:
+        return "Текущая обстановка"
+      default:
+        return ""
+    }
+  }
+
+  const options = [
+    { label: "Текущая обстановка", path: ROUTES_PATH.MAIN },
+    { label: "База данных", path: ROUTES_PATH.HISTORY },
+  ]
+
   return (
     <nav className={styles.container}>
       <div className={styles.navigation__tabs}>
@@ -46,6 +91,26 @@ export const Navigation: React.FC = () => {
           onChange={handlePageChange}
           aria-label="navigation tabs"
           textColor="inherit"
+          TabIndicatorProps={{
+            sx: {
+              backgroundColor: "#fff",
+              height: 3, // Толщина линии подчеркивания
+              bottom: 0, // Полоса по нижнему краю блока
+            },
+          }}
+          sx={{
+            height: "100%",
+            "& .MuiTab-root": {
+              height: "100%",
+              transition: "color 0.3s",
+              "&:hover": {
+                backgroundColor: "#00000052",
+              },
+            },
+            "& .MuiTabs-flexContainer": {
+              height: "100%",
+            },
+          }}
         >
           <Tab
             label="Текущая обстановка"
@@ -61,6 +126,57 @@ export const Navigation: React.FC = () => {
           />
         </Tabs>
       </div>
+
+      <div className={styles.navigation__menu}>
+        <List component="nav" aria-label="Nav bar">
+          <ListItemButton
+            id="lock-button"
+            aria-haspopup="listbox"
+            aria-controls="lock-menu"
+            aria-expanded={openedMenu}
+            onClick={handleMenuOpen}
+          >
+            <ListItemText
+              primary={getCurrentPageLabel()}
+              secondary={getSecondaryPageLabel()}
+              primaryTypographyProps={{
+                fontSize: "1.25rem",
+                fontWeight: "bold",
+              }}
+              secondaryTypographyProps={{
+                color: "gray",
+              }}
+            />
+          </ListItemButton>
+        </List>
+        <Menu
+          id="lock-menu"
+          anchorEl={openMenu}
+          open={openedMenu}
+          onClose={handleMenuClose}
+          MenuListProps={{
+            "aria-labelledby": "lock-button",
+            role: "listbox",
+          }}
+        >
+          {options.map((option, index) => (
+            <MenuItem
+              key={option.path}
+              disabled={index === selectedIndex}
+              selected={index === selectedIndex}
+              onClick={() => handleMenuItemClick(option.path, index)}
+              sx={{
+                "&:hover": {
+                  backgroundColor: "#112d492a",
+                },
+              }}
+            >
+              {option.label}
+            </MenuItem>
+          ))}
+        </Menu>
+      </div>
+
       <div className={styles.navigation__buttons}>
         <ToggleSwitch
           nameSwitch="2-х оконный режим"
@@ -75,44 +191,6 @@ export const Navigation: React.FC = () => {
           inputProps={{ "aria-label": "Режим идентификации" }}
         />
       </div>
-      <IconButton
-        classes={styles.menuButton}
-        aria-label="morePages"
-        aria-controls="long-menu"
-        aria-haspopup="true"
-        onClick={handleMenuOpen}
-      >
-        <RiLineHeight />
-      </IconButton>
-      <Menu
-        id="long-menu"
-        anchorEl={openMenu}
-        open={openedMenu}
-        onClose={handleMenuClose}
-        // MenuListProps={{
-        //   style: {
-        //     maxHeight: 48 * 4.5,
-        //     width: "20ch",
-        //   },
-        // }}
-      >
-        <MenuItem
-          onClick={() => {
-            handleMenuClose()
-            handlePageChange(null, ROUTES_PATH.MAIN)
-          }}
-        >
-          Текущая обстановка
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            handleMenuClose()
-            handlePageChange(null, ROUTES_PATH.HISTORY)
-          }}
-        >
-          База данных
-        </MenuItem>
-      </Menu>
     </nav>
   )
 }

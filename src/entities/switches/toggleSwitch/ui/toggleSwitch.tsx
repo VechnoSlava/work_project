@@ -1,6 +1,6 @@
 import { Switch, styled } from "@mui/material"
-import styles from "./toggleSwitch.module.scss"
 import { grey } from "@mui/material/colors"
+import styles from "./toggleSwitch.module.scss"
 
 interface IToggleSwitch {
   id?: string
