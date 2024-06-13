@@ -19,11 +19,15 @@ export const navigationPageSlice = createAppSlice({
     setPage: create.reducer((state, action: PayloadAction<RoutePath>) => {
       state.currentMainPage = action.payload
     }),
+    setSlavePage: create.reducer((state, action: PayloadAction<RoutePath>) => {
+      state.currentSlavePage = action.payload
+    }),
   }),
   selectors: {
     selectPage: state => state.currentMainPage,
+    selectSlavePage: state => state.currentSlavePage,
   },
 })
 
-export const { setPage } = navigationPageSlice.actions
-export const { selectPage } = navigationPageSlice.selectors
+export const { setPage, setSlavePage } = navigationPageSlice.actions
+export const { selectPage, selectSlavePage } = navigationPageSlice.selectors

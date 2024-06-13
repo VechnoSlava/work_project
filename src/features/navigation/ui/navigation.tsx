@@ -92,7 +92,7 @@ export const Navigation: React.FC = () => {
     }
   }
 
-  const options = [
+  const optionsPath = [
     { label: "Текущая обстановка", path: ROUTES_PATH.MAIN },
     { label: "База данных", path: ROUTES_PATH.HISTORY },
   ]
@@ -173,7 +173,7 @@ export const Navigation: React.FC = () => {
             role: "listbox",
           }}
         >
-          {options.map((option, index) => (
+          {optionsPath.map((option, index) => (
             <MenuItem
               key={option.path}
               disabled={index === selectedIndex}
