@@ -1,7 +1,7 @@
 import { Switch, styled } from "@mui/material"
 import { grey } from "@mui/material/colors"
 
-const CustomSwitch = styled(Switch)({
+export const CustomSwitch = styled(Switch)({
   margin: 0,
   padding: 6,
   "& .MuiSwitch-switchBase": {
@@ -39,5 +39,3 @@ const CustomSwitch = styled(Switch)({
     backgroundColor: "#c5c5c7",
   },
 })
-
-export default CustomSwitch

@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom"
+import { MainLayout } from "../layouts"
 import { MainPage } from "../../pages/mainPage"
 import { HistoryPage } from "../../pages/historyPage"
 import { ROUTES_PATH } from "../../shared/constants/routes"
-import { MainLayout } from "../layouts/mainLayout"
 import { SlaveHistoryPage } from "../../pages/slaveHistoryPage"
 import { SlaveMainPage } from "../../pages/slaveMainPage"
 

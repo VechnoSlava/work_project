@@ -1,4 +1,4 @@
-const IconLogo = () => {
+export const IconLogo = () => {
   return (
     <svg width="3em" height="3em" viewBox="0 0 1000 1500">
       <g>
@@ -10,5 +10,3 @@ const IconLogo = () => {
     </svg>
   )
 }
-
-export default IconLogo

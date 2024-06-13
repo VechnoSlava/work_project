@@ -1,8 +1,8 @@
-import type { FC } from "react"
-import { Navigation } from "../../../features/navigation/ui/navigation"
 import styles from "./header.module.scss"
-import IconLogo from "../../../shared/icons/logoIcon"
+import type { FC } from "react"
 import { Button } from "@mui/material"
+import { Navigation } from "../../../features/navigation/ui/navigation"
+import { IconLogo } from "../../../shared/icons"
 
 export const Header: FC = () => {
   console.log("render header")

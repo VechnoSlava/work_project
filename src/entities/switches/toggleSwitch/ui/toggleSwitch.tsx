@@ -1,21 +1,24 @@
-import CustomSwitch from "../../../../shared/buttons/CustomSwitch"
+import { CustomSwitch } from "../../../../shared/buttons"
 import styles from "./toggleSwitch.module.scss"
 
 interface IToggleSwitch {
   id?: string
   disabled?: boolean
   checked: boolean
-  onChange: () => void
+  onChange: (
+    event: React.ChangeEvent<HTMLInputElement>,
+    checked: boolean,
+  ) => void
   nameSwitch?: string
   inputProps?: React.InputHTMLAttributes<HTMLInputElement> | undefined
 }
 
 export const ToggleSwitch = ({
   id,
-  disabled,
+  disabled = false,
   checked,
   onChange,
-  nameSwitch,
+  nameSwitch = "",
   inputProps,
 }: IToggleSwitch) => {
   return (
@@ -27,7 +30,7 @@ export const ToggleSwitch = ({
             disabled={disabled}
             id={id}
             checked={checked}
-            onChange={onChange}
+            onChange={event => onChange(event, event.target.checked)}
             inputProps={inputProps}
           />
         </div>
