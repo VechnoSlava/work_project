@@ -1,0 +1,33 @@
+.header {
+  box-sizing: border-box;
+  background-color: rgba(31, 89, 97, 0.603);
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  padding: 0 5px;
+  height: 90px;
+}
+.header__container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.header__icon {
+  display: block;
+  align-items: center;
+}
+
+.header__navigation {
+  display: block;
+  align-items: center;
+  height: 100%;
+}
+
+.header__buttons {
+  width: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

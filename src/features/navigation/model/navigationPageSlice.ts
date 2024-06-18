@@ -9,7 +9,7 @@ export interface PageState {
 
 const initialState: PageState = {
   currentMainPage: ROUTES_PATH.MAIN,
-  currentSlavePage: "",
+  currentSlavePage: ROUTES_PATH.SLAVEMAIN,
 }
 
 export const navigationPageSlice = createAppSlice({
@@ -18,6 +18,10 @@ export const navigationPageSlice = createAppSlice({
   reducers: create => ({
     setPage: create.reducer((state, action: PayloadAction<RoutePath>) => {
       state.currentMainPage = action.payload
+      state.currentSlavePage =
+        action.payload === ROUTES_PATH.MAIN
+          ? ROUTES_PATH.SLAVEMAIN
+          : ROUTES_PATH.SLAVEHISTORY
     }),
     setSlavePage: create.reducer((state, action: PayloadAction<RoutePath>) => {
       state.currentSlavePage = action.payload

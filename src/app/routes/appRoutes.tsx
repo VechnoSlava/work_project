@@ -14,6 +14,7 @@ export const AppRoutes: React.FC = () => {
           <Route index element={<MainPage />} />
           <Route path={ROUTES_PATH.HISTORY} element={<HistoryPage />} />
         </Route>
+
         <Route path={ROUTES_PATH.SLAVEMAIN} element={<SlaveMainPage />} />
         <Route path={ROUTES_PATH.SLAVEHISTORY} element={<SlaveHistoryPage />} />
       </Routes>

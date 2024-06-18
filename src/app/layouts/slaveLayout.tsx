@@ -1,10 +1,9 @@
-import { SlaveMainPage } from "../../pages/slaveMainPage"
-// import { SlaveHistoryPage } from "../../pages/slaveHistoryPage"
+import { Outlet } from "react-router-dom"
 
-export const SlaveLayout: React.FC = () => {
+export const SlaveLayout = () => {
   return (
     <div>
-      <SlaveMainPage />
+      <Outlet />
     </div>
   )
 }

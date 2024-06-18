@@ -1,7 +1,11 @@
 import { NavLink, useNavigate } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "../../../app/store/hooks"
 import { type RoutePath, ROUTES_PATH } from "../../../shared/constants/routes"
-import { selectPage, setPage } from "../model/navigationPageSlice"
+import {
+  selectPage,
+  selectSlavePage,
+  setPage,
+} from "../model/navigationPageSlice"
 import styles from "./navigation.module.css"
 import {
   selectModeIdentification,
@@ -21,14 +25,16 @@ import {
   ListItemButton,
   ListItemText,
 } from "@mui/material"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 export const Navigation: React.FC = () => {
   const dispatch = useAppDispatch()
-  const checkOpenedWindow = useAppSelector(selectWindow)
+  const isSecondaryWindowOpen = useAppSelector(selectWindow)
   const checkIdentificationMode = useAppSelector(selectModeIdentification)
   const checkReferenceMode = useAppSelector(selectModeReference)
-  const currentPage = useAppSelector(selectPage)
+  const currentMainPage = useAppSelector(selectPage)
+  const currentSlavePage = useAppSelector(selectSlavePage)
+  const newWindowRef = useRef<Window | null>(null)
 
   const [openMenu, setOpenMenu] = useState<null | HTMLElement>(null)
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -38,6 +44,7 @@ export const Navigation: React.FC = () => {
   const handleToggleWindow = () => {
     dispatch(toggleSecondaryWindow())
   }
+
   const handleModeIdentification = () => {
     dispatch(toggleIdentificationMode())
   }
@@ -72,7 +79,7 @@ export const Navigation: React.FC = () => {
   }
 
   const getCurrentPageLabel = () => {
-    switch (currentPage) {
+    switch (currentMainPage) {
       case ROUTES_PATH.MAIN:
         return "Текущая обстановка"
       case ROUTES_PATH.HISTORY:
@@ -82,7 +89,7 @@ export const Navigation: React.FC = () => {
     }
   }
   const getSecondaryPageLabel = () => {
-    switch (currentPage) {
+    switch (currentMainPage) {
       case ROUTES_PATH.MAIN:
         return "База данных"
       case ROUTES_PATH.HISTORY:
@@ -97,11 +104,65 @@ export const Navigation: React.FC = () => {
     { label: "База данных", path: ROUTES_PATH.HISTORY },
   ]
 
+  // второе окно
+  useEffect(() => {
+    console.log("effect", newWindowRef.current)
+
+    const handleUnload = () => {
+      console.log("dispatch")
+      dispatch(toggleSecondaryWindow())
+    }
+
+    if (isSecondaryWindowOpen) {
+      console.log("start create", newWindowRef.current)
+      if (!newWindowRef.current || newWindowRef.current.closed) {
+        console.log("create new window", newWindowRef.current)
+        newWindowRef.current = window.open(
+          currentSlavePage,
+          "slaveWindow",
+          "width=800,height=600,menubar=0,toolbar=0",
+        )
+        if (newWindowRef.current) {
+          newWindowRef.current.addEventListener("load", () => {
+            newWindowRef.current?.addEventListener("unload", handleUnload)
+            console.log("start unload", newWindowRef.current)
+          })
+          console.log("start load", newWindowRef.current)
+        }
+      } else {
+        console.log("replace Page")
+        newWindowRef.current.location.replace(currentSlavePage)
+      }
+    } else if (newWindowRef.current) {
+      newWindowRef.current.close()
+      newWindowRef.current = null
+      console.log("close window", newWindowRef.current)
+    }
+    return () => {
+      console.log("return effect")
+      if (newWindowRef.current) {
+        newWindowRef.current.removeEventListener("load", handleUnload)
+        newWindowRef.current.removeEventListener("unload", handleUnload)
+      }
+    }
+  }, [isSecondaryWindowOpen, currentSlavePage, dispatch])
+
+  // // Очистка окна при размонтировании компонента
+  // useEffect(() => {
+  //   console.log("second effect", newWindowRef.current)
+  //   return () => {
+  //     if (newWindowRef.current) {
+  //       newWindowRef.current.close()
+  //       newWindowRef.current = null
+  //     }
+  //   }
+  // }, [])
+
   return (
     <nav className={styles.container}>
       <div className={styles.navigation__tabs}>
         <Tabs
-          value={currentPage}
+          value={currentMainPage}
           onChange={handlePageChange}
           aria-label="navigation tabs"
           textColor="inherit"
@@ -194,7 +255,7 @@ export const Navigation: React.FC = () => {
       <div className={styles.navigation__buttons}>
         <ToggleSwitch
           nameSwitch="2-х оконный режим"
-          checked={checkOpenedWindow}
+          checked={isSecondaryWindowOpen}
           onChange={handleToggleWindow}
           inputProps={{ "aria-label": "2-х оконный режим" }}
         />

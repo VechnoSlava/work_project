@@ -1,4 +1,4 @@
-import type { FC } from "react"
+import { type FC } from "react"
 import { MainMap } from "../../../widgets/mainMap"
 import { CommonTargetsTable } from "../../../widgets/commonTargetsTable"
 import { SpectrumTargetChart } from "../../../widgets/spectrumTargetChart"

@@ -1,11 +1,11 @@
-import styles from "./header.module.scss"
+import styles from "./header.module.css"
 import type { FC } from "react"
 import { Button } from "@mui/material"
 import { Navigation } from "../../../features/navigation/ui/navigation"
 import { IconLogo } from "../../../shared/icons"
 
 export const Header: FC = () => {
-  console.log("render header")
+  console.log("HEADER")
 
   return (
     <header className={styles.header}>

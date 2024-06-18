@@ -1,6 +1,6 @@
-import type { FC } from "react"
+export const SlaveHistoryPage = () => {
+  console.log("slaveHistoryPage")
 
-export const SlaveHistoryPage: FC = () => {
   return (
     <div>
       <h1>SlaveHistoryPage</h1>
