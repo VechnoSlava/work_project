@@ -113,6 +113,14 @@ export const Navigation: React.FC = () => {
       dispatch(toggleSecondaryWindow())
     }
 
+    const attachHandlers = () => {
+      if (newWindowRef.current) {
+        newWindowRef.current.removeEventListener("beforeunload", handleUnload)
+        newWindowRef.current.removeEventListener("unload", handleUnload)
+        newWindowRef.current.addEventListener("beforeunload", handleUnload)
+        newWindowRef.current.addEventListener("unload", handleUnload)
+      }
+    }
     if (isSecondaryWindowOpen) {
       console.log("start create", newWindowRef.current)
       if (!newWindowRef.current || newWindowRef.current.closed) {
@@ -122,16 +130,29 @@ export const Navigation: React.FC = () => {
           "slaveWindow",
           "width=800,height=600,menubar=0,toolbar=0",
         )
-        if (newWindowRef.current) {
-          newWindowRef.current.addEventListener("load", () => {
-            newWindowRef.current?.addEventListener("unload", handleUnload)
-            console.log("start unload", newWindowRef.current)
-          })
-          console.log("start load", newWindowRef.current)
-        }
+
+        const interval = setInterval(() => {
+          if (
+            newWindowRef.current &&
+            newWindowRef.current.document.readyState === "complete"
+          ) {
+            attachHandlers()
+            clearInterval(interval)
+          }
+        }, 100)
       } else {
-        console.log("replace Page")
         newWindowRef.current.location.replace(currentSlavePage)
+        console.log("replace page", newWindowRef.current)
+
+        const interval = setInterval(() => {
+          if (
+            newWindowRef.current &&
+            newWindowRef.current.document.readyState === "complete"
+          ) {
+            attachHandlers()
+            clearInterval(interval)
+          }
+        }, 100)
       }
     } else if (newWindowRef.current) {
       newWindowRef.current.close()
@@ -141,7 +162,7 @@ export const Navigation: React.FC = () => {
     return () => {
       console.log("return effect")
       if (newWindowRef.current) {
-        newWindowRef.current.removeEventListener("load", handleUnload)
+        newWindowRef.current.removeEventListener("beforeunload", handleUnload)
         newWindowRef.current.removeEventListener("unload", handleUnload)
       }
     }
