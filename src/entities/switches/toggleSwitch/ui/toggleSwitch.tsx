@@ -1,5 +1,5 @@
 import { CustomSwitch } from "../../../../shared/buttons"
-import styles from "./toggleSwitch.module.scss"
+import styles from "./toggleSwitch.module.css"
 
 interface IToggleSwitch {
   id?: string

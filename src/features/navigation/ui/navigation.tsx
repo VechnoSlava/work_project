@@ -281,6 +281,7 @@ export const Navigation: React.FC = () => {
           inputProps={{ "aria-label": "2-х оконный режим" }}
         />
         <ToggleSwitch
+          // disabled
           nameSwitch="Режим идентификации"
           checked={checkIdentificationMode}
           onChange={handleModeIdentification}
