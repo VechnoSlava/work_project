@@ -1,10 +1,9 @@
 import styles from "./header.module.css"
-import type { FC } from "react"
 import { Button } from "@mui/material"
 import { Navigation } from "../../../features/navigation/ui/navigation"
 import { IconLogo } from "../../../shared/icons"
 
-export const Header: FC = () => {
+export const Header = () => {
   console.log("HEADER")
 
   return (
@@ -17,7 +16,9 @@ export const Header: FC = () => {
           <Navigation />
         </div>
         <div className={styles.header__buttons}>
-          <Button variant="contained">Play</Button>
+          <Button onClick={() => console.log("Click")} variant="contained">
+            Play
+          </Button>
         </div>
       </div>
     </header>

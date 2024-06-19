@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react"
 import { NavLink, useNavigate } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "../../../app/store/hooks"
 import { type RoutePath, ROUTES_PATH } from "../../../shared/constants/routes"
@@ -6,7 +7,6 @@ import {
   selectSlavePage,
   setPage,
 } from "../model/navigationPageSlice"
-import styles from "./navigation.module.css"
 import {
   selectModeIdentification,
   selectModeReference,
@@ -25,9 +25,10 @@ import {
   ListItemButton,
   ListItemText,
 } from "@mui/material"
-import { useEffect, useRef, useState } from "react"
+import styles from "./navigation.module.css"
 
-export const Navigation: React.FC = () => {
+export const Navigation = () => {
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const isSecondaryWindowOpen = useAppSelector(selectWindow)
   const checkIdentificationMode = useAppSelector(selectModeIdentification)
@@ -36,10 +37,9 @@ export const Navigation: React.FC = () => {
   const currentSlavePage = useAppSelector(selectSlavePage)
   const newWindowRef = useRef<Window | null>(null)
 
-  const [openMenu, setOpenMenu] = useState<null | HTMLElement>(null)
   const [selectedIndex, setSelectedIndex] = useState(0)
+  const [openMenu, setOpenMenu] = useState<null | HTMLElement>(null)
   const openedMenu = Boolean(openMenu)
-  const navigate = useNavigate()
 
   const handleToggleWindow = () => {
     dispatch(toggleSecondaryWindow())
@@ -103,7 +103,6 @@ export const Navigation: React.FC = () => {
     { label: "Текущая обстановка", path: ROUTES_PATH.MAIN },
     { label: "База данных", path: ROUTES_PATH.HISTORY },
   ]
-
   // второе окно
   useEffect(() => {
     console.log("run effect", newWindowRef.current)
@@ -113,11 +112,9 @@ export const Navigation: React.FC = () => {
       dispatch(toggleSecondaryWindow())
     }
 
-    const attachHandlerUnload = () => {
-      if (newWindowRef.current) {
-        newWindowRef.current.removeEventListener("unload", handleUnload)
-        newWindowRef.current.addEventListener("unload", handleUnload)
-      }
+    const attachHandlerUnload = (currentWin: Window) => {
+      currentWin.removeEventListener("unload", handleUnload)
+      currentWin.addEventListener("unload", handleUnload)
     }
 
     if (isSecondaryWindowOpen) {
@@ -134,7 +131,7 @@ export const Navigation: React.FC = () => {
             newWindowRef.current &&
             newWindowRef.current.document.readyState === "complete"
           ) {
-            attachHandlerUnload()
+            attachHandlerUnload(newWindowRef.current)
             clearInterval(interval)
           }
         }, 100)
@@ -147,7 +144,7 @@ export const Navigation: React.FC = () => {
             newWindowRef.current &&
             newWindowRef.current.document.readyState === "complete"
           ) {
-            attachHandlerUnload()
+            attachHandlerUnload(newWindowRef.current)
             clearInterval(interval)
           }
         }, 100)
