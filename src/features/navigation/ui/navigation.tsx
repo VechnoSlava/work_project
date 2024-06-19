@@ -106,21 +106,20 @@ export const Navigation: React.FC = () => {
 
   // второе окно
   useEffect(() => {
-    console.log("effect", newWindowRef.current)
+    console.log("run effect", newWindowRef.current)
 
     const handleUnload = () => {
-      console.log("dispatch")
+      console.log("dispatch effect")
       dispatch(toggleSecondaryWindow())
     }
 
-    const attachHandlers = () => {
+    const attachHandlerUnload = () => {
       if (newWindowRef.current) {
-        newWindowRef.current.removeEventListener("beforeunload", handleUnload)
         newWindowRef.current.removeEventListener("unload", handleUnload)
-        newWindowRef.current.addEventListener("beforeunload", handleUnload)
         newWindowRef.current.addEventListener("unload", handleUnload)
       }
     }
+
     if (isSecondaryWindowOpen) {
       console.log("start create", newWindowRef.current)
       if (!newWindowRef.current || newWindowRef.current.closed) {
@@ -130,13 +129,12 @@ export const Navigation: React.FC = () => {
           "slaveWindow",
           "width=800,height=600,menubar=0,toolbar=0",
         )
-
         const interval = setInterval(() => {
           if (
             newWindowRef.current &&
             newWindowRef.current.document.readyState === "complete"
           ) {
-            attachHandlers()
+            attachHandlerUnload()
             clearInterval(interval)
           }
         }, 100)
@@ -149,7 +147,7 @@ export const Navigation: React.FC = () => {
             newWindowRef.current &&
             newWindowRef.current.document.readyState === "complete"
           ) {
-            attachHandlers()
+            attachHandlerUnload()
             clearInterval(interval)
           }
         }, 100)
@@ -162,22 +160,10 @@ export const Navigation: React.FC = () => {
     return () => {
       console.log("return effect")
       if (newWindowRef.current) {
-        newWindowRef.current.removeEventListener("beforeunload", handleUnload)
         newWindowRef.current.removeEventListener("unload", handleUnload)
       }
     }
   }, [isSecondaryWindowOpen, currentSlavePage, dispatch])
-
-  // // Очистка окна при размонтировании компонента
-  // useEffect(() => {
-  //   console.log("second effect", newWindowRef.current)
-  //   return () => {
-  //     if (newWindowRef.current) {
-  //       newWindowRef.current.close()
-  //       newWindowRef.current = null
-  //     }
-  //   }
-  // }, [])
 
   return (
     <nav className={styles.container}>
