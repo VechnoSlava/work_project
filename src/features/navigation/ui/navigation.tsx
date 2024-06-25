@@ -28,6 +28,8 @@ import {
 import styles from "./navigation.module.css"
 
 export const Navigation = () => {
+  console.log("render NAV")
+
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const isSecondaryWindowOpen = useAppSelector(selectWindow)
@@ -264,7 +266,6 @@ export const Navigation = () => {
           inputProps={{ "aria-label": "2-х оконный режим" }}
         />
         <ToggleSwitch
-          // disabled
           nameSwitch="Режим идентификации"
           checked={checkIdentificationMode}
           onChange={handleModeIdentification}
