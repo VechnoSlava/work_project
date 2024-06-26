@@ -23,15 +23,18 @@ export const CustomSwitch = styled(Switch)({
       border: "6px solid #fff",
     },
     "&.Mui-disabled .MuiSwitch-thumb": {
-      color: grey[600],
+      color: grey[400],
     },
     "&.Mui-disabled + .MuiSwitch-track": {
-      opacity: 0.3,
+      opacity: 0.5,
     },
   },
   "& .MuiSwitch-thumb": {
     height: 24,
     width: 24,
+    "& .MuiSwitch:hover": {
+      backgroundColor: "#fff",
+    },
   },
   "& .MuiSwitch-track": {
     borderRadius: 24 / 2,

@@ -1,0 +1,16 @@
+.navigation__tabs {
+  display: flex;
+  margin-right: 20px;
+  height: 100%;
+  align-items: center;
+  /* flex: 1; */
+}
+
+@media (max-width: 940px) {
+  .navigation__tabs {
+    display: none;
+  }
+  .navigation__menu {
+    display: flex;
+  }
+}

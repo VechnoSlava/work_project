@@ -1,0 +1,21 @@
+.navigation__menu {
+  width: 240px;
+  height: 100%;
+  padding: 0 10px;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.menuButton {
+  display: none;
+}
+
+@media (max-width: 940px) {
+  .navigation__tabs {
+    display: none;
+  }
+  .navigation__menu {
+    display: flex;
+  }
+}
