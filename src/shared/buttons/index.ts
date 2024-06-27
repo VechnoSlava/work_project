@@ -1,1 +1,1 @@
-export { CustomSwitch } from "./CustomSwitch"
+export { ToggleSwitch } from "./toggleSwitch/toggleSwitch"

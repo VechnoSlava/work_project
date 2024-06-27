@@ -13,7 +13,7 @@ import {
   ROUTES_PATH,
   type RoutePath,
 } from "../../../../shared/constants/routes"
-import { ToggleSwitch } from "../../../switches/toggleSwitch"
+import { ToggleSwitch } from "../../../../shared/buttons"
 
 export const NavigationButtons = () => {
   const isSecondaryWindowOpen = useAppSelector(selectWindow)
@@ -51,24 +51,18 @@ export const NavigationButtons = () => {
           nameSwitch="Режим идентификации"
           checked={checkIdentificationMode}
           onChange={handleModeIdentification}
-          inputProps={{ "aria-label": "Режим идентификации" }}
+          inputProps={{ "aria-label": "2-х оконный режим" }}
         />
       </div>
+
       <div className={styles.navigation__buttons}>
         <ToggleSwitch
-          disabled={handleDisabledModeIDentification(currentMainPage)}
           nameSwitch="Режим эталонов"
           checked={checkReferenceMode}
           onChange={handleModeReference}
-          inputProps={{ "aria-label": "Режим эталонов" }}
+          disabled={handleDisabledModeIDentification(currentMainPage)}
+          inputProps={{ "aria-label": "2-х оконный режим" }}
         />
-        {/* <ToggleSwitch
-          disabled={handleDisabledModeIDentification(currentMainPage)}
-          nameSwitch="Режим эталонов"
-          checked={checkReferenceMode}
-          onChange={handleModeReference}
-          inputProps={{ "aria-label": "Режим эталонов" }}
-        /> */}
       </div>
     </>
   )

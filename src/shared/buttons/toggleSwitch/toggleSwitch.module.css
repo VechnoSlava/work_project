@@ -1,8 +1,6 @@
 .switch {
-  display: block;
-}
-.switch__container {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-width: 229px;
 }

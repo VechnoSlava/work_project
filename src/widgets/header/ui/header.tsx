@@ -1,5 +1,4 @@
 import styles from "./header.module.css"
-import { Button } from "@mui/material"
 import { Navigation } from "../../../features/navigation/ui/navigation"
 import { IconLogo } from "../../../shared/icons"
 
@@ -15,11 +14,7 @@ export const Header = () => {
         <div className={styles.header__navigation}>
           <Navigation />
         </div>
-        <div className={styles.header__buttons}>
-          <Button onClick={() => console.log("Click")} variant="contained">
-            Play
-          </Button>
-        </div>
+        <div className={styles.header__buttons}></div>
       </div>
     </header>
   )

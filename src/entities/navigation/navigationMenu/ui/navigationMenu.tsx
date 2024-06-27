@@ -95,6 +95,13 @@ export const NavigationMenu = () => {
           "aria-labelledby": "lock-button",
           role: "listbox",
         }}
+        sx={{
+          "& .MuiPaper-root": {
+            width: "200px",
+            backgroundColor: "#1a4858",
+            color: "rgb(255 255 255)",
+          },
+        }}
       >
         {optionsPath.map((option, index) => (
           <MenuItem
