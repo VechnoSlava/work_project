@@ -1,0 +1,24 @@
+.controlPanel {
+  display: flex;
+  align-items: center;
+  /* width: 100%; */
+  height: 100%;
+}
+
+.controlPanel__columnOne {
+  padding: 4px 10px;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.controlPanel__columnTwo {
+  padding: 5px 10px;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}

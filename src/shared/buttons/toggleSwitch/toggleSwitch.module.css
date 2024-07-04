@@ -2,5 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-width: 229px;
+}
+.switch__label {
+  white-space: nowrap;
 }

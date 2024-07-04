@@ -1,17 +1,17 @@
 import { Tabs, Tab } from "@mui/material"
 import { NavLink, useNavigate } from "react-router-dom"
-import type { RoutePath } from "../../../../shared/constants/routes"
-import { ROUTES_PATH } from "../../../../shared/constants/routes"
-import styles from "./navigationTabs.module.css"
-import { useAppDispatch, useAppSelector } from "../../../../app/store/hooks"
+import { useAppDispatch, useAppSelector } from "../../../../../app/store/hooks"
 import {
-  selectPage,
-  setPage,
-} from "../../../../features/navigation/model/navigationPageSlice"
+  type RoutePath,
+  ROUTES_PATH,
+} from "../../../../../shared/constants/routes"
+import { selectPage, setPage } from "../../../model/pagesNavigationSlice"
+import styles from "./pagesNavigationTabs.module.css"
 
-export const NavigationTabs = () => {
+export const PagesNavigationTabs = () => {
+  console.log("TABS")
+
   const navigate = useNavigate()
-
   const dispatch = useAppDispatch()
   const currentMainPage = useAppSelector(selectPage)
 
@@ -26,7 +26,7 @@ export const NavigationTabs = () => {
   }
 
   return (
-    <div className={styles.navigation__tabs}>
+    <nav className={styles.navigation__tabs}>
       <Tabs
         value={currentMainPage}
         onChange={handlePageChange}
@@ -66,6 +66,6 @@ export const NavigationTabs = () => {
           to={ROUTES_PATH.HISTORY}
         />
       </Tabs>
-    </div>
+    </nav>
   )
 }

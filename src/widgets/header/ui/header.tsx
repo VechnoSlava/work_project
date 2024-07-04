@@ -1,6 +1,12 @@
 import styles from "./header.module.css"
-import { Navigation } from "../../../features/navigation/ui/navigation"
 import { IconLogo } from "../../../shared/icons"
+import {
+  PagesNavigationMenu,
+  PagesNavigationTabs,
+} from "../../../features/pagesNavigation"
+import { ControlModesPanel } from "../../../features/controlModesPanel"
+import { ButtonConnectToServer } from "../../../features/buttonConnectToServer"
+import { ButtonSideMenuFilters } from "../../../features/buttonSideMenuFilters"
 
 export const Header = () => {
   console.log("HEADER")
@@ -12,9 +18,16 @@ export const Header = () => {
           <IconLogo />
         </div>
         <div className={styles.header__navigation}>
-          <Navigation />
+          <PagesNavigationTabs />
+          <PagesNavigationMenu />
         </div>
-        <div className={styles.header__buttons}></div>
+        <div className={styles.header__controls}>
+          <ControlModesPanel />
+        </div>
+        <div className={styles.header__buttons}>
+          <ButtonConnectToServer />
+          <ButtonSideMenuFilters />
+        </div>
       </div>
     </header>
   )

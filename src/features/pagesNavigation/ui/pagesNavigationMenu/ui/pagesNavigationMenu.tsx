@@ -5,20 +5,18 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material"
-import { useAppDispatch, useAppSelector } from "../../../../app/store/hooks"
-import {
-  selectPage,
-  setPage,
-} from "../../../../features/navigation/model/navigationPageSlice"
+
+import styles from "./pagesNavigationMenu.module.css"
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { useAppDispatch, useAppSelector } from "../../../../../app/store/hooks"
+import { selectPage, setPage } from "../../../model/pagesNavigationSlice"
 import {
   ROUTES_PATH,
   type RoutePath,
-} from "../../../../shared/constants/routes"
-import styles from "./navigationMenu.module.css"
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+} from "../../../../../shared/constants/routes"
 
-export const NavigationMenu = () => {
+export const PagesNavigationMenu = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const [selectedIndex, setSelectedIndex] = useState(0)

@@ -1,14 +1,14 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit"
 import { combineSlices, configureStore } from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/query"
-import { navigationPageSlice } from "../../features/navigation/model/navigationPageSlice"
-import { navigationWindowSlice } from "../../features/navigation/model/navigationWindowSlice"
+import { controlModesSlice } from "../../features/controlModesPanel/model/controlModesSlice"
 import { sideMenuSlice } from "../../widgets/sideMenuFilters/model/sideMenuSlice"
+import { pagesNavigationSlice } from "../../features/pagesNavigation/model/pagesNavigationSlice"
 
 //Добавляем слайсы в combineSlices
 const rootReducer = combineSlices(
-  navigationPageSlice,
-  navigationWindowSlice,
+  pagesNavigationSlice,
+  controlModesSlice,
   sideMenuSlice,
 )
 

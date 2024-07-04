@@ -1,5 +1,5 @@
+import { type PayloadAction } from "@reduxjs/toolkit/react"
 import { createAppSlice } from "../../../app/store/createAppSlice"
-import type { PayloadAction } from "@reduxjs/toolkit"
 import { ROUTES_PATH, type RoutePath } from "../../../shared/constants/routes"
 
 export interface PageState {
@@ -12,7 +12,7 @@ const initialState: PageState = {
   currentSlavePage: ROUTES_PATH.SLAVEMAIN,
 }
 
-export const navigationPageSlice = createAppSlice({
+export const pagesNavigationSlice = createAppSlice({
   name: "navigationPage",
   initialState,
   reducers: create => ({
@@ -33,5 +33,5 @@ export const navigationPageSlice = createAppSlice({
   },
 })
 
-export const { setPage, setSlavePage } = navigationPageSlice.actions
-export const { selectPage, selectSlavePage } = navigationPageSlice.selectors
+export const { setPage, setSlavePage } = pagesNavigationSlice.actions
+export const { selectPage, selectSlavePage } = pagesNavigationSlice.selectors

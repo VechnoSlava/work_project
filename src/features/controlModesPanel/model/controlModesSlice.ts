@@ -13,8 +13,8 @@ const initialState: WindowState = {
   isReferenceMode: false,
 }
 
-export const navigationWindowSlice = createAppSlice({
-  name: "navigationWindow",
+export const controlModesSlice = createAppSlice({
+  name: "controlModes",
   initialState,
   reducers: create => ({
     toggleSecondaryWindow: create.reducer(state => {
@@ -38,6 +38,6 @@ export const {
   toggleSecondaryWindow,
   toggleIdentificationMode,
   toggleReferenceMode,
-} = navigationWindowSlice.actions
+} = controlModesSlice.actions
 export const { selectWindow, selectModeIdentification, selectModeReference } =
-  navigationWindowSlice.selectors
+  controlModesSlice.selectors
