@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react"
 import { useAppDispatch, useAppSelector } from "../../../app/store/hooks"
 import { selectSlavePage } from "../model/navigationPageSlice"
 import {
+  selectModeIdentification,
   selectWindow,
   toggleSecondaryWindow,
 } from "../model/navigationWindowSlice"
@@ -9,13 +10,16 @@ import styles from "./navigation.module.css"
 import { NavigationTabs } from "../../../entities/navigation/navigationTabs"
 import { NavigationMenu } from "../../../entities/navigation/navigationMenu"
 import { NavigationButtons } from "../../../entities/navigation/navigationButtons"
-import { MainButtonFilter } from "../../../entities/buttonsFilters/mainButtonFilter"
+import { MainButtonFilter } from "../../../entities/buttonFilters/mainButtonFilter"
+import { BiWifi, BiWifiOff } from "react-icons/bi"
+import { ButtonMenuHead } from "../../../shared/buttons/"
 
 export const Navigation = () => {
   const dispatch = useAppDispatch()
   const isSecondaryWindowOpen = useAppSelector(selectWindow)
   const currentSlavePage = useAppSelector(selectSlavePage)
   const newWindowRef = useRef<Window | null>(null)
+  const isIdentification = useAppSelector(selectModeIdentification)
 
   // второе окно
   useEffect(() => {
@@ -73,6 +77,16 @@ export const Navigation = () => {
       <NavigationMenu />
       <NavigationButtons />
       <MainButtonFilter />
+
+      <div>
+        <ButtonMenuHead value="check">
+          {isIdentification ? (
+            <BiWifi size="100%" style={{ color: "#04b355ff" }} />
+          ) : (
+            <BiWifiOff size="100%" />
+          )}
+        </ButtonMenuHead>
+      </div>
     </nav>
   )
 }
