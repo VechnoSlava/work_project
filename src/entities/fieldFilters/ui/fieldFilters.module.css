@@ -1,0 +1,9 @@
+.accordion {
+  width: 100%;
+  color: white;
+}
+
+.filterProps {
+  display: flex;
+  align-items: center;
+}

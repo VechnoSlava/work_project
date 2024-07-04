@@ -22,6 +22,9 @@ const CustomSwitch = styled(Switch)({
       "&.Mui-disabled + .MuiSwitch-track": {
         opacity: 0.5,
       },
+      "&:hover .MuiSwitch-switchBase": {
+        backgroundColor: "#00000037",
+      },
     },
     "&.Mui-focusVisible .MuiSwitch-thumb": {
       color: "#33cf4d",
