@@ -10,9 +10,19 @@ export const ButtonConnectToServer = () => {
   const ws = useRef<WebSocket | null>(null)
 
   const openConnection = () => {
+    if (ws.current && ws.current.readyState !== WebSocket.CLOSED) {
+      return
+    }
+
     ws.current = new WebSocket(ws_URL)
-    ws.current.onopen = () => setStatus("Соединение открыто")
-    ws.current.onclose = () => setStatus("Соединение закрыто")
+    ws.current.onopen = () => {
+      setStatus("Соединение открыто")
+      setIsConnected(true)
+    }
+    ws.current.onclose = () => {
+      setStatus("Соединение закрыто")
+      setIsConnected(false)
+    }
     ws.current.onmessage = e => {
       const message = JSON.parse(e.data)
       console.log(message)
@@ -21,10 +31,6 @@ export const ButtonConnectToServer = () => {
 
   const closeConnection = () => {
     if (ws.current) {
-      ws.current.onclose = () => {
-        setStatus("Соединение закрыто")
-        ws.current = null
-      }
       ws.current.close()
     }
   }
@@ -35,7 +41,6 @@ export const ButtonConnectToServer = () => {
     } else {
       openConnection()
     }
-    setIsConnected(!isConnected)
   }
 
   useEffect(() => {
@@ -45,7 +50,6 @@ export const ButtonConnectToServer = () => {
       }
     }
   }, [])
-
   console.log(status)
 
   return (
