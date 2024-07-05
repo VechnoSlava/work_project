@@ -4,6 +4,8 @@ import styles from "./buttonConnectToServer.module.css"
 import { useEffect, useRef, useState } from "react"
 
 export const ButtonConnectToServer = () => {
+  console.log("ButtonConnectToServer!")
+
   const ws_URL = "wss://ws.coincap.io/prices?assets=bitcoin,ethereum"
   const [isConnected, setIsConnected] = useState<boolean>(false)
   const [status, setStatus] = useState<string>("Соединение закрыто")
@@ -68,7 +70,6 @@ export const ButtonConnectToServer = () => {
           )}
         </ButtonMenuHead>
       </div>
-      <div>{status}</div>
     </>
   )
 }
