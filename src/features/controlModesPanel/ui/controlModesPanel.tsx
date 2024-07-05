@@ -1,5 +1,4 @@
 import { useAppSelector, useAppDispatch } from "../../../app/store/hooks"
-import { ToggleSwitch } from "../../../shared/buttons"
 import { type RoutePath, ROUTES_PATH } from "../../../shared/constants/routes"
 import {
   selectWindow,
@@ -15,6 +14,7 @@ import {
 } from "../../pagesNavigation/model/pagesNavigationSlice"
 import styles from "./controlModesPanel.module.css"
 import { useEffect, useRef } from "react"
+import { ToggleSwitch } from "../../../entities/toggleSwitch"
 
 export const ControlModesPanel = () => {
   console.log("ControlPanel")
@@ -95,7 +95,7 @@ export const ControlModesPanel = () => {
 
   return (
     <div className={styles.controlPanel}>
-      <div className={styles.controlPanel__columnOne}>
+      <div className={styles.controlPanel__column}>
         <ToggleSwitch
           nameSwitch="2-х оконный режим"
           checked={isSecondaryWindowOpen}
@@ -110,7 +110,7 @@ export const ControlModesPanel = () => {
         />
       </div>
 
-      <div className={styles.controlPanel__columnTwo}>
+      <div className={styles.controlPanel__column}>
         <ToggleSwitch
           nameSwitch="Режим эталонов"
           checked={isReferenceMode}

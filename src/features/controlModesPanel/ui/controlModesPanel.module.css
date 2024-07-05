@@ -5,17 +5,8 @@
   height: 100%;
 }
 
-.controlPanel__columnOne {
+.controlPanel__column {
   padding: 4px 10px;
-  height: 100%;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-}
-
-.controlPanel__columnTwo {
-  padding: 5px 10px;
   height: 100%;
   box-sizing: border-box;
   display: flex;

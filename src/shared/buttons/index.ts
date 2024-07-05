@@ -1,2 +1,2 @@
-export { ToggleSwitch } from "./toggleSwitch/toggleSwitch"
 export { ButtonMenuHead } from "./buttonMenuHead/buttonMenuHead"
+export { CustomSwitch } from "./customSwitch/customSwitch"

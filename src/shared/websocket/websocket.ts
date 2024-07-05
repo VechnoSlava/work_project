@@ -6,7 +6,7 @@
 //   console.log("websocket is connecting...")
 // }
 
-// const ws_path:string = 'ws://192.21.16.14:5105/echo';
+// const ws:string = 'ws://192.21.16.14:5105/echo';
 
 // const AppWs = () => {
 //   const [isPaused, setIsPaused] = useState(false);

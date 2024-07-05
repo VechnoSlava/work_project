@@ -7,6 +7,9 @@ export const InputFilterForm = styled(TextField)({
   },
   "& .MuiFormLabel-root": {
     color: "#999999e7",
+    "&:focused": {
+      color: "#fff",
+    },
   },
 
   "& .MuiInputBase-input": {
