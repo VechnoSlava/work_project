@@ -4,12 +4,14 @@ import { setupListeners } from "@reduxjs/toolkit/query"
 import { controlModesSlice } from "../../features/controlModesPanel/model/controlModesSlice"
 import { sideMenuSlice } from "../../widgets/sideMenuFilters/model/sideMenuSlice"
 import { pagesNavigationSlice } from "../../features/pagesNavigation/model/pagesNavigationSlice"
+import { serverConnectionSlice } from "../../features/buttonConnectToServer/model/serverConnectionSlice"
 
 //Добавляем слайсы в combineSlices
 const rootReducer = combineSlices(
   pagesNavigationSlice,
   controlModesSlice,
   sideMenuSlice,
+  serverConnectionSlice,
 )
 
 export const makeStore = (preloadedState?: Partial<RootState>) => {
