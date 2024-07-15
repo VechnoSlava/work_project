@@ -1,7 +1,19 @@
 import React from "react"
 import { createRoot } from "react-dom/client"
-import App from "./app/App"
 import "./index.css"
+import timemachine from "timemachine"
+import App from "./app/App"
+console.log(new Date())
+
+timemachine.config({
+  dateString: "2020 00:00:00",
+  // timestamp: currentTimeStamp,
+  // difference: -timeDifference,
+  tick: true,
+})
+
+timemachine.reset()
+console.log(new Date())
 
 const container = document.getElementById("root")
 const renderApp = (container: HTMLElement) => {

@@ -1,32 +1,58 @@
-// import { type PayloadAction } from "@reduxjs/toolkit/react"
+import { type PayloadAction } from "@reduxjs/toolkit/react"
 import { createAppSlice } from "../../../app/store/createAppSlice"
 
 export interface IConnectionState {
-  isConnected: boolean
+  isConnection: boolean
   stateConnection: "idle" | "connecting" | "success" | "failed"
+  errorMessage: string | null
 }
 
 const initialState: IConnectionState = {
-  isConnected: false,
+  isConnection: false,
   stateConnection: "idle",
+  errorMessage: null,
 }
 
 export const serverConnectionSlice = createAppSlice({
   name: "serverConnection",
   initialState,
   reducers: create => ({
-    connectToServer: create.reducer(state => {
-      state.isConnected = true
+    connectToServerRequest: create.reducer(state => {
+      state.stateConnection = "connecting"
+      state.errorMessage = null
     }),
+    connectToServerSuccess: create.reducer(state => {
+      state.isConnection = true
+      state.stateConnection = "success"
+      state.errorMessage = null
+    }),
+    connectToServerFailure: create.reducer(
+      (state, action: PayloadAction<string>) => {
+        state.isConnection = false
+        state.stateConnection = "failed"
+        state.errorMessage = action.payload
+      },
+    ),
     disconnectToServer: create.reducer(state => {
-      state.isConnected = false
+      state.isConnection = false
+      state.stateConnection = "idle"
     }),
   }),
   selectors: {
-    selectIsConnected: state => state.isConnected,
+    selectIsConnection: state => state.isConnection,
+    selectStateConnection: state => state.stateConnection,
+    selectErrorMessageConnection: state => state.errorMessage,
   },
 })
 
-export const { connectToServer, disconnectToServer } =
-  serverConnectionSlice.actions
-export const { selectIsConnected } = serverConnectionSlice.selectors
+export const {
+  connectToServerRequest,
+  connectToServerSuccess,
+  connectToServerFailure,
+  disconnectToServer,
+} = serverConnectionSlice.actions
+export const {
+  selectIsConnection,
+  selectStateConnection,
+  selectErrorMessageConnection,
+} = serverConnectionSlice.selectors
