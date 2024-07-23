@@ -1,0 +1,30 @@
+diff --git a/node_modules/timemachine/timemachine.js b/node_modules/timemachine/timemachine.js
+index 494e05f..965cde6 100644
+--- a/node_modules/timemachine/timemachine.js
++++ b/node_modules/timemachine/timemachine.js
+@@ -41,8 +41,23 @@
+         this.tickStartDate = null;
+         this.keepTime = false;
+         this.difference = 0;
+-        Date = OriginalDate;
+-        Date.prototype = OriginalDate.prototype;
++        // Date = OriginalDate;
++        // Date.prototype = OriginalDate.prototype;
++        
++        // Установите Date обратно в оригинальную функцию
++  if (typeof global !== 'undefined') {
++    Object.defineProperty(global, 'Date', {
++      value: OriginalDate,
++      configurable: true,
++      writable: true
++    });
++  } else if (typeof window !== 'undefined') {
++    Object.defineProperty(window, 'Date', {
++      value: OriginalDate,
++      configurable: true,
++      writable: true
++    });
++  }
+       },
+ 
+       _apply: function() {
