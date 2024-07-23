@@ -6,8 +6,9 @@ import {
 	disconnectToServer,
 	setMessage,
 } from './serverConnectionSlice'
+import config from '../../../config.json'
 
-const socket_URL = 'wss://ws.coincap.io/prices?assets=bitcoin,ethereum'
+const socket_URL = config.serverUrl
 
 export const webSocketMiddleware: Middleware = store => {
 	let socket: WebSocket | null = null

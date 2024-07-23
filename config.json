@@ -1,0 +1,3 @@
+{
+	"serverUrl": "wss://ws.coincap.io/prices?assets=bitcoin,ethereum"
+}

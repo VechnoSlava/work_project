@@ -1,20 +1,22 @@
 {
-  "compilerOptions": {
-    "target": "ES5",
-    "useDefineForClassFields": true,
-    "lib": ["DOM", "DOM.Iterable", "ES2015"],
-    "allowJs": false,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "types": ["vitest/globals"]
-  },
-  "references": [{ "path": "./tsconfig.node.json" }]
+	"compilerOptions": {
+		"target": "ES5",
+		"useDefineForClassFields": true,
+		"lib": ["DOM", "DOM.Iterable", "ES2015"],
+		"allowJs": false,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"strict": true,
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"noEmit": true,
+		"jsx": "react-jsx",
+		"types": ["vitest/globals"]
+	},
+	"include": ["src/**/*.ts", "src/**/*.tsx"],
+	"exclude": ["node_modules", "vite.config.ts"],
+	"references": [{ "path": "./tsconfig.node.json" }]
 }
