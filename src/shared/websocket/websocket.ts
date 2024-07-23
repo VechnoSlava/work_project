@@ -1,60 +1,49 @@
-// import { useState, useRef, useEffect, useCallback } from "react";
-// import { p } from "vitest/dist/reporters-yx5ZTtEV.js";
+import type { Middleware } from '@reduxjs/toolkit'
+import {
+	connectToServerRequest,
+	connectToServerSuccess,
+	connectToServerFailure,
+	disconnectToServer,
+	setMessage,
+} from './serverConnectionSlice'
 
-// const websocket = new WebSocket(`'ws://192.21.16.14:5105/echo'`)
-// websocket.onopen = () => {
-//   console.log("websocket is connecting...")
-// }
+const socket_URL = 'wss://ws.coincap.io/prices?assets=bitcoin,ethereum'
 
-// const ws:string = 'ws://192.21.16.14:5105/echo';
+export const webSocketMiddleware: Middleware = store => {
+	let socket: WebSocket | null = null
 
-// const AppWs = () => {
-//   const [isPaused, setIsPaused] = useState(false);
-//   const [data, setData] = useState(null);
-//   const [status, setStatus] = useState("");
-//   const ws = useRef(null);
+	return next => action => {
+		const { dispatch } = store
 
-//   useEffect(() => {
-//       if (!isPaused) {
-//             ws.current = new WebSocket(ws_path); // создаем ws соединение
-//             ws.current.onopen = () => setStatus("Соединение открыто");	// callback на ивент открытия соединения
-//             ws.current.onclose = () => setStatus("Соединение закрыто"); // callback на ивент закрытия соединения
-//           gettingData();
-//       }
+		if (connectToServerRequest.match(action)) {
+			socket = new WebSocket(socket_URL)
+			console.log('Подключение...')
 
-//       return () => ws.current.close(); // кода меняется isPaused - соединение закрывается
-//   }, [ws, isPaused]);
+			socket.onopen = () => {
+				console.log('Соединение открыто!')
+				dispatch(connectToServerSuccess())
+			}
 
-//   const gettingData = useCallback(() => {
-//       if (!ws.current) return;
+			socket.onerror = () => {
+				dispatch(connectToServerFailure('Ошибка подключения!'))
+			}
 
-//       ws.current.onmessage = e => {                //подписка на получение данных по вебсокету
-//           if (isPaused) return;
-//           const message = JSON.parse(e.data);
-//           setData(message);
-//       };
-//   }, [isPaused]);
+			socket.onclose = () => {
+				console.log('Соединение закрыто!')
+				dispatch(disconnectToServer())
+			}
 
-//   return (
-//       <>
-//           {!!data &&
-//               <div>
-//                   <div>
-//                       <h2>{status}</h2>
-//                       <p>{`connection ID: ${data?.connectionID}`}</p>
-//                       <p>{`event: ${data?.event}`}</p>
-//                       <p>{`status: ${data?.status}`}</p>
-//                       <p>{`version: ${data?.version}`}</p>
-//                   </div>
+			socket.onmessage = event => {
+				const message = JSON.parse(event.data)
+				dispatch(setMessage(message))
+			}
+		} else if (disconnectToServer.match(action)) {
+			if (socket) {
+				socket.close()
+				socket = null
+			}
+		}
 
-//                   <button onclick={() => {
-//                       ws.current.close();
-//                       setIsPaused(!isPaused)
-//                   }}>{!isPaused ? 'Остановить соединение' : 'Открыть соединение' }</button>
-//               </div>
-//           }
-//       </>
-//   )
-// }
-
-// export default AppWs;
+		return next(action)
+	}
+}
