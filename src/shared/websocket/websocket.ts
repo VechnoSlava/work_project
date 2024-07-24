@@ -1,4 +1,4 @@
-import type { Middleware } from '@reduxjs/toolkit'
+import type { Dispatch, Middleware, MiddlewareAPI, PayloadAction } from '@reduxjs/toolkit'
 import {
 	connectToServerRequest,
 	connectToServerSuccess,
@@ -7,30 +7,33 @@ import {
 	setMessage,
 } from './serverConnectionSlice'
 import config from '../../../config.json'
+import { AppDispatch, RootState } from '../../app/store/store'
 
 const socket_URL = config.serverUrl
 
-export const webSocketMiddleware: Middleware = store => {
+export const webSocketMiddleware: Middleware<{}, RootState> = (
+	store: MiddlewareAPI<AppDispatch, RootState>,
+) => {
 	let socket: WebSocket | null = null
 
 	return next => action => {
-		const { dispatch } = store
+		const dispatch: AppDispatch = store.dispatch
 
 		if (connectToServerRequest.match(action)) {
 			socket = new WebSocket(socket_URL)
-			console.log('Подключение...')
+			console.log('Connecting to server...')
 
 			socket.onopen = () => {
-				console.log('Соединение открыто!')
+				console.log('Connection is complete!')
 				dispatch(connectToServerSuccess())
 			}
 
 			socket.onerror = () => {
-				dispatch(connectToServerFailure('Ошибка подключения!'))
+				dispatch(connectToServerFailure('Fault connection!'))
 			}
 
 			socket.onclose = () => {
-				console.log('Соединение закрыто!')
+				console.log('Connection is close!')
 				dispatch(disconnectToServer())
 			}
 

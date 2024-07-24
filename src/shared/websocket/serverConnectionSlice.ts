@@ -40,6 +40,9 @@ export const serverConnectionSlice = createAppSlice({
 		setMessage: create.reducer((state, action: PayloadAction<any>) => {
 			state.data = action.payload
 		}),
+		broadcastSync: create.reducer((state, action: PayloadAction<IConnectionState>) => {
+			return { ...state, ...action.payload }
+		}),
 	}),
 	selectors: {
 		selectIsConnection: state => state.isConnection,
@@ -55,6 +58,7 @@ export const {
 	connectToServerFailure,
 	disconnectToServer,
 	setMessage,
+	broadcastSync,
 } = serverConnectionSlice.actions
 export const {
 	selectIsConnection,

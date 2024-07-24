@@ -1,0 +1,18 @@
+/* spectrumTargetChart.module.css */
+.chartContainer {
+	padding: 16px;
+}
+
+.chartList {
+	list-style-type: none;
+	padding: 0;
+}
+
+.chartItem {
+	margin-bottom: 8px;
+	font-size: 16px;
+}
+
+.chartItem strong {
+	margin-right: 8px;
+}

@@ -6,6 +6,7 @@ import { sideMenuSlice } from '../../widgets/sideMenuFilters/model/sideMenuSlice
 import { pagesNavigationSlice } from '../../features/pagesNavigation/model/pagesNavigationSlice'
 import { serverConnectionSlice } from '../../shared/webSocket/serverConnectionSlice'
 import { webSocketMiddleware } from '../../shared/webSocket/websocket'
+import { broadcastMiddleware } from '../../shared/broadcastChanel/broadcastChanelMiddleware'
 
 //Добавляем слайсы в combineSlices
 const rootReducer = combineSlices(
@@ -23,7 +24,7 @@ export const makeStore = (preloadedState?: Partial<RootState>) => {
 		// Adding the api middleware enables caching, invalidation, polling,
 		// and other useful features of `rtk-query`.
 		middleware: getDefaultMiddleware => {
-			return getDefaultMiddleware().concat(webSocketMiddleware)
+			return getDefaultMiddleware().concat(webSocketMiddleware).concat(broadcastMiddleware)
 		},
 		preloadedState,
 	})
