@@ -1,20 +1,20 @@
 // import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAppSlice } from '../../../app/store/createAppSlice'
 
-export interface WindowState {
+export interface IModesWorkState {
 	isSecondaryWindowMode: boolean
 	isIdentificationMode: boolean
 	isReferenceMode: boolean
 }
 
-const initialState: WindowState = {
+const initialState: IModesWorkState = {
 	isSecondaryWindowMode: false,
 	isIdentificationMode: false,
 	isReferenceMode: false,
 }
 
 export const controlModesSlice = createAppSlice({
-	name: 'controlModes',
+	name: 'workModes',
 	initialState,
 	reducers: create => ({
 		toggleSecondaryWindow: create.reducer(state => {
