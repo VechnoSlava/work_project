@@ -2,13 +2,13 @@
 import { createAppSlice } from '../../../app/store/createAppSlice'
 
 export interface WindowState {
-	isSecondaryWindowOpen: boolean
+	isSecondaryWindowMode: boolean
 	isIdentificationMode: boolean
 	isReferenceMode: boolean
 }
 
 const initialState: WindowState = {
-	isSecondaryWindowOpen: false,
+	isSecondaryWindowMode: false,
 	isIdentificationMode: false,
 	isReferenceMode: false,
 }
@@ -18,7 +18,7 @@ export const controlModesSlice = createAppSlice({
 	initialState,
 	reducers: create => ({
 		toggleSecondaryWindow: create.reducer(state => {
-			state.isSecondaryWindowOpen = !state.isSecondaryWindowOpen
+			state.isSecondaryWindowMode = !state.isSecondaryWindowMode
 		}),
 		toggleIdentificationMode: create.reducer(state => {
 			state.isIdentificationMode = !state.isIdentificationMode
@@ -28,7 +28,7 @@ export const controlModesSlice = createAppSlice({
 		}),
 	}),
 	selectors: {
-		selectSecondWindow: state => state.isSecondaryWindowOpen,
+		selectModeSecondWindow: state => state.isSecondaryWindowMode,
 		selectModeIdentification: state => state.isIdentificationMode,
 		selectModeReference: state => state.isReferenceMode,
 	},
@@ -36,5 +36,5 @@ export const controlModesSlice = createAppSlice({
 
 export const { toggleSecondaryWindow, toggleIdentificationMode, toggleReferenceMode } =
 	controlModesSlice.actions
-export const { selectSecondWindow, selectModeIdentification, selectModeReference } =
+export const { selectModeSecondWindow, selectModeIdentification, selectModeReference } =
 	controlModesSlice.selectors

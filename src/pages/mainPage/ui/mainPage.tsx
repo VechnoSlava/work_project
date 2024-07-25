@@ -4,11 +4,11 @@ import { CommonTargetsTable } from '../../../widgets/commonTargetsTable'
 import { SpectrumTargetChart } from '../../../widgets/spectrumTargetChart'
 import styles from './mainPage.module.css'
 import { useAppSelector } from '../../../app/store/hooks'
-import { selectSecondWindow } from '../../../features/controlModesPanel/model/controlModesSlice'
+import { selectModeSecondWindow } from '../../../widgets/header/model/controlModesSlice'
 
 export const MainPage: FC = () => {
 	console.log('render main page')
-	const secondWindowOpened = useAppSelector(selectSecondWindow)
+	const secondWindowOpened = useAppSelector(selectModeSecondWindow)
 
 	return (
 		<div className={styles.container}>

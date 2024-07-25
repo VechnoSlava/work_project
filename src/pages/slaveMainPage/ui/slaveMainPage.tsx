@@ -1,10 +1,10 @@
 import { useAppSelector } from '../../../app/store/hooks'
-import { selectSecondWindow } from '../../../features/controlModesPanel/model/controlModesSlice'
+import { selectModeSecondWindow } from '../../../widgets/header/model/controlModesSlice'
 import { SpectrumTargetChart } from '../../../widgets/spectrumTargetChart'
 
 export const SlaveMainPage = () => {
 	console.log('slaveMainPage')
-	const secondWindowOpened = useAppSelector(selectSecondWindow)
+	const secondWindowOpened = useAppSelector(selectModeSecondWindow)
 
 	return (
 		<div>

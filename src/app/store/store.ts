@@ -1,7 +1,7 @@
 import type { Action, ThunkAction } from '@reduxjs/toolkit'
 import { combineSlices, configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
-import { controlModesSlice } from '../../features/controlModesPanel/model/controlModesSlice'
+import { controlModesSlice } from '../../widgets/header/model/controlModesSlice'
 import { sideMenuSlice } from '../../widgets/sideMenuFilters/model/sideMenuSlice'
 import { pagesNavigationSlice } from '../../features/pagesNavigation/model/pagesNavigationSlice'
 import { serverConnectionSlice } from '../../shared/webSocket/serverConnectionSlice'
