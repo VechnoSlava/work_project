@@ -1,9 +1,9 @@
-import { Outlet } from "react-router-dom"
+import { Outlet } from 'react-router-dom'
 
 export const SlaveLayout = () => {
-  return (
-    <div>
-      <Outlet />
-    </div>
-  )
+	return (
+		<main>
+			<Outlet />
+		</main>
+	)
 }

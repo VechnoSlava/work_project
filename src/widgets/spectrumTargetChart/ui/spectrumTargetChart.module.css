@@ -1,6 +1,7 @@
 /* spectrumTargetChart.module.css */
 .chartContainer {
-	padding: 16px;
+	background-color: #9d47b3f1;
+	border: 2px solid #30bf3e;
 }
 
 .chartList {

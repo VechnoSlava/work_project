@@ -1,5 +1,6 @@
 import { useAppSelector } from '../../../app/store/hooks'
 import { selectModeSecondWindow } from '../../../widgets/header/model/controlModesSlice'
+import { MainMap } from '../../../widgets/mainMap'
 import { SpectrumTargetChart } from '../../../widgets/spectrumTargetChart'
 
 export const SlaveMainPage = () => {
@@ -9,7 +10,7 @@ export const SlaveMainPage = () => {
 	return (
 		<div>
 			<h1>SlaveMainPage</h1>
-			{secondWindowOpened && <SpectrumTargetChart />}
+			<MainMap key={0} />
 		</div>
 	)
 }
