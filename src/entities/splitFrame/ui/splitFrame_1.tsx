@@ -1,4 +1,4 @@
-import React, { Children, ReactNode, useEffect, useRef } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import Split from 'react-split'
 import './splitFrame.css'
 
@@ -13,13 +13,14 @@ export const SplitFrame: React.FC<ISplitFrame> = ({ children, frameDirection }) 
 			? { direction: 'vertical' as 'vertical', className: 'split-vertical' }
 			: { direction: 'horizontal' as 'horizontal', className: 'split-horizontal' }
 
-	if (children.length == 1) {
-		return <>{children}</>
-	}
+	// console.log(`'дочерних элементов: ${React.Children.count(children)}`)
 
-	return (
-		<Split gutterSize={8} {...frameProps}>
-			{children}
-		</Split>
-	)
+	if (children.length > 1) {
+		return (
+			<Split gutterSize={8} {...frameProps}>
+				{children}
+			</Split>
+		)
+	}
+	return <>{children}</>
 }

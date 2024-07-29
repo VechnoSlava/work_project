@@ -5,36 +5,22 @@ import { CommonTargetsTable } from '../../../widgets/commonTargetsTable'
 import { SpectrumTargetChart } from '../../../widgets/spectrumTargetChart'
 import { SplitFrame } from '../../../entities/splitFrame'
 import { MainMap } from '../../../widgets/mainMap'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export const MainPage = () => {
 	const secondWindowOpened = useAppSelector(selectModeSecondWindow)
 	const [key, setKey] = useState(100)
-	console.log(key)
 
 	useEffect(() => {
 		secondWindowOpened ? setKey(101) : setKey(100)
 	}, [secondWindowOpened])
 
-	// useEffect(() => {
-	// 	setKey(prevKey => prevKey + 1)
-	// }, [secondWindowOpened])
-
 	return (
 		<div className={styles.container}>
-			<SplitFrame frameDirection="vertical" key={key}>
-				<SplitFrame frameDirection="horizontal" key={102}>
-					{!secondWindowOpened && <MainMap key={1} />}
-					<SpectrumTargetChart key={2} />
-					<CommonTargetsTable key={3} />
-				</SplitFrame>
-				<SplitFrame frameDirection="horizontal" key={103}>
-					<SplitFrame frameDirection="vertical" key={104}>
-						<SpectrumTargetChart key={4} />
-						<CommonTargetsTable key={5} />
-					</SplitFrame>
-					{!secondWindowOpened && <CommonTargetsTable key={6} />}
-				</SplitFrame>
+			<SplitFrame frameDirection="horizontal" key={key}>
+				{secondWindowOpened && <MainMap />}
+				{secondWindowOpened && <SpectrumTargetChart />}
+				<CommonTargetsTable />
 			</SplitFrame>
 		</div>
 	)

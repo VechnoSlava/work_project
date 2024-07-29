@@ -8,7 +8,7 @@ export const SpectrumTargetChart: FC = () => {
 	// Преобразуем объект данных в массив пар [ключ, значение] вручную
 	const entries = data ? Object.keys(data).map(key => [key, data[key]]) : []
 
-	console.log(data)
+	// console.log(data)
 	return (
 		<div className={styles.chartContainer}>
 			<p>SpectrumTargetChart</p>
