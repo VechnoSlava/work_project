@@ -21,7 +21,7 @@ export const MainPage = () => {
 		<div className={styles.container}>
 			<SplitFrame frameDirection="vertical" key={key}>
 				<SplitFrame frameDirection="horizontal" key={102}>
-					{!secondWindowOpened && <MainMap key={1} />}
+					{secondWindowOpened ? null : <MainMap key={1} />}
 					<SpectrumTargetChart key={2} />
 					<CommonTargetsTable key={3} />
 				</SplitFrame>
@@ -30,7 +30,7 @@ export const MainPage = () => {
 						<SpectrumTargetChart key={4} />
 						<CommonTargetsTable key={5} />
 					</SplitFrame>
-					{!secondWindowOpened && <CommonTargetsTable key={6} />}
+					{secondWindowOpened ? null : <CommonTargetsTable key={6} />}
 				</SplitFrame>
 			</SplitFrame>
 		</div>
