@@ -1,24 +1,27 @@
-import React, { Children, ReactNode, useEffect, useRef } from 'react'
-import Split from 'react-split'
+import React, { ReactNode } from 'react'
+import Split, { SplitProps } from 'react-split'
 import './splitFrame.css'
 
-interface ISplitFrame {
+interface ISplitFrame extends SplitProps {
 	children: ReactNode[]
 	frameDirection: 'horizontal' | 'vertical'
 }
+const frameProps = {
+	vertical: { direction: 'vertical', className: 'split-vertical' },
+	horizontal: { direction: 'horizontal', className: 'split-horizontal' },
+}
 
-export const SplitFrame: React.FC<ISplitFrame> = ({ children, frameDirection }) => {
-	const frameProps =
-		frameDirection === 'vertical'
-			? { direction: 'vertical' as 'vertical', className: 'split-vertical' }
-			: { direction: 'horizontal' as 'horizontal', className: 'split-horizontal' }
-
-	if (children.length == 1) {
+export const SplitFrame: React.FC<ISplitFrame> = ({ children, frameDirection }, props) => {
+	if (children.filter(node => node).length == 1) {
 		return <>{children}</>
 	}
 
+	if (children.length == 0) {
+		return
+	}
+
 	return (
-		<Split gutterSize={8} {...frameProps}>
+		<Split gutterSize={8} {...frameProps[frameDirection]} {...props}>
 			{children}
 		</Split>
 	)

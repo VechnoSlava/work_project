@@ -8,17 +8,14 @@ import { MainMap } from '../../../widgets/mainMap'
 import { useState, useEffect } from 'react'
 
 export const MainPage = () => {
+	console.log('render MainPage')
+
 	const secondWindowOpened = useAppSelector(selectModeSecondWindow)
 	const [key, setKey] = useState(100)
-	console.log(key)
 
 	useEffect(() => {
 		secondWindowOpened ? setKey(101) : setKey(100)
 	}, [secondWindowOpened])
-
-	// useEffect(() => {
-	// 	setKey(prevKey => prevKey + 1)
-	// }, [secondWindowOpened])
 
 	return (
 		<div className={styles.container}>
