@@ -16,10 +16,6 @@ export const SplitFrame: React.FC<ISplitFrame> = ({ children, frameDirection }, 
 		return <>{children}</>
 	}
 
-	if (children.length == 0) {
-		return
-	}
-
 	return (
 		<Split gutterSize={8} {...frameProps[frameDirection]} {...props}>
 			{children}
