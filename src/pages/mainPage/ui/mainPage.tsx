@@ -6,6 +6,7 @@ import { SpectrumTargetChart } from '../../../widgets/spectrumTargetChart'
 import { SplitFrame } from '../../../entities/splitFrame'
 import { MainMap } from '../../../widgets/mainMap'
 import { useState, useEffect } from 'react'
+import { Spectrogram } from '../../../widgets/spectrogram'
 
 export const MainPage = () => {
 	console.log('render MainPage')
@@ -22,7 +23,7 @@ export const MainPage = () => {
 			<SplitFrame frameDirection="vertical" key={key}>
 				<SplitFrame frameDirection="horizontal" key={102}>
 					{secondWindowOpened ? null : <MainMap key={1} />}
-					<SpectrumTargetChart key={2} />
+					<Spectrogram key={2} />
 					<CommonTargetsTable key={3} />
 				</SplitFrame>
 				<SplitFrame frameDirection="horizontal" key={103}>
