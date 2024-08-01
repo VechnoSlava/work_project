@@ -1,24 +1,31 @@
 import React, { ReactNode } from 'react'
 import Split, { SplitProps } from 'react-split'
-import './splitFrame.css'
+import styles from './splitFrame.module.css'
 
 interface ISplitFrame extends SplitProps {
 	children: ReactNode[]
 	frameDirection: 'horizontal' | 'vertical'
 }
 const frameProps = {
-	vertical: { direction: 'vertical', className: 'split-vertical' },
-	horizontal: { direction: 'horizontal', className: 'split-horizontal' },
+	vertical: { direction: 'vertical', className: styles.split_vertical },
+	horizontal: { direction: 'horizontal', className: styles.split_horizontal },
+}
+const createGutter = (index: number, direction: string) => {
+	const gutter = document.createElement('div')
+	gutter.className = `${styles.gutter} ${direction === 'horizontal' ? styles.gutter_horizontal : styles.gutter_vertical}`
+	return gutter
 }
 
 export const SplitFrame: React.FC<ISplitFrame> = ({ children, frameDirection }, props) => {
-	if (children.filter(node => node).length == 1) {
-		return <>{children}</>
+	const filteredChildren = React.Children.toArray(children).filter(Boolean)
+
+	if (filteredChildren.length === 1) {
+		return <>{filteredChildren}</>
 	}
 
 	return (
-		<Split gutterSize={8} {...frameProps[frameDirection]} {...props}>
-			{children}
+		<Split {...frameProps[frameDirection]} gutter={createGutter} gutterSize={8} {...props}>
+			{filteredChildren}
 		</Split>
 	)
 }

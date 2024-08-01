@@ -10,7 +10,7 @@ export const lc = lightningChart({
 	},
 	// warnings: false,
 	sharedContextOptions: {
-		useIndividualCanvas: false,
+		// useIndividualCanvas: false,
 		// useStackingOrder: false,
 		// devicePixelRatio: true,
 		// noCanvasStyles: true,
