@@ -11,22 +11,12 @@ import {
 import { lc } from '../../../shared/libs/lightingChart/lcjs'
 import { platanTheme } from '../../../shared/libs/lightingChart/theme'
 
-export const createSpectrum = (divContainer: HTMLDivElement) => {
-	const containerChart1 = document.createElement('div')
-	const containerChart2 = document.createElement('div')
-	divContainer.append(containerChart1)
-	divContainer.append(containerChart2)
-
-	containerChart1.style.width = '100%'
-	containerChart1.style.height = '70%'
-	containerChart2.style.width = '100%'
-	containerChart2.style.height = '30%'
-
+export const createSpectrum = (idContainerSpectrum: string, idContainerBand: string) => {
 	const threshold = 70
 	const chart = lc
 		.ChartXY({
 			theme: platanTheme,
-			container: containerChart1,
+			container: idContainerSpectrum,
 		})
 		.setTitle('Спектр сигнала')
 		.setTitlePosition('center-top')
@@ -52,13 +42,7 @@ export const createSpectrum = (divContainer: HTMLDivElement) => {
 		.setStrokeStyle(emptyLine)
 		.setAutoScrollingEnabled(false)
 		.setCursorEnabled(false)
-	const warningImage = new Image()
-	warningImage.crossOrigin = ''
-	warningImage.src = document.head.baseURI + 'examples/assets/0054/warning.png'
-	eventSeries
-		.setPointFillStyle(new ImageFill({ source: warningImage }))
-		.setPointAlignment({ x: 0, y: -1.1 })
-		.setPointSize(0.8)
+	eventSeries.setPointAlignment({ x: 0, y: -1.1 }).setPointSize(0.8)
 
 	const lineSeries = chart
 		.addPointLineAreaSeries({ dataPattern: 'ProgressiveX' })
@@ -69,7 +53,7 @@ export const createSpectrum = (divContainer: HTMLDivElement) => {
 		.setValue(threshold)
 		.setStrokeStyle(stroke => new DashedLine({ fillStyle: stroke.getFillStyle() }))
 
-	const zoomBandChart = lc.ZoomBandChart({ container: containerChart2, theme: platanTheme })
+	const zoomBandChart = lc.ZoomBandChart({ container: idContainerBand, theme: platanTheme })
 	zoomBandChart
 		.add(eventSeries)
 		.setAutoScrollingEnabled(false)
@@ -90,22 +74,3 @@ export const createSpectrum = (divContainer: HTMLDivElement) => {
 		}
 	}, 1000 / 60)
 }
-
-// //Settings font and color
-// .setTitleFont(
-// 	new FontSettings({
-// 		family: 'sans-serif',
-// 		size: 16,
-// 		weight: 'normal',
-// 		style: 'normal',
-// 	}),
-// )
-
-// const chart2 = lc
-// 	.ChartXY({
-// 		container: idContainer,
-// 	})
-// 	.setTitle('Спектр сигнала 2')
-// 	.setTitlePosition('center-top')
-// 	.setPadding(0)
-// 	.setMouseInteractions(false)

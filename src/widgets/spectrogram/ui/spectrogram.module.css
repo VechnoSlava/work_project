@@ -1,7 +1,17 @@
-.plot {
-	/* height: 100%;
-	width: 100%; */
-	/* padding: 10px; */
+.spectrogram {
+	box-sizing: border-box;
 	overflow: hidden;
-	/* border: solid 1px red; */
+	border: solid 1px red;
+	width: 100%;
+	height: 100%;
+}
+
+.spectrogram__spectrum {
+	width: 100%;
+	height: 70%;
+}
+
+.spectrogram__spectrum_band {
+	width: 100%;
+	height: 30%;
 }

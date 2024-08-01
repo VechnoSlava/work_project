@@ -10,6 +10,7 @@ const frameProps = {
 	vertical: { direction: 'vertical', className: styles.split_vertical },
 	horizontal: { direction: 'horizontal', className: styles.split_horizontal },
 }
+
 const createGutter = (index: number, direction: string) => {
 	const gutter = document.createElement('div')
 	gutter.className = `${styles.gutter} ${direction === 'horizontal' ? styles.gutter_horizontal : styles.gutter_vertical}`
@@ -22,10 +23,13 @@ export const SplitFrame: React.FC<ISplitFrame> = ({ children, frameDirection }, 
 	if (filteredChildren.length === 1) {
 		return <>{filteredChildren}</>
 	}
-
 	return (
 		<Split {...frameProps[frameDirection]} gutter={createGutter} gutterSize={8} {...props}>
-			{filteredChildren}
+			{filteredChildren.map((child, index) => (
+				<div key={index} className={styles.split_item}>
+					{child}
+				</div>
+			))}
 		</Split>
 	)
 }
