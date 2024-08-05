@@ -1,5 +1,5 @@
 import { MainMap } from '../../../widgets/mainMap'
-import { CommonTargetsTable } from '../../../widgets/commonTargetsTable'
+import { CurrentTargetsTable } from '../../../widgets/currentTargetsTable'
 import { SpectrumTargetChart } from '../../../widgets/spectrumTargetChart'
 import { SplitFrame } from '../../../entities/splitFrame'
 import { useAppSelector } from '../../../app/store/hooks'
@@ -17,14 +17,14 @@ export const HistoryPage = () => {
 		<SplitFrame frameDirection="vertical" key={key}>
 			<SplitFrame frameDirection="horizontal" key={202}>
 				{!secondWindowOpened && <MainMap key={1} />}
-				<CommonTargetsTable key={3} />
+				<CurrentTargetsTable key={3} />
 			</SplitFrame>
 			<SplitFrame frameDirection="horizontal" key={203}>
 				<SplitFrame frameDirection="vertical" key={204}>
-					<CommonTargetsTable key={4} />
+					<CurrentTargetsTable key={4} />
 					<SpectrumTargetChart key={5} />
 				</SplitFrame>
-				<CommonTargetsTable key={6} />
+				<CurrentTargetsTable key={6} />
 			</SplitFrame>
 		</SplitFrame>
 	)

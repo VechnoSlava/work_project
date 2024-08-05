@@ -1,7 +1,7 @@
 import styles from './mainPage.module.css'
 import { useAppSelector } from '../../../app/store/hooks'
 import { selectModeSecondWindow } from '../../../widgets/header/model/controlModesSlice'
-import { CommonTargetsTable } from '../../../widgets/commonTargetsTable'
+import { CurrentTargetsTable } from '../../../widgets/currentTargetsTable'
 import { SpectrumTargetChart } from '../../../widgets/spectrumTargetChart'
 import { SplitFrame } from '../../../entities/splitFrame'
 import { MainMap } from '../../../widgets/mainMap'
@@ -23,15 +23,15 @@ export const MainPage = () => {
 			<SplitFrame frameDirection="vertical" key={key}>
 				<SplitFrame frameDirection="horizontal" key={102}>
 					{secondWindowOpened ? null : <MainMap key={1} />}
+					<CurrentTargetsTable key={3} />
 					<Spectrogram key={2} />
-					<CommonTargetsTable key={3} />
 				</SplitFrame>
 				<SplitFrame frameDirection="horizontal" key={103}>
 					<SplitFrame frameDirection="vertical" key={104}>
 						<SpectrumTargetChart key={4} />
-						<CommonTargetsTable key={5} />
+						<MainMap key={5} />
 					</SplitFrame>
-					{secondWindowOpened ? null : <CommonTargetsTable key={6} />}
+					{secondWindowOpened ? null : <SpectrumTargetChart key={6} />}
 				</SplitFrame>
 			</SplitFrame>
 		</div>

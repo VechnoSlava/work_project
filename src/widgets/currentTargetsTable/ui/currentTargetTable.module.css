@@ -1,7 +1,9 @@
 .table__container {
+	display: block;
+	box-sizing: border-box;
 	width: 100%;
 	height: 100%;
 	background-color: #a7c2ebfe;
-	color: black;
+	/* color: rgb(235, 5, 5); */
 	border: 1px solid red;
 }

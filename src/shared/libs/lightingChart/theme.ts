@@ -7,7 +7,7 @@ export const platanTheme = makeCustomTheme({
 	effects: true,
 	fontFamily: 'Segoe UI, -apple-system, Verdana, Helvetica',
 	backgroundColor: ColorHEX('#082740ff'),
-	textColor: ColorHEX('#b7b7b3ff'),
+	textColor: ColorHEX('#f0f0ecff'),
 	dataColors: [
 		ColorHEX('#1edcf6'),
 		ColorHEX('#01e971'),
