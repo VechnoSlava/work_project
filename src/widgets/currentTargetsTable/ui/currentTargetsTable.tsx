@@ -49,69 +49,8 @@ export const CurrentTargetsTable = () => {
 				density={'compact'}
 				rows={currentTargets}
 				columns={columns}
+				disableColumnMenu={true}
 			/>
 		</div>
 	)
 }
-
-/*
-export const CurrentTargetsTable = () => {
-	return (
-		<div className={styles.table__container}>
-			<DataGrid
-				aria-label="Targets_table"
-				rows={currentTargets}
-				columns={columns}
-				sx={{
-					'&.MuiDataGrid-root': {
-						border: '1px solid #4f4f4fac ',
-						backgroundColor: '#0c2047eb',
-						color: '#f0f0ecff',
-
-						'& .MuiDataGrid-virtualScroller': {
-							// backgroundColor: 'red',
-							// color: 'black',
-							'& .MuiDataGrid-row': {
-								// borderBottom: 'none',
-								'&:hover': {
-									backgroundColor: '#444',
-								},
-							},
-						},
-
-						// '& .MuiDataGrid-topContainer': {
-						// 	backgroundColor: 'red',
-						// 	color: 'black',
-						// },
-
-						'& .MuiDataGrid-container--top': {
-							// backgroundColor: 'red',
-							// color: 'pink',
-						},
-
-						'& .MuiDataGrid-columnHeaders': {
-							// backgroundColor: '#0c2047eb',
-							// color: '#black',
-						},
-					},
-
-					//Scrollbar styles
-					// '& ::-webkit-scrollbar': {
-					// 	width: '12px',
-					// 	// height: '10px',
-					// },
-					// '& ::-webkit-scrollbar-track': {
-					// 	background: '#113d4ae1',
-					// },
-					// '& ::-webkit-scrollbar-thumb': {
-					// 	backgroundColor: '#888',
-					// },
-					// '& ::-webkit-scrollbar-thumb:hover': {
-					// 	background: '#555',
-					// },
-				}}
-			/>
-		</div>
-	)
-}
-*/

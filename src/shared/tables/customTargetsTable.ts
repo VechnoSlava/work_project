@@ -8,11 +8,11 @@ export const CustomTargetTable = styled(DataGrid)({
 		borderRadius: 0,
 		backgroundColor: '#112d49',
 		color: '#dfdfdfff',
-		// '--DataGrid-containerBackground': '#06344dff',
+		'--DataGrid-containerBackground': '#06344dff',
 		'--DataGrid-rowBorderColor': '#656b6e56',
-		// '& .MuiDataGrid-virtualScroller': {
-		// 	'& .MuiDataGrid-columnHeaders': {},
+		'--DataGrid-scrollbarSize': '12px',
 
+		// '& .MuiDataGrid-virtualScroller': {
 		// 	'& .MuiDataGrid-row': {
 		// 		// borderBottom: 'none',
 		// 		'&:hover': {
@@ -26,52 +26,43 @@ export const CustomTargetTable = styled(DataGrid)({
 			borderTop: 'none',
 			backgroundColor: '#06344dff',
 			'& .MuiTablePagination-root': {
-				// height: '30px',
-				// fontSize: '10px',
 				color: '#dfdfdfff',
 			},
 		},
 	},
 
 	//Scrollbar styles
+
 	'.MuiDataGrid-scrollbar::-webkit-scrollbar': {
 		width: '12px',
 		height: '12px',
 	},
 	'.MuiDataGrid-scrollbar::-webkit-scrollbar-track': {
-		background: '#113d4ae1',
+		backgroundColor: '#06344dff',
 	},
 	'.MuiDataGrid-scrollbar::-webkit-scrollbar-thumb': {
-		backgroundColor: '#888',
+		backgroundColor: '#0c4c5cff',
 	},
 	'.MuiDataGrid-scrollbar::-webkit-scrollbar-thumb:hover': {
-		background: '#555',
-	},
-	'.MuiDataGrid-scrollbar::-webkit-scrollbar-track-piece:vertical:start': {
-		backgroundColor: ' #4d7fff',
+		backgroundColor: '#aeafaf63',
 	},
 
-	// '.MuiDataGrid-virtualScroller': {
-	// 	// backgroundColor: '#da1919ff',
-	// 	color: '#38ff07ff',
-	// 	'& .MuiDataGrid-topContainer': {
-	// 		backgroundColor: '#da1919ff',
-	// 		color: '#3d07ffff',
-	// 	},
-	// 	'& .MuiDataGrid-columnHeader': {
-	// 		backgroundColor: '#da1919ff',
-	// 		height: '30px',
-	// 	},
-	// },
-
-	// '& .MuiDataGrid-columnsContainer': {
-	// 	background: '#555',
-	// },
-	'& .MuiDataGrid-container--top': {
-		background: '#da1919ff',
+	'.MuiDataGrid-scrollbar::-webkit-scrollbar-button:vertical:decrement': {
+		backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath fill='%23dfdfdfff' d='M213.66 165.66a8 8 0 0 1-11.32 0L128 91.31 53.66 165.66a8 8 0 0 1-11.32-11.32l80-80a8 8 0 0 1 11.32 0l80 80a8 8 0 0 1 0 11.32z'/%3E%3C/svg%3E")`,
+		backgroundSize: '100%',
+		backgroundRepeat: 'no-repeat',
+		backgroundPosition: 'center',
 	},
-
-	// '.MuiDataGrid-topContainer': {
-	// 	background: '#555',
-	// },
+	'.MuiDataGrid-scrollbar::-webkit-scrollbar-button:vertical:increment': {
+		backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' fill='%23dfdfdfff' viewBox='0 0 256 256'%3E%3Cpath d='M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z'%3E%3C/path%3E%3C/svg%3E")`,
+		backgroundSize: '100%',
+		backgroundRepeat: 'no-repeat',
+		backgroundPosition: 'center',
+	},
+	'.MuiDataGrid-scrollbar::-webkit-scrollbar-button:vertical': {
+		backgroundColor: ' #0c4c5cff',
+		':hover': {
+			backgroundColor: '#aeafaf63',
+		},
+	},
 })
