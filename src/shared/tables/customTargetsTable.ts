@@ -61,6 +61,7 @@ export const CustomTargetTable = styled(DataGrid)({
 	},
 	'.MuiDataGrid-scrollbar::-webkit-scrollbar-button:vertical': {
 		backgroundColor: ' #0c4c5cff',
+		ariaHidden: 'false',
 		':hover': {
 			backgroundColor: '#aeafaf63',
 		},
