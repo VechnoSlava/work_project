@@ -1,5 +1,6 @@
 import { DataGrid, GridColDef, GridRowsProp } from '@mui/x-data-grid'
 import styles from './currentTargetTable.module.css'
+import { CustomTargetTable } from '../../../shared/tables/customTargetsTable'
 
 const currentTargets: GridRowsProp = [
 	{ id: 767, frequency: 88.62, dt: 6.89, PSI: 62.97 },
@@ -13,25 +14,24 @@ const currentTargets: GridRowsProp = [
 	{ id: 56, frequency: 79.77, dt: 9.69, PSI: 1.19 },
 	{ id: 119, frequency: 15.93, dt: 46.18, PSI: 16.69 },
 	{ id: 69, frequency: 10.28, dt: 13.08, PSI: 6.07 },
-	{ id: 377, frequency: 51.46, dt: 61.93, PSI: 89.28 },
-	{ id: 135, frequency: 49.03, dt: 56.6, PSI: 48.0 },
-	{ id: 413, frequency: 93.36, dt: 83.4, PSI: 54.67 },
-	{ id: 308, frequency: 88.77, dt: 30.92, PSI: 28.82 },
-	{ id: 162, frequency: 26.53, dt: 51.07, PSI: 34.28 },
-	{ id: 430, frequency: 39.23, dt: 38.82, PSI: 94.06 },
-	{ id: 380, frequency: 72.64, dt: 2.48, PSI: 99.7 },
-	{ id: 596, frequency: 61.62, dt: 90.54, PSI: 29.23 },
-	{ id: 817, frequency: 94.58, dt: 93.96, PSI: 43.16 },
-	{ id: 797, frequency: 45.72, dt: 17.06, PSI: 76.15 },
-	{ id: 490, frequency: 22.59, dt: 21.92, PSI: 6.92 },
-	{ id: 46, frequency: 96.97, dt: 50.69, PSI: 59.55 },
-	{ id: 915, frequency: 55.98, dt: 24.61, PSI: 48.63 },
-	{ id: 823, frequency: 78.55, dt: 19.91, PSI: 74.35 },
-	{ id: 170, frequency: 36.78, dt: 88.44, PSI: 31.28 },
-	{ id: 402, frequency: 20.86, dt: 83.76, PSI: 67.51 },
-	{ id: 220, frequency: 7.55, dt: 45.85, PSI: 23.6 },
-	{ id: 52, frequency: 73.82, dt: 61.96, PSI: 89.61 },
-	{ id: 699, frequency: 2.08, dt: 69.17, PSI: 12.48 },
+	// { id: 377, frequency: 51.46, dt: 61.93, PSI: 89.28 },
+	// { id: 135, frequency: 49.03, dt: 56.6, PSI: 48.0 },
+	// { id: 413, frequency: 93.36, dt: 83.4, PSI: 54.67 },
+	// { id: 308, frequency: 88.77, dt: 30.92, PSI: 28.82 },
+	// { id: 162, frequency: 26.53, dt: 51.07, PSI: 34.28 },
+	// { id: 430, frequency: 39.23, dt: 38.82, PSI: 94.06 },
+	// { id: 380, frequency: 72.64, dt: 2.48, PSI: 99.7 },
+	// { id: 596, frequency: 61.62, dt: 90.54, PSI: 29.23 },
+	// { id: 817, frequency: 94.58, dt: 93.96, PSI: 43.16 },
+	// { id: 797, frequency: 45.72, dt: 17.06, PSI: 76.15 },
+	// { id: 490, frequency: 22.59, dt: 21.92, PSI: 6.92 },
+	// { id: 915, frequency: 55.98, dt: 24.61, PSI: 48.63 },
+	// { id: 823, frequency: 78.55, dt: 19.91, PSI: 74.35 },
+	// { id: 170, frequency: 36.78, dt: 88.44, PSI: 31.28 },
+	// { id: 402, frequency: 20.86, dt: 83.76, PSI: 67.51 },
+	// { id: 220, frequency: 7.55, dt: 45.85, PSI: 23.6 },
+	// { id: 52, frequency: 73.82, dt: 61.96, PSI: 89.61 },
+	// { id: 699, frequency: 2.08, dt: 69.17, PSI: 12.48 },
 ]
 
 const columns: GridColDef[] = [
@@ -44,20 +44,74 @@ const columns: GridColDef[] = [
 export const CurrentTargetsTable = () => {
 	return (
 		<div className={styles.table__container}>
-			<DataGrid
-				autosizeOptions={{
-					columns: ['id', 'frequency', 'Длительность импульса', 'PSI'],
-					// includeOutliers: true,
-					includeHeaders: true,
-				}}
-				aria-label="Таблица целей"
+			<CustomTargetTable
+				aria-label="Targets_table"
+				density={'compact'}
 				rows={currentTargets}
 				columns={columns}
-				rowSelection={false}
-				// checkboxSelection={false}
-				disableColumnMenu={true}
-				disableColumnResize={true}
 			/>
 		</div>
 	)
 }
+
+/*
+export const CurrentTargetsTable = () => {
+	return (
+		<div className={styles.table__container}>
+			<DataGrid
+				aria-label="Targets_table"
+				rows={currentTargets}
+				columns={columns}
+				sx={{
+					'&.MuiDataGrid-root': {
+						border: '1px solid #4f4f4fac ',
+						backgroundColor: '#0c2047eb',
+						color: '#f0f0ecff',
+
+						'& .MuiDataGrid-virtualScroller': {
+							// backgroundColor: 'red',
+							// color: 'black',
+							'& .MuiDataGrid-row': {
+								// borderBottom: 'none',
+								'&:hover': {
+									backgroundColor: '#444',
+								},
+							},
+						},
+
+						// '& .MuiDataGrid-topContainer': {
+						// 	backgroundColor: 'red',
+						// 	color: 'black',
+						// },
+
+						'& .MuiDataGrid-container--top': {
+							// backgroundColor: 'red',
+							// color: 'pink',
+						},
+
+						'& .MuiDataGrid-columnHeaders': {
+							// backgroundColor: '#0c2047eb',
+							// color: '#black',
+						},
+					},
+
+					//Scrollbar styles
+					// '& ::-webkit-scrollbar': {
+					// 	width: '12px',
+					// 	// height: '10px',
+					// },
+					// '& ::-webkit-scrollbar-track': {
+					// 	background: '#113d4ae1',
+					// },
+					// '& ::-webkit-scrollbar-thumb': {
+					// 	backgroundColor: '#888',
+					// },
+					// '& ::-webkit-scrollbar-thumb:hover': {
+					// 	background: '#555',
+					// },
+				}}
+			/>
+		</div>
+	)
+}
+*/
