@@ -78,7 +78,7 @@ export const CurrentTargetsTable = () => {
 				rows={currentTargets}
 				columns={columns}
 				disableColumnMenu={true}
-				columnHeaderHeight={30}
+				columnHeaderHeight={36}
 				rowHeight={30}
 				getRowClassName={params => (params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd')}
 				slots={{

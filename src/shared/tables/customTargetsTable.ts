@@ -6,7 +6,6 @@ function customCheckbox(theme: Theme) {
 		'& .MuiCheckbox-root svg': {
 			width: 16,
 			height: 16,
-			backgroundColor: 'transparent',
 			border: `1px solid #444444`,
 			borderRadius: 2,
 		},
@@ -67,7 +66,7 @@ export const CustomTargetTable = styled(DataGrid)(({ theme }) => ({
 	},
 
 	// Vertical scrollbar styles
-	'.MuiDataGrid-scrollbar--vertical ': {
+	'.MuiDataGrid-scrollbar--vertical': {
 		width: '12px',
 		'& .MuiDataGrid-scrollbarContent': {
 			width: '12px',
@@ -139,6 +138,12 @@ export const CustomTargetTable = styled(DataGrid)(({ theme }) => ({
 			color: '#dfdfdfff',
 			overflowY: 'hidden',
 		},
+	},
+	'& .MuiDataGrid-cell:focus': {
+		outline: 'none',
+	},
+	'& .MuiDataGrid-cell:focus-within': {
+		outline: 'none',
 	},
 	...customCheckbox(theme),
 }))
