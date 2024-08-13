@@ -1,6 +1,7 @@
 import {
 	GridColDef,
 	gridPageCountSelector,
+	gridPageSelector,
 	GridPagination,
 	GridRowsProp,
 	useGridApiContext,
@@ -43,11 +44,12 @@ const columns: GridColDef[] = [
 
 //Custom menu pagination
 function Pagination({
-	page,
+	// page,
 	onPageChange,
 	className,
 }: Pick<TablePaginationProps, 'page' | 'onPageChange' | 'className'>) {
 	const apiRef = useGridApiContext()
+	const page = useGridSelector(apiRef, gridPageSelector)
 	const pageCount = useGridSelector(apiRef, gridPageCountSelector)
 
 	return (
@@ -57,10 +59,12 @@ function Pagination({
 			shape="rounded"
 			size="small"
 			count={pageCount}
+			defaultPage={page}
 			page={page + 1}
-			onChange={(event, newPage) => {
+			onChange={(event: React.ChangeEvent<unknown>, newPage: number) => {
 				onPageChange(event as any, newPage - 1)
 			}}
+			siblingCount={1} // Показывает одну страницу до и после текущей
 		/>
 	)
 }
@@ -71,13 +75,13 @@ function CustomPagination(props: any) {
 
 export const CurrentTargetsTable = () => {
 	return (
-		<div className={styles.table__container} aria-hidden="false">
+		<div className={styles.table__container}>
 			<CustomTargetTable
 				checkboxSelection
 				aria-label="Targets_table"
 				rows={currentTargets}
 				columns={columns}
-				disableColumnMenu={true}
+				disableColumnMenu
 				columnHeaderHeight={36}
 				rowHeight={30}
 				getRowClassName={params => (params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd')}
