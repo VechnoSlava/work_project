@@ -3,29 +3,31 @@ import { DataGrid, gridClasses } from '@mui/x-data-grid'
 
 function customCheckbox(theme: Theme) {
 	return {
-		'& .MuiCheckbox-root svg': {
-			width: 14,
-			height: 14,
-			border: `1px solid #444444`,
-			borderRadius: 2,
-		},
-		'& .MuiCheckbox-root svg path': {
-			display: 'none',
-		},
-		'& .MuiCheckbox-root.Mui-checked:not(.MuiCheckbox-indeterminate) svg': {
-			backgroundColor: '#10745eff',
-			borderColor: '#a3a3a3',
+		[`& .${gridClasses.checkboxInput}`]: {
+			'& svg': {
+				width: 12,
+				height: 12,
+				border: `1px solid #444444`,
+				borderRadius: 2,
+			},
+			'& svg path': {
+				display: 'none',
+			},
+			'&.Mui-checked:not(.MuiCheckbox-indeterminate) svg': {
+				backgroundColor: '#10745eff',
+				borderColor: '#a3a3a3',
+			},
 		},
 	}
 }
 
 export const CustomTargetTable = styled(DataGrid)(({ theme }) => ({
+	//root styles table
 	'--DataGrid-containerBackground': '#112d49',
 	'--DataGrid-rowBorderColor': '#656b6e56',
-
+	backgroundColor: '#15283b',
 	border: 'none',
 	borderRadius: 0,
-	backgroundColor: '#15283b',
 
 	//Scrollbar styles
 	'& ::-webkit-scrollbar': {
@@ -37,9 +39,9 @@ export const CustomTargetTable = styled(DataGrid)(({ theme }) => ({
 	},
 	'& ::-webkit-scrollbar-thumb': {
 		backgroundColor: '#0c4c5cff',
-	},
-	'& ::-webkit-scrollbar-thumb:hover': {
-		backgroundColor: '#aeafaf63',
+		'&:hover': {
+			backgroundColor: '#aeafaf63',
+		},
 	},
 
 	// Vertical scrollbar styles
@@ -78,56 +80,70 @@ export const CustomTargetTable = styled(DataGrid)(({ theme }) => ({
 		},
 	},
 
-	'& .MuiDataGrid-columnHeaderTitleContainer': {
+	// styles header column
+	[`& .${gridClasses.columnHeaderTitleContainer}`]: {
 		justifyContent: 'space-between',
-	},
-
-	'& .MuiDataGrid-virtualScroller': {
-		'& .MuiDataGrid-row': {
-			'&:hover': {
-				backgroundColor: '#d1d1d128',
-			},
-			'&.Mui-selected': {
-				backgroundColor: '#03556ebe',
-				'&:hover': {
-					backgroundColor: '#dfdede34',
-				},
-			},
-		},
 	},
 
 	[`& .${gridClasses.columnHeader}:focus, & .${gridClasses.columnHeader}:focus-within`]: {
 		outline: 'none',
 	},
 
-	//Striped rows
+	// styles rows
 	[`& .${gridClasses.row}`]: {
 		fontSize: 12,
 		fontWeight: 400,
-	},
-	[`& .${gridClasses.row}.even`]: {
-		backgroundColor: '#172f47',
-		'&:hover': {
-			backgroundColor: alpha('#717274', 0.2),
-			'@media (hover: none)': {
-				backgroundColor: 'transparent',
+		[`&:hover`]: {
+			backgroundColor: '#d1d1d128',
+		},
+		[`&.Mui-selected`]: {
+			backgroundColor: '#03556ebe',
+			[`&:hover`]: {
+				backgroundColor: '#dfdede34',
+			},
+		},
+		[`&.even`]: {
+			backgroundColor: '#172f47',
+			[`&:hover`]: {
+				backgroundColor: alpha('#717274', 0.2),
+				'@media (hover: none)': {
+					backgroundColor: 'transparent',
+				},
 			},
 		},
 	},
 
+	// styles cells
+	[`& .${gridClasses.cell}`]: {
+		fontSize: 12,
+		fontWeight: 400,
+		[`&:focus, &:focus-within`]: {
+			outline: 'none',
+		},
+	},
+
 	// footer table container-navigation
-	'& .MuiDataGrid-footerContainer': {
+	[`& .${gridClasses.footerContainer}`]: {
 		borderTop: 'none',
 		backgroundColor: '#112d49',
-		'& .MuiTablePagination-root': {
+		[`& .MuiTablePagination-root`]: {
 			color: '#dfdfdfff',
 			overflowY: 'hidden',
 		},
 	},
 
-	[`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
-		outline: 'none',
+	[`& .${gridClasses.virtualScroller}`]: {
+		[`& .${gridClasses.row}`]: {
+			[`&:hover`]: {
+				backgroundColor: '#d1d1d128',
+			},
+			[`&.Mui-selected`]: {
+				backgroundColor: '#03556ebe',
+				[`&:hover`]: {
+					backgroundColor: '#dfdede34',
+				},
+			},
+		},
 	},
-
 	...customCheckbox(theme),
 }))

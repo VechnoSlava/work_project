@@ -83,7 +83,7 @@ export const CurrentTargetsTable = () => {
 				columns={columns}
 				disableColumnMenu
 				columnHeaderHeight={36}
-				rowHeight={30}
+				rowHeight={28}
 				getRowClassName={params => (params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd')}
 				slots={{
 					pagination: CustomPagination,
