@@ -1,3 +1,4 @@
 {
-	"serverUrl": "wss://ws.coincap.io/prices?assets=bitcoin,ethereum"
+	"serverUrl1": "wss://ws.coincap.io/prices?assets=bitcoin,ethereum",
+	"serverUrl": "ws://192.21.16.14:5105/echo"
 }

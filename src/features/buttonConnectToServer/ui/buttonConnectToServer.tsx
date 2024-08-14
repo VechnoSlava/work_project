@@ -11,6 +11,8 @@ import {
 } from '../../../shared/webSocket/serverConnectionSlice'
 
 export const ButtonConnectToServer = () => {
+	console.log('render button')
+
 	const dispatch = useAppDispatch()
 	const isConnection = useAppSelector(selectIsConnection)
 	const stateConnection = useAppSelector(selectStateConnection)

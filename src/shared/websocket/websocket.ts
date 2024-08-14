@@ -1,4 +1,4 @@
-import type { Dispatch, Middleware, MiddlewareAPI, PayloadAction } from '@reduxjs/toolkit'
+import type { Middleware, MiddlewareAPI } from '@reduxjs/toolkit'
 import {
 	connectToServerRequest,
 	connectToServerSuccess,
@@ -26,9 +26,11 @@ export const webSocketMiddleware: Middleware<{}, RootState> = (
 			socket.onopen = () => {
 				console.log('Connection is complete!')
 				dispatch(connectToServerSuccess())
+				console.log('past complete')
 			}
 
 			socket.onerror = () => {
+				console.log('Socket error!')
 				dispatch(connectToServerFailure('Fault connection!'))
 			}
 
@@ -39,7 +41,12 @@ export const webSocketMiddleware: Middleware<{}, RootState> = (
 
 			socket.onmessage = event => {
 				const message = JSON.parse(event.data)
-				dispatch(setMessage(message))
+				console.log(message)
+
+				// if (message.id === 1) {
+				// 	console.log(message)
+				// 	dispatch(setMessage(message))
+				// }
 			}
 		} else if (disconnectToServer.match(action)) {
 			if (socket) {
