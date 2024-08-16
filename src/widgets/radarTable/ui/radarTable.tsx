@@ -98,7 +98,6 @@ function Pagination({
 		/>
 	)
 }
-
 function CustomPagination(props: any) {
 	return <GridPagination ActionsComponent={Pagination} {...props} />
 }
@@ -182,7 +181,7 @@ export const RadarTable = () => {
 					pagination: { paginationModel: { pageSize: 25, page: 0 } },
 				}}
 				localeText={{
-					noRowsLabel: 'Не обнаружено',
+					noRowsLabel: 'Целей не обнаружено',
 					columnHeaderSortIconLabel: 'Сортировать',
 					footerRowSelected: count =>
 						count !== 1

@@ -41,9 +41,6 @@ export const serverConnectionSlice = createAppSlice({
 		updateRadarsList: create.reducer((state, action: PayloadAction<IWebSocket['radarsList']>) => {
 			state.radars = action.payload.radars
 		}),
-		// setMessage: create.reducer((state, action: PayloadAction<any>) => {
-		// 	state.data = action.payload
-		// }),
 		broadcastSync: create.reducer((state, action: PayloadAction<IConnectionState>) => {
 			return { ...state, ...action.payload }
 		}),
@@ -53,7 +50,6 @@ export const serverConnectionSlice = createAppSlice({
 		selectStateConnection: state => state.stateConnection,
 		selectErrorMessageConnection: state => state.errorMessage,
 		selectRadarsList: state => state.radars,
-		// selectData: state => state.data,
 	},
 })
 
@@ -63,7 +59,6 @@ export const {
 	connectToServerFailure,
 	disconnectToServer,
 	updateRadarsList,
-	// setMessage,
 	broadcastSync,
 } = serverConnectionSlice.actions
 export const {
@@ -71,5 +66,4 @@ export const {
 	selectStateConnection,
 	selectErrorMessageConnection,
 	selectRadarsList,
-	// selectData,
 } = serverConnectionSlice.selectors

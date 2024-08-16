@@ -25,18 +25,17 @@ export const webSocketMiddleware: Middleware<{}, RootState> = (
 			console.log('Connecting to server...')
 
 			socket.onopen = () => {
-				console.log('Connection is complete!')
+				console.log('Connection to server is complete!')
 				dispatch(connectToServerSuccess())
-				console.log('past complete')
 			}
 
 			socket.onerror = () => {
-				console.log('Socket error!')
+				console.log('Connection error!')
 				dispatch(connectToServerFailure('Fault connection!'))
 			}
 
 			socket.onclose = () => {
-				console.log('Connection is close!')
+				console.log('Connection to server is close!')
 				dispatch(disconnectToServer())
 			}
 
