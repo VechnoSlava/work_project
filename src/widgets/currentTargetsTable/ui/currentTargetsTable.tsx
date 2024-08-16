@@ -10,42 +10,166 @@ import {
 	useGridSelector,
 } from '@mui/x-data-grid'
 import MuiPagination from '@mui/material/Pagination'
-import { MenuItem, TablePaginationProps } from '@mui/material'
+import { MenuItem, TablePaginationProps, Typography } from '@mui/material'
 import { PiMapPinAreaBold } from 'react-icons/pi'
 import { RiInboxArchiveLine } from 'react-icons/ri'
 import { CustomTargetTable } from '../../../shared/tables/customTargetsTable'
 import { MenuContextTable } from '../../../shared/menu/tableContextMenu'
 import { IoIosConstruct } from 'react-icons/io'
+import { formatDateTimeRu, formatNumber } from '../../../shared/utils/utils'
+import { IRadarsList } from '../../../shared/webSocket/IWebSocket'
 
 const currentTargets: GridRowsProp = [
-	{ id: 767, frequency: 88.62, dt: 6.89, PSI: 62.97, Phase: 62.97, Amplitude: 62.97 },
-	{ id: 597, frequency: 27.42, dt: 61.93, PSI: 43.15, Phase: 62.97, Amplitude: 62.97 },
-	{ id: 890, frequency: 16.99, dt: 25.49, PSI: 35.08, Phase: 62.97, Amplitude: 62.97 },
-	{ id: 64, frequency: 86.24, dt: 12.09, PSI: 29.34, Phase: 62.97, Amplitude: 62.97 },
-	{ id: 219, frequency: 25.93, dt: 80.18, PSI: 72.41, Phase: 62.97, Amplitude: 62.97 },
-	{ id: 907, frequency: 12.52, dt: 52.18, PSI: 81.6, Phase: 62.97, Amplitude: 62.97 },
-	{ id: 945, frequency: 31.75, dt: 28.17, PSI: 5.15, Phase: 62.97, Amplitude: 62.97 },
-	{ id: 46, frequency: 39.0, dt: 1.58, PSI: 66.76, Phase: 62.97, Amplitude: 62.97 },
-	{ id: 56, frequency: 79.77, dt: 9.69, PSI: 1.19, Phase: 62.97, Amplitude: 62.97 },
-	{ id: 119, frequency: 15.93, dt: 46.18, PSI: 16.69, Phase: 62.97, Amplitude: 62.97 },
-	{ id: 69, frequency: 10.28, dt: 13.08, PSI: 6.07, Phase: 62.97, Amplitude: 62.97 },
-	{ id: 377, frequency: 51.46, dt: 61.93, PSI: 89.28, Phase: 62.97, Amplitude: 62.97 },
-	{ id: 135, frequency: 49.03, dt: 56.6, PSI: 48.0, Phase: 62.97, Amplitude: 62.97 },
-	{ id: 413, frequency: 93.36, dt: 83.4, PSI: 54.67, Phase: 62.97, Amplitude: 62.97 },
-	{ id: 308, frequency: 88.77, dt: 30.92, PSI: 28.82, Phase: 62.97, Amplitude: 62.97 },
-	{ id: 162, frequency: 26.53, dt: 51.07, PSI: 34.28, Phase: 62.97, Amplitude: 62.97 },
-	{ id: 430, frequency: 39.23, dt: 38.82, PSI: 94.06, Phase: 62.97, Amplitude: 62.97 },
-	{ id: 380, frequency: 72.64, dt: 2.48, PSI: 99.7, Phase: 62.97, Amplitude: 62.97 },
+	{
+		id: 1,
+		uid: '6b183e28-08c8-466a-47ce-d4aea9a07499',
+		inner_id: 0,
+		pulse_length: 607.3371,
+		rot_period: 127,
+		freq: 9402.5,
+		PRI: 1442,
+		comment: '-',
+		bearing: {
+			id: 0,
+			bearing: 21.04,
+			origin: [0, 0],
+		},
+		path: null,
+		detection_time: '2024-08-14T12:21:54+03:00',
+		identification_data: '6b183e28-08c8-466a-47ce-d4aea9a07499Identification',
+		id_signature: 2,
+	},
+	{
+		id: 2,
+		uid: '55c41f4f-9f53-4118-757a-98f3bc736785',
+		inner_id: 1,
+		pulse_length: 635.67535,
+		rot_period: 127,
+		freq: 9417.333,
+		PRI: 1200,
+		comment: '-',
+		bearing: {
+			id: 0,
+			bearing: 21.04,
+			origin: [0, 0],
+		},
+		path: null,
+		detection_time: '2024-08-14T12:21:54+03:00',
+		identification_data: '55c41f4f-9f53-4118-757a-98f3bc736785Identification',
+		id_signature: 3,
+	},
+	{
+		id: 3,
+		uid: '975f7c97-6973-441b-63b7-7ab7035fdfea',
+		inner_id: 2,
+		pulse_length: 606.36346,
+		rot_period: 127,
+		freq: 9458.167,
+		PRI: 593,
+		comment: '-',
+		bearing: {
+			id: 0,
+			bearing: 21.04,
+			origin: [0, 0],
+		},
+		path: null,
+		detection_time: '2024-08-14T12:21:54+03:00',
+		identification_data: '975f7c97-6973-441b-63b7-7ab7035fdfeaIdentification',
+		id_signature: 4,
+	},
+	{
+		id: 4,
+		uid: '7d3ab25d-4a0f-441a-72f0-5123765ef62b',
+		inner_id: 3,
+		pulse_length: 631.9093,
+		rot_period: 127,
+		freq: 9407,
+		PRI: 554,
+		comment: '-',
+		bearing: {
+			id: 0,
+			bearing: 21.04,
+			origin: [0, 0],
+		},
+		path: null,
+		detection_time: '2024-08-14T12:21:54+03:00',
+		identification_data: '7d3ab25d-4a0f-441a-72f0-5123765ef62bIdentification',
+		id_signature: 5,
+	},
+	{
+		id: 5,
+		uid: '42454d34-bd81-4f4d-47a3-5798ee4e2791',
+		inner_id: 4,
+		pulse_length: 598.70685,
+		rot_period: 127,
+		freq: 9452.25,
+		PRI: 882,
+		comment: '-',
+		bearing: {
+			id: 0,
+			bearing: 21.04,
+			origin: [0, 0],
+		},
+		path: null,
+		detection_time: '2024-08-14T12:21:54+03:00',
+		identification_data: '42454d34-bd81-4f4d-47a3-5798ee4e2791Identification',
+		id_signature: 6,
+	},
 ]
 
 const columns: GridColDef[] = [
-	{ field: 'id', headerName: 'РЛС' },
-	{ field: 'frequency', headerName: 'Частота' },
-	{ field: 'dt', headerName: 'Длительность импульса' },
-	{ field: 'PSI', headerName: 'ПСИ' },
-	{ field: 'Phase', headerName: 'Фаза' },
-	{ field: 'Amplitude', headerName: 'Амплитуда' },
+	{ field: 'id', headerName: '№', width: 30 },
+	{
+		field: 'uid',
+		headerName: 'РЛС',
+		valueGetter: (value: string) => value.slice(0, 8),
+	},
+	{
+		field: 'freq',
+		headerName: 'Частота',
+		valueGetter: value => formatNumber(value),
+	},
+	{
+		field: 'pulse_length',
+		headerName: 'Длительность импульса',
+		valueGetter: value => formatNumber(value),
+	},
+	{
+		field: 'PRI',
+		headerName: 'ПСИ',
+		valueGetter: value => formatNumber(value),
+	},
+	{
+		field: 'bearing',
+		headerName: 'Пеленг',
+		valueGetter: (value, row: IRadarsList) => formatNumber(row.bearing.bearing),
+	},
+	{
+		field: 'rot_period',
+		headerName: 'Период вращения',
+		valueGetter: value => formatNumber(value),
+	},
+	{
+		field: 'detection_time',
+		headerName: 'Время обнаружения',
+		valueGetter: (value: string) => formatDateTimeRu(value),
+	},
+	{
+		field: 'identification_data',
+		headerName: 'БД инфо',
+		valueGetter: (value: string) => value.slice(0, 8),
+	},
+	{ field: 'comment', headerName: 'Комментарий' },
 ]
+
+//Title DataGrid Toolbar
+function CustomTitle() {
+	return (
+		<Typography align="center" sx={{ backgroundColor: '#112d49' }}>
+			Тестовая таблица целей
+		</Typography>
+	)
+}
 
 //Custom menu pagination
 function Pagination({
@@ -71,7 +195,6 @@ function Pagination({
 		/>
 	)
 }
-
 function CustomPagination(props: any) {
 	return <GridPagination ActionsComponent={Pagination} {...props} />
 }
@@ -147,12 +270,14 @@ export const CurrentTargetsTable = () => {
 				}}
 				getRowClassName={params => (params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd')}
 				slots={{
+					toolbar: CustomTitle,
 					pagination: CustomPagination,
 				}}
 				initialState={{
 					pagination: { paginationModel: { pageSize: 25, page: 0 } },
 				}}
 				localeText={{
+					noRowsLabel: 'Целей не обнаружено',
 					columnHeaderSortIconLabel: 'Сортировать',
 					footerRowSelected: count =>
 						count !== 1
