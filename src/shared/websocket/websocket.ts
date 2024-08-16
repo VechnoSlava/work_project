@@ -5,6 +5,7 @@ import {
 	connectToServerFailure,
 	disconnectToServer,
 	updateRadarsList,
+	updatePanoramaSpectrum,
 	// setMessage,
 } from './serverConnectionSlice'
 import config from '../../../config.json'
@@ -45,6 +46,10 @@ export const webSocketMiddleware: Middleware<{}, RootState> = (
 					console.log(message.radars)
 					dispatch(updateRadarsList(message))
 				}
+				// else if (message['id'] === 0) {
+				// 	console.log(message.points)
+				// 	dispatch(updatePanoramaSpectrum(message))
+				// }
 			}
 		} else if (disconnectToServer.match(action)) {
 			if (socket) {
