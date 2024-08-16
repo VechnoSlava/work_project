@@ -5,8 +5,8 @@ import { controlModesSlice } from '../../widgets/header/model/controlModesSlice'
 import { sideMenuSlice } from '../../widgets/sideMenuFilters/model/sideMenuSlice'
 import { pagesNavigationSlice } from '../../features/pagesNavigation/model/pagesNavigationSlice'
 import { serverConnectionSlice } from '../../shared/webSocket/serverConnectionSlice'
-import { webSocketMiddleware } from '../../shared/webSocket/websocket'
 import { broadcastMiddleware } from '../../shared/broadcastChanel/broadcastChanelMiddleware'
+import { webSocketMiddleware } from '../../shared/webSocket/webSocket'
 
 //Добавляем слайсы в combineSlices
 const rootReducer = combineSlices(

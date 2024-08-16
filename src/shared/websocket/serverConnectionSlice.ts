@@ -1,18 +1,19 @@
 import { type PayloadAction } from '@reduxjs/toolkit/react'
 import { createAppSlice } from '../../app/store/createAppSlice'
+import { IWebSocket } from './IWebSocket'
 
 export interface IConnectionState {
 	isConnection: boolean
 	stateConnection: 'idle' | 'connecting' | 'success' | 'failed'
 	errorMessage: string | null
-	data: any
+	radars: IWebSocket['radarsList']['radars']
 }
 
 const initialState: IConnectionState = {
 	isConnection: false,
 	stateConnection: 'idle',
 	errorMessage: null,
-	data: null,
+	radars: [],
 }
 
 export const serverConnectionSlice = createAppSlice({
@@ -37,9 +38,12 @@ export const serverConnectionSlice = createAppSlice({
 			state.isConnection = false
 			state.stateConnection = 'idle'
 		}),
-		setMessage: create.reducer((state, action: PayloadAction<any>) => {
-			state.data = action.payload
+		updateRadarsList: create.reducer((state, action: PayloadAction<IWebSocket['radarsList']>) => {
+			state.radars = action.payload.radars
 		}),
+		// setMessage: create.reducer((state, action: PayloadAction<any>) => {
+		// 	state.data = action.payload
+		// }),
 		broadcastSync: create.reducer((state, action: PayloadAction<IConnectionState>) => {
 			return { ...state, ...action.payload }
 		}),
@@ -48,7 +52,8 @@ export const serverConnectionSlice = createAppSlice({
 		selectIsConnection: state => state.isConnection,
 		selectStateConnection: state => state.stateConnection,
 		selectErrorMessageConnection: state => state.errorMessage,
-		selectData: state => state.data,
+		selectRadarsList: state => state.radars,
+		// selectData: state => state.data,
 	},
 })
 
@@ -57,12 +62,14 @@ export const {
 	connectToServerSuccess,
 	connectToServerFailure,
 	disconnectToServer,
-	setMessage,
+	updateRadarsList,
+	// setMessage,
 	broadcastSync,
 } = serverConnectionSlice.actions
 export const {
 	selectIsConnection,
 	selectStateConnection,
 	selectErrorMessageConnection,
-	selectData,
+	selectRadarsList,
+	// selectData,
 } = serverConnectionSlice.selectors

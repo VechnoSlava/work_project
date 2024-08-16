@@ -4,7 +4,8 @@ import {
 	connectToServerSuccess,
 	connectToServerFailure,
 	disconnectToServer,
-	setMessage,
+	updateRadarsList,
+	// setMessage,
 } from './serverConnectionSlice'
 import config from '../../../config.json'
 import { AppDispatch, RootState } from '../../app/store/store'
@@ -41,12 +42,10 @@ export const webSocketMiddleware: Middleware<{}, RootState> = (
 
 			socket.onmessage = event => {
 				const message = JSON.parse(event.data)
-				console.log(message)
-
-				// if (message.id === 1) {
-				// 	console.log(message)
-				// 	dispatch(setMessage(message))
-				// }
+				if (message['id'] === 1) {
+					console.log(message.radars)
+					dispatch(updateRadarsList(message))
+				}
 			}
 		} else if (disconnectToServer.match(action)) {
 			if (socket) {
