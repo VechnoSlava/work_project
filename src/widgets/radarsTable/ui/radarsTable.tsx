@@ -1,4 +1,4 @@
-import styles from './radarTable.module.css'
+import styles from './radarsTable.module.css'
 import { useState } from 'react'
 import {
 	GridColDef,
@@ -103,7 +103,7 @@ function CustomPagination(props: any) {
 }
 
 //X-Data-Grid
-export const RadarTable = () => {
+export const RadarsTable = () => {
 	const [contextMenu, setContextMenu] = useState<{
 		mouseX: number
 		mouseY: number

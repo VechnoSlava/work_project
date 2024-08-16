@@ -6,7 +6,6 @@ import {
 	disconnectToServer,
 	updateRadarsList,
 	updatePanoramaSpectrum,
-	// setMessage,
 } from './serverConnectionSlice'
 import config from '../../../config.json'
 import { AppDispatch, RootState } from '../../app/store/store'
