@@ -7,7 +7,7 @@ export const darkTheme = createTheme(
 			mode: 'dark',
 		},
 		typography: {
-			// fontWeightRegular: 400,
+			fontWeightRegular: 400,
 			fontFamily: [
 				'-apple-system',
 				'BlinkMacSystemFont',

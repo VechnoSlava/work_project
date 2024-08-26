@@ -67,7 +67,7 @@ export const PagesNavigationMenu = () => {
 						secondary={getSecondaryPageLabel()}
 						primaryTypographyProps={{
 							fontSize: '1.25rem',
-							fontWeight: 'bold',
+							fontWeight: 'regular',
 						}}
 						secondaryTypographyProps={{
 							color: 'gray',

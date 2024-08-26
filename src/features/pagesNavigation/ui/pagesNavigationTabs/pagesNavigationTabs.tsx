@@ -36,6 +36,7 @@ export const PagesNavigationTabs = () => {
 				sx={{
 					height: '100%',
 					'& .MuiTab-root': {
+						fontWeight: 'regular',
 						height: '100%',
 						transition: 'color 0.3s',
 						'&:hover': {

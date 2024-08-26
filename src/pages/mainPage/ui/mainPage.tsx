@@ -8,6 +8,7 @@ import { MainMap } from '../../../widgets/mainMap'
 import { useState, useEffect } from 'react'
 import { Spectrogram } from '../../../widgets/spectrogram'
 import { RadarsTable } from '../../../widgets/radarsTable'
+import { SpectrumPanorama } from '../../../widgets/SpectrumPanorama'
 
 export const MainPage = () => {
 	console.log('render MainPage')
@@ -30,9 +31,9 @@ export const MainPage = () => {
 				<SplitFrame frameDirection="horizontal" key={103}>
 					<SplitFrame frameDirection="vertical" key={104}>
 						<SpectrumTargetChart key={4} />
-						<MainMap key={5} />
+						<RadarsTable key={5} />
 					</SplitFrame>
-					{secondWindowOpened ? null : <RadarsTable key={6} />}
+					{secondWindowOpened ? null : <SpectrumPanorama key={6} />}
 				</SplitFrame>
 			</SplitFrame>
 		</div>
