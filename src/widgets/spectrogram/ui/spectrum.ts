@@ -34,7 +34,7 @@ export const createSpectrum = (idContainerSpectrum: string, idContainerBand: str
 	// 	.setMouseInteractionRectangleFit(false) //уменьшение масштаба зажатой ЛКМ влево
 
 	// Disable all interactions
-	// panoramaSpectrumChart.setMouseInteractionRectangleFit(false)
+	// panoramaSpectrumChart.setMouseInteraction(false)
 	*/
 
 	//Двойной клик мыши по фону сбрасывает масштабирование
