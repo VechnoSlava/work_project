@@ -1,5 +1,5 @@
-import { makeCustomTheme } from '@arction/lcjs-themes'
-import { ColorHEX } from '@arction/lcjs'
+import { ColorHEX } from '@lightningchart/lcjs'
+import { makeCustomTheme } from '@lightningchart/lcjs-themes'
 
 export const platanTheme = makeCustomTheme({
 	isDark: true,

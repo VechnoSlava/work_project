@@ -1,14 +1,11 @@
 import {
-	AxisScrollStrategies,
-	AxisTickStrategies,
+	SolidFill,
 	ColorHEX,
-	DashedLine,
+	AxisTickStrategies,
+	AxisScrollStrategies,
 	emptyFill,
 	emptyLine,
-	FontSettings,
-	ImageFill,
-	SolidFill,
-} from '@arction/lcjs'
+} from '@lightningchart/lcjs'
 import { lc } from '../../../shared/libs/lightingChart/lcjs'
 import { platanTheme } from '../../../shared/libs/lightingChart/theme'
 const threshold = 70

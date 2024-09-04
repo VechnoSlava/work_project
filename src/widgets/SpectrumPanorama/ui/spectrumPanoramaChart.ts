@@ -1,22 +1,22 @@
-import {
-	AxisScrollStrategies,
-	AxisTickStrategies,
-	ColorHEX,
-	ColorRGBA,
-	emptyFill,
-	emptyLine,
-	LUT,
-	NumericTickStrategy,
-	PalettedFill,
-	SolidFill,
-	SolidLine,
-	synchronizeAxisIntervals,
-	TickStyle,
-} from '@arction/lcjs'
 import { lc } from '../../../shared/libs/lightingChart/lcjs'
 import { platanTheme } from '../../../shared/libs/lightingChart/theme'
 import spectrumData from '../../../shared/dataTest/message.json'
 import { ISpectrumPanorama } from '../../../shared/webSocket/IWebSocket'
+import {
+	LUT,
+	ColorRGBA,
+	SolidFill,
+	ColorHEX,
+	SolidLine,
+	AxisTickStrategies,
+	NumericTickStrategy,
+	TickStyle,
+	emptyLine,
+	emptyFill,
+	AxisScrollStrategies,
+	PalettedFill,
+} from '@lightningchart/lcjs'
+import { log } from 'console'
 
 // Цветовая палитра для теплового водопада
 const WFPalette = new LUT({
@@ -59,17 +59,18 @@ function findMinMaxValues1(arr: Array<ISpectrumPanorama>) {
 const { minX, maxX, minY, maxY } = findMinMaxValues1(spectrumData.points)
 
 const freqTickFormatter = (tickValue: number) => {
-	return `${tickValue / 1_000_000_000} ГГц`
+	return `                ${tickValue / 1_000_000_000} ГГц`
 }
 const freqNumFormatter = (tickValue: number) => {
 	return tickValue / 1_000_000_000
 }
-
+//--------------------------------------------------------------------------
 export const createSpectrumPanoramaChart = (
 	idContainerSpectrum: string,
 	idContainerBand: string,
 	idContainerHeatMap: string,
 ) => {
+	//------------------------------------------------------------------------
 	/**Спектр-панорама */
 	const spectrumChart = lc
 		.ChartXY({
@@ -92,6 +93,7 @@ export const createSpectrumPanoramaChart = (
 	const axisX = spectrumChart
 		.getDefaultAxisX()
 		.setTitle('')
+		.setUnits('ГГц')
 		.setMarginAfterTicks(0)
 		.setStrokeStyle(
 			new SolidLine({ thickness: 1, fillStyle: new SolidFill({ color: ColorHEX('#cfcfcf20') }) }),
@@ -121,7 +123,7 @@ export const createSpectrumPanoramaChart = (
 								fillStyle: new SolidFill({ color: ColorHEX('#636363ff') }),
 							}),
 						)
-						.setTickLength(0)
+						.setTickLength(20)
 						.setTickPadding(5),
 				)
 
@@ -142,23 +144,9 @@ export const createSpectrumPanoramaChart = (
 				),
 		)
 
-	axisX.setTickStrategy(AxisTickStrategies.Numeric, ticks =>
-		ticks.setCursorFormatter((value, range, locale) => freqNumFormatter(value).toFixed(3)),
+	axisX.setTickStrategy(AxisTickStrategies.Numeric, strategy =>
+		strategy.setCursorFormatter((value, range, locale) => freqNumFormatter(value).toFixed(3)),
 	)
-	//настройка разметки оси X
-	// const tickX = axisX.addCustomTick().setValue(2)
-
-	// .setTextFormatter(value => freqFormatter(value))
-	// .setMarker(
-	// 	marker =>
-	// 		marker
-	// 			.setTextFont(font => font.setSize(isMinor ? 10 : 12))
-	// 			.setTextFillStyle(new SolidFill({ color: ColorRGBA(255, 255, 255, 255) })),
-	// 	// .setTextFillStyle(new SolidFill({ color: ColorRGBA(255, 255, 255, 255) }))
-	// )
-
-	//Синхронизация осей частоты
-	// synchronizeAxisIntervals(spectrumChart.getDefaultAxisX(), axisX)
 
 	const axisY = spectrumChart
 		.getDefaultAxisY()
@@ -170,29 +158,75 @@ export const createSpectrumPanoramaChart = (
 		.setStrokeStyle(
 			new SolidLine({ thickness: 1, fillStyle: new SolidFill({ color: ColorHEX('#cfcfcf20') }) }),
 		)
-		.setTickStrategy(AxisTickStrategies.Numeric, tickStrategy =>
-			tickStrategy.setTickStyle((tickStyle: TickStyle) =>
-				tickStyle
-					.setLabelFillStyle(emptyFill)
-					.setLabelFont(font => font.setWeight(400).setSize(14))
-					.setGridStrokeStyle(emptyLine)
-					// .setGridStrokeStyle(
-					// 	new SolidLine({
-					// 		thickness: 1,
-					// 		fillStyle: new SolidFill({ color: ColorHEX('#cfcfcf20') }),
-					// 	}),
-					// )
-					.setTickLength(0)
-					.setTickPadding(5),
-			),
-		)
+		.setTickStrategy('Empty')
 
+	//-------Курсор----------------------------------------------------------------
+	spectrumChart.setCursorFormatting((_, hit, hits) => {
+		return [
+			[
+				{
+					text: `Параметры:`,
+					fillStyle: new SolidFill({ color: ColorHEX('#17e380') }),
+				},
+			],
+			// [hit.series], // returning a series will display the series color and its name automatically.
+			[
+				{
+					text: `Частота`,
+					fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
+				},
+				,
+				'',
+				{
+					text: hit.axisX.formatValue(hit.x),
+					fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
+				},
+				{
+					text: `ГГц`,
+					fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
+				},
+			],
+			[
+				{
+					text: `Амплитуда`,
+					fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
+				},
+				,
+				'',
+				{
+					text: hit.y.toFixed(2),
+					fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
+				},
+				{
+					text: 'В',
+					fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
+				},
+			],
+		]
+	})
+	spectrumChart.setCursor(cursor =>
+		cursor
+			.setTickMarkerXVisible(false)
+			.setTickMarkerYVisible(false)
+			.setGridStrokeXStyle(
+				new SolidLine({ thickness: 1, fillStyle: new SolidFill({ color: ColorHEX('#a6a6a6') }) }),
+			)
+			.setGridStrokeYStyle(
+				new SolidLine({ thickness: 1, fillStyle: new SolidFill({ color: ColorHEX('#a6a6a6') }) }),
+			),
+	)
+	//----------------------------------------------------------------------------
+	/**Данные */
 	const lineSeries = spectrumChart
 		.addPointLineAreaSeries({ dataPattern: 'ProgressiveX' })
+		.setName(`Спектральная панорама`)
 		.setAreaFillStyle(emptyFill)
 		.setPointFillStyle(emptyFill)
-		.add(spectrumData.points)
+		// .add(spectrumData.points)
+		.appendJSON(spectrumData.points)
+		.setStrokeStyle(stroke => stroke.setThickness(-1))
 
+	//-----------------------------------------------------------------------------
 	/**Окно видимой части спектр-панорамы */
 	const zoomBandChart = lc
 		.ZoomBandChart({
@@ -203,10 +237,23 @@ export const createSpectrumPanoramaChart = (
 		.setPadding({ right: 3, left: 3, top: 4, bottom: 4 })
 		.setSeriesBackgroundStrokeStyle(emptyLine)
 		.setBackgroundFillStyle(new SolidFill({ color: ColorHEX('#112d49') }))
+		.setSplitterStrokeStyle(
+			new SolidLine({
+				thickness: 1,
+				fillStyle: new SolidFill({ color: ColorHEX('#1f5961') }),
+			}),
+		)
+		.setDefocusOverlayFillStyle(new SolidFill({ color: ColorHEX('#00000049') }))
+		.setKnobSize({ x: 6, y: 20 })
+		.setKnobFillStyle(new SolidFill({ color: ColorHEX('#00d6d6') }))
+		.setKnobStrokeStyle(
+			new SolidLine({ thickness: 1, fillStyle: new SolidFill({ color: ColorHEX('#1f5961') }) }),
+		)
 	zoomBandChart.add(lineSeries)
 
 	const axisBandX = zoomBandChart.getDefaultAxisX().setTickStrategy(AxisTickStrategies.Empty)
 
+	//-----------------------------------------------------------------------------
 	/** Водопад тепловой карты */
 	const watterfall = lc
 		.ChartXY({
@@ -236,8 +283,6 @@ export const createSpectrumPanoramaChart = (
 		.setStrokeStyle(emptyLine)
 		.setScrollStrategy(undefined)
 		.setAnimationZoom(undefined)
-		// .setTickStrategy(AxisTickStrategies.Time)
-		// .setInterval({ start: -30 * 1000, end: 0 })
 		.setScrollStrategy(AxisScrollStrategies.progressive)
 		.setTickStrategy(AxisTickStrategies.Empty)
 
@@ -245,14 +290,10 @@ export const createSpectrumPanoramaChart = (
 		.addHeatmapScrollingGridSeries({
 			scrollDimension: 'rows',
 			resolution: 1024 * 12,
-			start: { x: 0, y: 0 },
-			step: { x: 1, y: 1 },
 		})
 		.setWireframeStyle(emptyLine)
 		.setFillStyle(new PalettedFill({ lut: WFPalette }))
-		// .setDataCleaning({
-		// 	minDataPointCount: 1000,
-		// })
 		.setWireframeStyle(emptyLine)
+
 	heatmapSeries.addIntensityValues([spectrumData.psd])
 }

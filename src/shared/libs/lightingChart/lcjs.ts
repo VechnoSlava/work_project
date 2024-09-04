@@ -1,4 +1,4 @@
-import { lightningChart } from '@arction/lcjs'
+import { lightningChart } from '@lightningchart/lcjs'
 
 export const lc = lightningChart({
 	// Valid until 15/03/2024

@@ -20,22 +20,28 @@ export const MainPage = () => {
 		secondWindowOpened ? setKey(101) : setKey(100)
 	}, [secondWindowOpened])
 
+	// return (
+	// 	<div className={styles.container}>
+	// 		<SplitFrame frameDirection="vertical" key={key}>
+	// 			<SplitFrame frameDirection="horizontal" key={102}>
+	// 				{secondWindowOpened ? null : <MainMap key={1} />}
+	// 				<CurrentTargetsTable key={3} />
+	// 				<Spectrogram key={2} />
+	// 			</SplitFrame>
+	// 			<SplitFrame frameDirection="horizontal" key={103}>
+	// 				<SplitFrame frameDirection="vertical" key={104}>
+	// 					<SpectrumTargetChart key={4} />
+	// 					<RadarsTable key={5} />
+	// 				</SplitFrame>
+	// 				{secondWindowOpened ? null : <SpectrumPanorama key={6} />}
+	// 			</SplitFrame>
+	// 		</SplitFrame>
+	// 	</div>
+	// )
 	return (
-		<div className={styles.container}>
-			<SplitFrame frameDirection="vertical" key={key}>
-				<SplitFrame frameDirection="horizontal" key={102}>
-					{secondWindowOpened ? null : <MainMap key={1} />}
-					<CurrentTargetsTable key={3} />
-					<Spectrogram key={2} />
-				</SplitFrame>
-				<SplitFrame frameDirection="horizontal" key={103}>
-					<SplitFrame frameDirection="vertical" key={104}>
-						<SpectrumTargetChart key={4} />
-						<RadarsTable key={5} />
-					</SplitFrame>
-					{secondWindowOpened ? null : <SpectrumPanorama key={6} />}
-				</SplitFrame>
-			</SplitFrame>
-		</div>
+		<SplitFrame frameDirection="horizontal" key={key}>
+			<CurrentTargetsTable key={3} />
+			<SpectrumPanorama key={4} />
+		</SplitFrame>
 	)
 }
