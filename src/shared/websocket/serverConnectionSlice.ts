@@ -1,11 +1,12 @@
 import { type PayloadAction } from '@reduxjs/toolkit/react'
 import { createAppSlice } from '../../app/store/createAppSlice'
-import { IWebSocket } from './IWebSocket'
+import { IWebSocket, WebSocketMessage } from './IWebSocket'
 
 export interface IConnectionState {
 	isConnection: boolean
 	stateConnection: 'idle' | 'connecting' | 'success' | 'failed'
 	errorMessage: string | null
+	sendMessage: any
 	radars: IWebSocket['radarsList']['radars']
 	panoramaPoints: IWebSocket['spectrumPanorama']['points']
 }
@@ -14,6 +15,7 @@ const initialState: IConnectionState = {
 	isConnection: false,
 	stateConnection: 'idle',
 	errorMessage: null,
+	sendMessage: null,
 	radars: [],
 	panoramaPoints: [],
 }
@@ -39,6 +41,9 @@ export const serverConnectionSlice = createAppSlice({
 		disconnectToServer: create.reducer(state => {
 			state.isConnection = false
 			state.stateConnection = 'idle'
+		}),
+		sendMessage: create.reducer((state, action: PayloadAction<WebSocketMessage>) => {
+			state.sendMessage = action.payload
 		}),
 		updateRadarsList: create.reducer((state, action: PayloadAction<IWebSocket['radarsList']>) => {
 			state.radars = action.payload.radars
@@ -66,6 +71,7 @@ export const {
 	connectToServerSuccess,
 	connectToServerFailure,
 	disconnectToServer,
+	sendMessage,
 	updateRadarsList,
 	updatePanoramaSpectrum,
 	broadcastSync,

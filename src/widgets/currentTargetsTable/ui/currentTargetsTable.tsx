@@ -1,10 +1,11 @@
 import styles from './currentTargetTable.module.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
 	GridColDef,
 	gridPageCountSelector,
 	gridPageSelector,
 	GridPagination,
+	GridRowSelectionModel,
 	GridRowsProp,
 	useGridApiContext,
 	useGridSelector,
@@ -18,6 +19,8 @@ import { MenuContextTable } from '../../../shared/menu/tableContextMenu'
 import { IoIosConstruct } from 'react-icons/io'
 import { formatDateTimeRu, formatNumber } from '../../../shared/utils/utils'
 import { IRadarsList } from '../../../shared/webSocket/IWebSocket'
+import { useAppDispatch } from '../../../app/store/hooks'
+import { sendMessage } from '../../../shared/webSocket/serverConnectionSlice'
 
 const currentTargets: GridRowsProp = [
 	{
@@ -206,6 +209,36 @@ export const CurrentTargetsTable = () => {
 		mouseY: number
 	} | null>(null)
 	const [idSelectedRow, setIdSelectedRow] = useState<number>()
+	const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([])
+	const dispatch = useAppDispatch()
+
+	// Функция для получения массива uid выбранных строк
+	const getSelectedUids = () => {
+		// Найдем строки, соответствующие выбранным id, и извлечем их uid
+		const selectedUids = rowSelectionModel
+			.map(id => {
+				const selectedRow = currentTargets.find(row => row.id === id)
+				return selectedRow ? { uid: selectedRow.uid } : null
+			})
+			.filter(uidObj => uidObj !== null) // Удаляем возможные null значения
+		return selectedUids
+	}
+
+	const sendMessageToWebSocket = () => {
+		const selectedRadars = getSelectedUids()
+		const message = {
+			id: 102,
+			data: selectedRadars,
+		}
+		console.log('Message sent:', message)
+		dispatch(sendMessage(message))
+	}
+
+	useEffect(() => {
+		if (rowSelectionModel.length > 0) {
+			sendMessageToWebSocket()
+		}
+	}, [rowSelectionModel])
 
 	const handleContextMenu = (event: React.MouseEvent) => {
 		event.preventDefault()
@@ -262,6 +295,10 @@ export const CurrentTargetsTable = () => {
 				disableColumnMenu
 				columnHeaderHeight={36}
 				rowHeight={28}
+				onRowSelectionModelChange={newRowSelectionModel => {
+					setRowSelectionModel(newRowSelectionModel)
+				}}
+				rowSelectionModel={rowSelectionModel}
 				slotProps={{
 					row: {
 						onContextMenu: handleContextMenu,

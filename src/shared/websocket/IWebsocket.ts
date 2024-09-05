@@ -23,6 +23,26 @@ export interface IRadarsList {
 	id_signature: number
 }
 
+export interface IRadarsTads {
+	id: number
+	uid: string
+	inner_id: number
+	pulse_length: number
+	rot_period: number
+	freq: number
+	PRI: number
+	comment: string
+	bearing: {
+		id: number
+		bearing: number
+		origin: number[]
+	}
+	path: unknown
+	detection_time: string
+	identification_data: string
+	id_signature: number
+}
+//--------------Входящие сообщения----------------------------------------
 export interface IWebSocket {
 	spectrumPanorama: {
 		id: 0
@@ -33,4 +53,22 @@ export interface IWebSocket {
 		id: 1
 		radars: Array<IRadarsList>
 	}
+
+	radarTads: {
+		id: 2
+	}
 }
+//--------------Исходящие сообщения----------------------------------------
+interface WebSocketMessageBase {
+	id: number
+}
+
+export interface ISelectedRadars extends WebSocketMessageBase {
+	data: { uid: string }[]
+}
+
+export interface ISelectedPulse extends WebSocketMessageBase {
+	radar: string
+}
+
+export type WebSocketMessage = ISelectedRadars | ISelectedPulse

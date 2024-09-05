@@ -6,10 +6,9 @@ import { ButtonSideMenuFilters } from '../../../features/buttonSideMenuFilters'
 import { SwitchSecondWindowMode } from '../../../features/switchSecondWindowMode'
 import { SwitchIdentificationMode } from '../../../features/switchIdentificationMode'
 import { SwitchReferenceMode } from '../../../features/switchReferenceMode'
+import { ButtonTestMessage } from '../../../features/buttonTestMessage'
 
 export const Header = () => {
-	console.log('HEADER')
-
 	return (
 		<header className={styles.header}>
 			<div className={styles.header__container}>
@@ -32,6 +31,7 @@ export const Header = () => {
 				<div className={styles.header__buttons}>
 					<ButtonConnectToServer />
 					<ButtonSideMenuFilters />
+					<ButtonTestMessage />
 				</div>
 			</div>
 		</header>

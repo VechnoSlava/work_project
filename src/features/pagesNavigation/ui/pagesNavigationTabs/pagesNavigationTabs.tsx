@@ -6,8 +6,6 @@ import { selectPage, setPage } from '../../model/pagesNavigationSlice'
 import styles from './pagesNavigationTabs.module.css'
 
 export const PagesNavigationTabs = () => {
-	console.log('TABS')
-
 	const navigate = useNavigate()
 	const dispatch = useAppDispatch()
 	const currentMainPage = useAppSelector(selectPage)
