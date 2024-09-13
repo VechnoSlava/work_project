@@ -24,7 +24,7 @@ export const SplitFrame: React.FC<ISplitFrame> = ({ children, frameDirection }, 
 		return <>{filteredChildren}</>
 	}
 	return (
-		<Split {...frameProps[frameDirection]} gutter={createGutter} gutterSize={8} {...props}>
+		<Split {...frameProps[frameDirection]} gutter={createGutter} gutterSize={10} {...props}>
 			{filteredChildren.map((child, index) => (
 				<div key={index} className={styles.split_item}>
 					{child}

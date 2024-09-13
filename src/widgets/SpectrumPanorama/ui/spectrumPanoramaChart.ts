@@ -16,7 +16,6 @@ import {
 	AxisScrollStrategies,
 	PalettedFill,
 } from '@lightningchart/lcjs'
-import { log } from 'console'
 
 // Цветовая палитра для теплового водопада
 const WFPalette = new LUT({

@@ -5,7 +5,7 @@ import { SplitFrame } from '../../../entities/splitFrame'
 import { useAppSelector } from '../../../app/store/hooks'
 import { selectModeSecondWindow } from '../../../widgets/header/model/controlModesSlice'
 import { useEffect, useState } from 'react'
-import { SpectrumPanorama } from '../../../widgets/SpectrumPanorama'
+import { SpectrumPanorama } from '../../../widgets/spectrumPanorama'
 
 export const HistoryPage = () => {
 	console.log('render history page')

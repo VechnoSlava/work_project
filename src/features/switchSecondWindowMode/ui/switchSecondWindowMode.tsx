@@ -6,6 +6,7 @@ import {
 	toggleSecondaryWindow,
 } from '../../../widgets/header/model/controlModesSlice'
 import { selectSlavePage } from '../../pagesNavigation/model/pagesNavigationSlice'
+import { store } from '../../../app/store/store'
 
 export const SwitchSecondWindowMode = () => {
 	const dispatch = useAppDispatch()

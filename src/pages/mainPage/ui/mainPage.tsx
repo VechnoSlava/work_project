@@ -8,7 +8,7 @@ import { MainMap } from '../../../widgets/mainMap'
 import { useState, useEffect } from 'react'
 import { Spectrogram } from '../../../widgets/spectrogram'
 import { RadarsTable } from '../../../widgets/radarsTable'
-import { SpectrumPanorama } from '../../../widgets/SpectrumPanorama'
+import { SpectrumPanorama } from '../../../widgets/spectrumPanorama'
 
 export const MainPage = () => {
 	console.log('render MainPage')

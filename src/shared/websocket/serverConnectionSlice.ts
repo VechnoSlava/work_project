@@ -48,11 +48,11 @@ export const serverConnectionSlice = createAppSlice({
 		updateRadarsList: create.reducer((state, action: PayloadAction<IWebSocket['radarsList']>) => {
 			state.radars = action.payload.radars
 		}),
-		updatePanoramaSpectrum: create.reducer(
-			(state, action: PayloadAction<IWebSocket['spectrumPanorama']>) => {
-				state.panoramaPoints = action.payload.points
-			},
-		),
+		// updatePanoramaSpectrum: create.reducer(
+		// 	(state, action: PayloadAction<IWebSocket['spectrumPanorama']>) => {
+		// 		state.panoramaPoints = action.payload.points
+		// 	},
+		// ),
 		broadcastSync: create.reducer((state, action: PayloadAction<IConnectionState>) => {
 			return { ...state, ...action.payload }
 		}),
@@ -73,7 +73,7 @@ export const {
 	disconnectToServer,
 	sendMessage,
 	updateRadarsList,
-	updatePanoramaSpectrum,
+	// updatePanoramaSpectrum,
 	broadcastSync,
 } = serverConnectionSlice.actions
 export const {

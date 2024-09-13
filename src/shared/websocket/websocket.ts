@@ -5,11 +5,11 @@ import {
 	connectToServerFailure,
 	disconnectToServer,
 	updateRadarsList,
-	updatePanoramaSpectrum,
 	sendMessage,
 } from './serverConnectionSlice'
 import config from '../../../config.json'
 import { AppDispatch, RootState } from '../../app/store/store'
+import { updatePanoramaSpectrum } from '../data/dataPanorama'
 
 const socket_URL = config.serverUrl
 
@@ -43,8 +43,9 @@ export const webSocketMiddleware: Middleware<{}, RootState> = (
 			socket.onmessage = event => {
 				const message: any = JSON.parse(event.data)
 				if (message['id'] === 0) {
-					// console.log(message.points)
+					console.log(message.points)
 					// dispatch(updatePanoramaSpectrum(message))
+					updatePanoramaSpectrum(message, 12288)
 				} else if (message['id'] === 1) {
 					console.log(message.radars)
 					dispatch(updateRadarsList(message))
