@@ -11,7 +11,7 @@ import { RadarsTable } from '../../../widgets/radarsTable'
 import { SpectrumPanorama } from '../../../widgets/spectrumPanorama'
 
 export const MainPage = () => {
-	console.log('render MainPage')
+	console.log('RENDER MAIN_PAGE')
 
 	const secondWindowOpened = useAppSelector(selectModeSecondWindow)
 	const [key, setKey] = useState(100)

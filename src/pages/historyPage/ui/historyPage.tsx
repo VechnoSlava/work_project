@@ -1,19 +1,27 @@
 import { MainMap } from '../../../widgets/mainMap'
-import { CurrentTargetsTable } from '../../../widgets/currentTargetsTable'
-import { SpectrumTargetChart } from '../../../widgets/spectrumTargetChart'
 import { SplitFrame } from '../../../entities/splitFrame'
 import { useAppSelector } from '../../../app/store/hooks'
 import { selectModeSecondWindow } from '../../../widgets/header/model/controlModesSlice'
 import { useEffect, useState } from 'react'
-import { SpectrumPanorama } from '../../../widgets/spectrumPanorama'
+import { RadarsTable } from '../../../widgets/radarsTable'
 
 export const HistoryPage = () => {
-	console.log('render history page')
+	console.log('RENDER HISTORY_PAGE')
+
 	const secondWindowOpened = useAppSelector(selectModeSecondWindow)
-	const [key, setKey] = useState(0)
+	const [key, setKey] = useState(201)
+
 	useEffect(() => {
 		secondWindowOpened ? setKey(200) : setKey(201)
-	})
+	}, [secondWindowOpened])
+
+	return (
+		<SplitFrame frameDirection="horizontal" key={key}>
+			{!secondWindowOpened && <MainMap key={1} />}
+			<RadarsTable key={6} />
+		</SplitFrame>
+	)
+
 	// return (
 	// 	<SplitFrame frameDirection="vertical" key={key}>
 	// 		<SplitFrame frameDirection="horizontal" key={202}>
@@ -29,10 +37,4 @@ export const HistoryPage = () => {
 	// 		</SplitFrame>
 	// 	</SplitFrame>
 	// )
-	return (
-		<SplitFrame frameDirection="horizontal" key={key}>
-			<CurrentTargetsTable key={3} />
-			<SpectrumPanorama key={4} />
-		</SplitFrame>
-	)
 }

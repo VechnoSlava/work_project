@@ -1,14 +1,27 @@
 import { Tabs, Tab } from '@mui/material'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../../app/store/hooks'
 import { type RoutePath, ROUTES_PATH } from '../../../../shared/constants/routes'
 import { selectPage, setPage } from '../../model/pagesNavigationSlice'
 import styles from './pagesNavigationTabs.module.css'
+import { useEffect } from 'react'
 
 export const PagesNavigationTabs = () => {
 	const navigate = useNavigate()
+	const location = useLocation()
 	const dispatch = useAppDispatch()
 	const currentMainPage = useAppSelector(selectPage)
+
+	//Синхронизация пути страницы с Redux при перезагрузке страницы
+	useEffect(() => {
+		const isValidRoute = (path: string): path is RoutePath => {
+			return Object.values(ROUTES_PATH).includes(path as RoutePath)
+		}
+		if (currentMainPage === location.pathname || !isValidRoute(location.pathname)) {
+			return
+		}
+		dispatch(setPage(location.pathname as RoutePath))
+	}, [])
 
 	const handlePageChange = (event: React.SyntheticEvent | null, newPage: RoutePath) => {
 		dispatch(setPage(newPage))

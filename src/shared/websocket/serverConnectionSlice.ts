@@ -53,9 +53,6 @@ export const serverConnectionSlice = createAppSlice({
 		// 		state.panoramaPoints = action.payload.points
 		// 	},
 		// ),
-		broadcastSync: create.reducer((state, action: PayloadAction<IConnectionState>) => {
-			return { ...state, ...action.payload }
-		}),
 	}),
 	selectors: {
 		selectIsConnection: state => state.isConnection,
@@ -74,7 +71,6 @@ export const {
 	sendMessage,
 	updateRadarsList,
 	// updatePanoramaSpectrum,
-	broadcastSync,
 } = serverConnectionSlice.actions
 export const {
 	selectIsConnection,

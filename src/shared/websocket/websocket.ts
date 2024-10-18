@@ -1,4 +1,4 @@
-import type { Middleware, MiddlewareAPI } from '@reduxjs/toolkit'
+import type { Dispatch, Middleware, MiddlewareAPI, PayloadAction } from '@reduxjs/toolkit'
 import {
 	connectToServerRequest,
 	connectToServerSuccess,
@@ -13,12 +13,12 @@ import { updatePanoramaSpectrum } from '../data/dataPanorama'
 
 const socket_URL = config.serverUrl
 
-export const webSocketMiddleware: Middleware<{}, RootState> = (
+export const webSocketMiddleware: Middleware<{}, RootState, Dispatch<PayloadAction>> = (
 	store: MiddlewareAPI<AppDispatch, RootState>,
 ) => {
 	let socket: WebSocket | null = null
 
-	return next => action => {
+	return next => (action: unknown) => {
 		const dispatch: AppDispatch = store.dispatch
 
 		if (connectToServerRequest.match(action)) {

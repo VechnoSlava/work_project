@@ -1,16 +1,9 @@
-// import type { PayloadAction } from "@reduxjs/toolkit"
-import { PayloadAction } from '@reduxjs/toolkit'
 import { createAppSlice } from '../../../app/store/createAppSlice'
-import { RootState } from '../../../app/store/store'
 
 export interface IModesWorkState {
 	isSecondaryWindowMode: boolean
 	isIdentificationMode: boolean
 	isReferenceMode: boolean
-}
-interface HydrateStateAction {
-	type: 'HYDRATE_STATE'
-	payload: RootState
 }
 
 const initialState: IModesWorkState = {
@@ -33,12 +26,6 @@ export const controlModesSlice = createAppSlice({
 			state.isReferenceMode = !state.isReferenceMode
 		}),
 	}),
-	extraReducers: builder => {
-		builder.addCase('HYDRATE_STATE', (state, action: HydrateStateAction) => {
-			// Обнови состояние с новыми данными
-			return action.payload.workModes
-		})
-	},
 	selectors: {
 		selectModeSecondWindow: state => state.isSecondaryWindowMode,
 		selectModeIdentification: state => state.isIdentificationMode,
