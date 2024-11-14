@@ -16,7 +16,6 @@ import {
 	AxisScrollStrategies,
 	PalettedFill,
 } from '@lightningchart/lcjs'
-import { panoramaSpectrumData } from '../../../shared/data/panoramaDataStorage'
 
 // Цветовая палитра для теплового водопада
 const WFPalette = new LUT({
@@ -222,7 +221,6 @@ export const createSpectrumPanoramaChart = (
 		.setPointFillStyle(emptyFill)
 		// .add(spectrumData.points)
 		.appendJSON(spectrumData.points)
-		// .appendJSON(panoramaSpectrumData.get() as unknown as { [key: string]: number }[])
 		.setStrokeStyle(stroke => stroke.setThickness(-1))
 
 	//-----------------------------------------------------------------------------

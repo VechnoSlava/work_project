@@ -2,7 +2,6 @@ import styles from './mainPage.module.css'
 import { useAppSelector } from '../../../app/store/hooks'
 import { selectModeSecondWindow } from '../../../widgets/header/model/controlModesSlice'
 import { CurrentTargetsTable } from '../../../widgets/currentTargetsTable'
-import { SpectrumTargetChart } from '../../../widgets/spectrumTargetChart'
 import { SplitFrame } from '../../../entities/splitFrame'
 import { MainMap } from '../../../widgets/mainMap'
 import { useState, useEffect } from 'react'
@@ -30,7 +29,7 @@ export const MainPage = () => {
 				</SplitFrame>
 				<SplitFrame frameDirection="horizontal" key={103}>
 					<SplitFrame frameDirection="vertical" key={104}>
-						<SpectrumTargetChart key={4} />
+						<div key={4} />
 						<RadarsTable key={5} />
 					</SplitFrame>
 					{secondWindowOpened ? null : <CurrentTargetsTable key={6} />}

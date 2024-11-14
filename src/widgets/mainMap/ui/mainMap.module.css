@@ -1,8 +1,11 @@
 .map__container {
-	display: block;
+	/* display: block; */
 	/* border: 1px solid #000000; */
 	box-sizing: border-box;
 	background-color: #22bf9bf1;
 	width: 100%;
 	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
