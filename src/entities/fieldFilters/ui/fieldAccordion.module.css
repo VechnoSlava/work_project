@@ -1,0 +1,11 @@
+.accordion {
+	width: 100%;
+	margin-bottom: 5px;
+}
+
+.accordion__details {
+	padding: 5px;
+	display: flex;
+	align-items: center;
+	margin-bottom: 5px;
+}

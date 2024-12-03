@@ -1,6 +1,6 @@
+import styles from './splitFrame.module.css'
 import React, { ReactNode } from 'react'
 import Split, { SplitProps } from 'react-split'
-import styles from './splitFrame.module.css'
 
 interface ISplitFrame extends SplitProps {
 	children: ReactNode[]

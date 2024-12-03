@@ -1,1 +1,1 @@
-export { FieldFilters } from "./ui/fieldFilters"
+export { FieldAccordion } from './ui/fieldAccordion'

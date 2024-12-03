@@ -1,0 +1,15 @@
+.formFilters {
+	width: 100%;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	padding: 10px;
+}
+
+.formFilters__buttonSubmit {
+	width: 200px;
+	height: 30px;
+	margin: 10px 0;
+	cursor: pointer;
+}
