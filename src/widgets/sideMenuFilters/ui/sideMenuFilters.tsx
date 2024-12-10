@@ -12,7 +12,7 @@ export const SideMenuFilters = () => {
 	}
 
 	const DrawerList = (
-		<Box sx={{ width: 500, height: '100vh', backgroundColor: '#112d49' }} role="presentation">
+		<Box sx={{ width: 500, height: '100vh', backgroundColor: '#0e3753' }} role="presentation">
 			<FormFiltersSideMenu />
 		</Box>
 	)

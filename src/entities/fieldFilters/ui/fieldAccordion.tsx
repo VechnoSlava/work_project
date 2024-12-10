@@ -17,19 +17,11 @@ export const FieldAccordion: React.FC<IAccordionProps> = ({ children, nameField,
 		<div className={styles.accordion}>
 			<Accordion
 				sx={{
-					backgroundColor: '#071521',
+					backgroundColor: '#091e2f',
+					boxShadow: '0px 2px 3px #12161a',
 				}}
 			>
-				<AccordionSummary
-					expandIcon={<SlArrowDown />}
-					id={id}
-					sx={{
-						color: '#fff',
-						'& .MuiAccordionSummary-expandIconWrapper': {
-							color: '#ccc',
-						},
-					}}
-				>
+				<AccordionSummary expandIcon={<SlArrowDown />} id={id}>
 					<Typography sx={{ fontSize: 16 }}>{nameField}</Typography>
 				</AccordionSummary>
 				<AccordionDetails

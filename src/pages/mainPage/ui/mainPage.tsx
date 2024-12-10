@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react'
 import { Spectrogram } from '../../../widgets/spectrogram'
 import { RadarsTable } from '../../../widgets/radarsTable'
 import { SpectrumPanorama } from '../../../widgets/spectrumPanorama'
+import { FormTest } from '../../../features/formTest'
 
 export const MainPage = () => {
 	console.log('RENDER MAIN_PAGE')
@@ -28,10 +29,11 @@ export const MainPage = () => {
 					<SpectrumPanorama key={3} />
 				</SplitFrame>
 				<SplitFrame frameDirection="horizontal" key={103}>
-					<SplitFrame frameDirection="vertical" key={104}>
+					<FormTest key={5} />
+					{/* <SplitFrame frameDirection="vertical" key={104}>
 						<div key={4} />
 						<RadarsTable key={5} />
-					</SplitFrame>
+					</SplitFrame> */}
 					{secondWindowOpened ? null : <CurrentTargetsTable key={6} />}
 				</SplitFrame>
 			</SplitFrame>
