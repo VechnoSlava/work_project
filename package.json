@@ -20,7 +20,7 @@
 		"@emotion/react": "^11.11.4",
 		"@emotion/styled": "^11.11.5",
 		"@fontsource/roboto": "^5.0.13",
-		"@lightningchart/lcjs": "^6.0.2",
+		"@lightningchart/lcjs": "^6.1.1",
 		"@lightningchart/lcjs-themes": "^4.0.2",
 		"@mui/material": "^5.15.19",
 		"@mui/x-data-grid": "^7.12.0",
