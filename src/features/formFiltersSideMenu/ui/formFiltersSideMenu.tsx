@@ -2,11 +2,7 @@ import styles from './formFiltersSideMenu.module.css'
 import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
 import { InputFilterForm } from '../../../shared/inputs/inputFilterForm'
 import { FieldAccordion } from '../../../entities/fieldFilters'
-import { ButtonDeleteFilter } from '../../../shared/buttons'
-import { MenuItem, Select, TextField } from '@mui/material'
-import { BiSolidChevronDownSquare, BiSolidTrash } from 'react-icons/bi'
 import { SelectFrequency } from '../../../entities/selectFrequency'
-import { register } from 'module'
 
 interface IFormFilters {
 	minFrequency: Number

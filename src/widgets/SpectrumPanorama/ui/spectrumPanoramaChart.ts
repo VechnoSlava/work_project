@@ -16,7 +16,6 @@ import {
 	AxisScrollStrategies,
 	PalettedFill,
 } from '@lightningchart/lcjs'
-import { panoramaSpectrumData } from '../../../shared/data/panoramaDataStorage'
 
 // Цветовая палитра для теплового водопада
 const WFPalette = new LUT({
