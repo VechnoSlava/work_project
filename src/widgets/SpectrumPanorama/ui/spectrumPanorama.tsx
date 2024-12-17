@@ -1,16 +1,18 @@
 import { useEffect } from 'react'
 import styles from './spectrumPanorama.module.css'
 import { createSpectrumPanoramaChart } from './spectrumPanoramaChart'
+import { spectrumPanoramaChart1 } from './spectrumPanoramaChart1'
 
 export function SpectrumPanorama() {
 	useEffect(() => {
 		const container = document.getElementById('spectrumPanorama') as HTMLDivElement | null
 		if (container) {
-			createSpectrumPanoramaChart(
-				'spectrumPanorama_spectrum',
-				'spectrumPanorama_band',
-				'spectrumPanorama_heatmap',
-			)
+			// createSpectrumPanoramaChart(
+			// 	'spectrumPanorama_spectrum',
+			// 	'spectrumPanorama_band',
+			// 	'spectrumPanorama_heatmap',
+			// )
+			spectrumPanoramaChart1.createPanoramaChart('spectrumPanorama_spectrum')
 		} else {
 			console.error('Container not found')
 		}

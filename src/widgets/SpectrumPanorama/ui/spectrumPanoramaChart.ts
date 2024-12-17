@@ -16,6 +16,7 @@ import {
 	AxisScrollStrategies,
 	PalettedFill,
 } from '@lightningchart/lcjs'
+import { log } from 'console'
 
 // Цветовая палитра для теплового водопада
 const WFPalette = new LUT({
@@ -57,6 +58,8 @@ function findMinMaxValues1(arr: Array<ISpectrumPanorama>) {
 
 const { minX, maxX, minY, maxY } = findMinMaxValues1(spectrumData.points)
 
+console.log(minX, maxX, minY, maxY)
+
 const freqTickFormatter = (tickValue: number) => {
 	return `                ${tickValue / 1_000_000_000} ГГц`
 }
@@ -79,7 +82,7 @@ export const createSpectrumPanoramaChart = (
 		})
 		.setTitle('Панорама спектрального диапазона')
 		.setTitlePosition('center-top')
-		.setPadding({ right: 3, left: 0, top: 0, bottom: 0 })
+		.setPadding({ right: 3, left: 0, top: 0, bottom: 2 })
 		.setTitleFont(font => font.setSize(16))
 	// .setBackgroundFillStyle(new SolidFill({ color: ColorHEX('#112d49') }))
 

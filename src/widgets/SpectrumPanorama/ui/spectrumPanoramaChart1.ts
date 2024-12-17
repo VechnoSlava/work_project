@@ -1,225 +1,181 @@
-class ChartSpectrumChan {
-	chan: 0 | 1
-	chartName: 'spectrumChan0' | 'spectrumChan1'
-	chart: ChartXY | undefined
-	axisX: Axis | undefined
-	axisY: Axis | undefined
-	spectrum: AreaSeriesPositive | undefined
-	marker: IMarker | undefined
-	metadataList: Array<UIElement> | undefined
+import {
+	Axis,
+	AxisTickStrategies,
+	ChartXY,
+	ColorHEX,
+	CustomTick,
+	emptyFill,
+	emptyLine,
+	NumericTickStrategy,
+	PointLineAreaSeries,
+	SolidFill,
+	SolidLine,
+	TickMarker,
+	TickStyle,
+	UIElementBuilders,
+} from '@lightningchart/lcjs'
+import { lc } from '../../../shared/libs/lightingChart/lcjs'
+import { platanTheme } from '../../../shared/libs/lightingChart/theme'
+import spectrumData from '../../../shared/dataTest/message.json'
 
-	constructor(chan: 0 | 1) {
-		this.chan = chan
-		this.chartName = `spectrumChan${chan}`
+const freqTickFormatter = (tickValue: number) => {
+	return `${tickValue / 1_000_000_000} ГГц`
+}
+
+const tickNumFormatter = (tickValue: number): number => {
+	return tickValue / 1_000_000_000
+}
+
+const calculateDivider = (start: number, end: number): number => {
+	const range = end - start
+	const dividers = [10e9, 1e9, 500e6, 200e6, 100e6, 50e6, 20e6, 10e6, 5e6, 2e6, 1e6]
+
+	for (const divider of dividers) {
+		if (Math.floor(range / divider) <= 10) {
+			return divider
+		}
+	}
+	return 1e6
+}
+
+const createTicks = (start: number, end: number, divider: number) => {
+	const majorTicks: number[] = []
+	const minorTicks: number[] = []
+	const minorStep = divider / 5
+
+	for (let i = Math.ceil(start / divider) * divider; i <= end; i += divider) {
+		majorTicks.push(i)
 	}
 
-	createChart(theme: string, idContainer: string) {
-		let chartAxisLimit = [...store.getState().commonData.chartAxisLimits[this.chartName]]
-		if (chartAxisLimit[0] === 0 && chartAxisLimit[1] === 0) {
-			return
+	for (let i = Math.ceil(start / minorStep) * minorStep; i <= end; i += minorStep) {
+		if (!majorTicks.includes(i)) {
+			minorTicks.push(i)
 		}
+	}
+	return { majorTicks, minorTicks }
+}
 
-		chartAxisLimit[0] = chartAxisLimit[0] / 1e6
-		chartAxisLimit[1] = chartAxisLimit[1] / 1e6
+const startPointSpectrum = 1e9
+const endPointSpectrum = 11e9
+const startPointBand = 1e9
+const endPointBand = 2e9
 
-		this.deleteChart()
+export class PanoramaSpectrumChart {
+	chartName: string
+	lineSeries: PointLineAreaSeries | undefined
+	spectrumChart: ChartXY | undefined
+	axisX: Axis | undefined
+	axisY: Axis | undefined
+	customTicks: CustomTick[] = []
 
-		this.chart = lc
+	constructor() {
+		this.chartName = 'Спектральная панорама'
+	}
+
+	createPanoramaChart(idContainerSpectrum: string) {
+		this.spectrumChart = lc
 			.ChartXY({
-				container: idContainer,
-				theme: theme === 'dark' ? Themes.turquoiseHexagon : Themes.light,
+				container: idContainerSpectrum,
+				theme: platanTheme,
+				defaultAxisX: { opposite: true },
 			})
-			.setTitle('')
-			.setPadding({ right: 1, left: 0, top: 10 })
-			.setMouseInteractionWheelZoom(false)
-			.setMouseInteractionRectangleZoom(false)
-			.setMouseInteractionRectangleFit(false)
+			.setTitle('Панорама спектрального диапазона')
+			.setTitlePosition('center-top')
+			.setPadding({ right: 3, left: 0, top: 0, bottom: 2 })
+			.setTitleFont(font => font.setSize(16))
 
-		this.axisX = this.chart
+		this.spectrumChart.onSeriesBackgroundMouseDoubleClick(() => {
+			this.spectrumChart?.forEachAxis(axis => axis.fit())
+		})
+
+		this.axisX = this.spectrumChart
 			.getDefaultAxisX()
 			.setTitle('')
-			.setAnimationsEnabled(false)
-			.setNibMousePickingAreaSize(0)
-			.setDefaultInterval({ start: chartAxisLimit[0], end: chartAxisLimit[1] })
+			.setUnits('ГГц')
+			.setMarginAfterTicks(0)
+			.setStrokeStyle(
+				new SolidLine({
+					thickness: 1,
+					fillStyle: new SolidFill({ color: ColorHEX('#cfcfcf20') }),
+				}),
+			)
+			.setDefaultInterval({ start: startPointBand, end: endPointBand })
 			.setIntervalRestrictions({
-				startMin: chartAxisLimit[0],
-				startMax: chartAxisLimit[1],
-				endMin: chartAxisLimit[0],
-				endMax: chartAxisLimit[1],
+				startMin: startPointSpectrum,
+				startMax: endPointSpectrum,
+				endMin: startPointSpectrum,
+				endMax: endPointSpectrum,
 			})
+			.setMouseInteractions(false)
+			.setTickStrategy(AxisTickStrategies.Numeric, (tickStrategy: NumericTickStrategy) =>
+				tickStrategy
+					.setTickStyle((tickStyle: TickStyle) =>
+						tickStyle
+							.setLabelFillStyle(new SolidFill({ color: ColorHEX('#c4c4c4') }))
+							.setLabelFont(font => font.setWeight(400).setSize(14))
+							.setGridStrokeStyle(
+								new SolidLine({
+									thickness: 1,
+									fillStyle: new SolidFill({ color: ColorHEX('#cfcfcf20') }),
+								}),
+							)
+							.setTickStyle(
+								new SolidLine({
+									thickness: 1,
+									fillStyle: new SolidFill({ color: ColorHEX('#636363ff') }),
+								}),
+							)
+							.setTickLength(20)
+							.setTickPadding(5),
+					)
+					.setMajorFormattingFunction(freqTickFormatter),
+			)
 
-		this.axisX.onAxisInteractionAreaMouseDoubleClick(axis => {
-			// Без задержки очень медленно изменяет масштаб оси
-			setTimeout(() => {
-				axis.fit()
-			}, 100)
+		this.axisX.onIntervalChange((_, start, end) => {
+			const divider = calculateDivider(start, end)
+			const { majorTicks, minorTicks } = createTicks(start, end, divider)
+
+			this.customTicks.forEach(tick => tick.dispose())
+			majorTicks.forEach(pos => this.addCustomTickX(pos, false))
+			minorTicks.forEach(pos => this.addCustomTickX(pos, true))
+			// console.log(this.customTicks)
 		})
 
-		let timer: NodeJS.Timer
-		this.axisX.onIntervalChange((axis: Axis, start: number, end: number) => {
-			clearTimeout(timer)
-			timer = setTimeout(() => {
-				store.dispatch(
-					updateChartState({
-						[this.chartName]: {
-							axisInterval: [start * 1e6, end * 1e6] as [number, number],
-						},
-					}),
-				)
-			}, 500)
-		})
-
-		this.axisY = this.chart
+		this.axisY = this.spectrumChart
 			.getDefaultAxisY()
-			.setTitle('')
-			.setThickness(store.getState().appData.view.maxWidth ? 0 : 50)
-			.setNibMousePickingAreaSize(0)
+			.setDefaultInterval(state => ({
+				start: (state.dataMin ?? 0) - 5,
+				end: (state.dataMax ?? 0) + 10,
+			}))
+			.setMouseInteractions(false)
+			.setChartInteractions(false)
+			.setChartInteractionZoomByWheel(false)
+			.setChartInteractionZoomByDrag(false)
+			.setStrokeStyle(emptyLine)
+			.setTickStrategy('Empty')
 
-		const resetAxisXY = () => {
-			this.axisX?.fit()
-			this.axisY?.fit()
-		}
-
-		this.chart.onBackgroundMouseDoubleClick(resetAxisXY)
-		this.chart.onSeriesBackgroundMouseDoubleClick(resetAxisXY)
-
-		// const legendBox = chart.addLegendBox(HorizontalLegendBoxBuilders);
-
-		this.spectrum = this.chart
-			.addAreaSeries({ type: AreaSeriesTypes.Positive, baseline: -30 })
-			.setName('Sp')
-			.setCursorInterpolationEnabled(false)
-			.setCursorResultTableFormatter((tableBuilder, series, position, high, low) => {
-				return tableBuilder
-					.addRow(`F:`, '', position.toFixed(1), '', 'МГц')
-					.addRow(`P:`, '', high.toFixed(1), '', 'дБ')
-			})
-
-		this.spectrum.onMouseDoubleClick(resetAxisXY)
-		// legendBox.add(areaSpectrum)
-
-		// =====================================================
-		// =================== markerSpectrum ==================
-		this.marker = {
-			marker: this.spectrum.addMarker(SeriesMarkerBuilder).setVisible(false),
-
-			isOn: false,
-			setOn: (newState: boolean) => {
-				if (!this.chart || !this.marker?.marker || !this.axisX) return
-
-				this.marker.isOn = newState
-				if (newState) {
-					const currentInterval = this.axisX.getInterval()
-					this.marker.marker
-						.setPosition({
-							x: (currentInterval.start + currentInterval.end) / 2,
-							y: 0,
-						})
-						.setVisible(true)
-				} else {
-					this.marker.marker.setVisible(false)
-				}
-			},
-		}
-
-		let show = store.getState().appData.view.chartSpectrumChan
-		if (window.innerWidth < 500) {
-			show &&= store.getState().appData.view.displayedChan === this.chan
-		}
-
-		store.dispatch(
-			updateChartState({
-				[this.chartName]: {
-					show: show,
-					chartWidth: this.getChartWidth(),
-					axisInterval: [chartAxisLimit[0] * 1e6, chartAxisLimit[1] * 1e6],
-					metadata: false,
-				},
-			}),
-		)
+		this.lineSeries = this.spectrumChart
+			.addPointLineAreaSeries({ dataPattern: 'ProgressiveX' })
+			.setName(`Спектральная панорама`)
+			.setAreaFillStyle(emptyFill)
+			.setPointFillStyle(emptyFill)
+			.appendJSON(spectrumData.points)
+			.setStrokeStyle(stroke => stroke.setThickness(1))
 
 		console.log('create chart: ', this.chartName)
 	}
 
-	addMetadata(metadataList: Array<string>) {
-		if (!this.chart) return
+	addCustomTickX(pos: number, isMinor: boolean) {
+		// this.clearCustomTics()
 
-		if (this.metadataList) {
-			for (let i = 0; i < this.metadataList.length; i++) {
-				this.metadataList[i].dispose()
-			}
-		}
-
-		this.metadataList = []
-		for (let i = 0; i < metadataList.length; i++) {
-			this.metadataList[i] = this.chart
-				.addUIElement(UIElementBuilders.TextBox)
-				.setOrigin({ x: 1, y: 1 })
-				.setMouseInteractions(false)
-				.setPosition({ x: 100, y: 90 - 6 * i })
-				.setText(metadataList[i])
-		}
-	}
-
-	getChartWidth() {
-		if (!this.chart || !this.axisY) return
-		console.log('getChartWidth getSizePixels', this.chart.getSizePixels().x)
-		console.log('getChartWidth getPadding', this.chart.getPadding().left)
-		console.log('getChartWidth getPadding', this.chart.getPadding().right)
-		return (
-			this.chart.getSizePixels().x -
-			this.chart.getPadding().left -
-			this.chart.getPadding().right -
-			(this.axisY.getThickness().max ?? 0)
+		const tick = this.axisX?.addCustomTick(
+			isMinor ? UIElementBuilders.AxisTickMinor : UIElementBuilders.AxisTickMajor,
 		)
-	}
+		console.log(this.customTicks)
 
-	setMaxWidth(state: boolean) {
-		if (this.axisY) {
-			if (state) {
-				this.axisY.setThickness(0)
-			} else {
-				this.axisY.setThickness(50)
-			}
-		}
-	}
+		if (tick) this.customTicks.push(tick)
 
-	deleteChart() {
-		console.log('delete chart: ', this.chartName)
-		this.chart?.dispose()
-		this.axisX?.dispose()
-		this.axisY?.dispose()
-		this.spectrum?.dispose()
-		this.marker?.marker.dispose()
-		this.chart = undefined
-		this.axisX = undefined
-		this.axisY = undefined
-		this.spectrum = undefined
-		this.marker = undefined
-		store.dispatch(
-			updateChartState({
-				[this.chartName]: {
-					show: false,
-					chartWidth: 0,
-					axisInterval: [0, 0],
-				},
-			}),
-		)
-	}
-
-	updateSpectrum(fStart: number, fStep: number, spectrum: Int8Array, metadataList: Array<string>) {
-		if (this.chart && this.spectrum) {
-			this.spectrum.clear()
-			this.spectrum.addArrayY(
-				// @ts-ignore - Флаг для игнорирования ошибки, которая находится на одну строку ниже.
-				// LCJS умеет работать с бинарными массивами, просто разработчики забыли добавить
-				// в метод addArrayY типизацию: arrayY: number[] | TypedArray
-				spectrum,
-				fStep / 1e6,
-				fStart / 1e6,
-			)
-
-			this.addMetadata(metadataList)
-		}
+		return tick
 	}
 }
+export let spectrumPanoramaChart1 = new PanoramaSpectrumChart()
