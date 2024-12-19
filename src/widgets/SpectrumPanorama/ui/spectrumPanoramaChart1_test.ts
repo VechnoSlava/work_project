@@ -139,55 +139,6 @@ export class PanoramaSpectrumChart {
 			strategy.setCursorFormatter((value, range, locale) => freqNumFormatter(value).toFixed(3)),
 		)
 
-		this.axisX.onIntervalChange((_: Axis, start, end) => {
-			// this.createTicksInRangeX(start, end)
-			const divider = calculateDivider(start, end) // Определяем оптимальный делитель
-			const { majorTicks, minorTicks } = createTicks(start, end, divider) // Генерируем отметки
-
-			// Удаляем старые кастомные отметки
-			this.customTicks?.forEach(tick => tick.dispose())
-			this.customTicks = []
-
-			// Добавляем новые основные отметки
-			majorTicks.forEach(pos => this.addCustomTickX(pos, false))
-
-			// Добавляем новые мелкие отметки
-			minorTicks.forEach(pos => this.addCustomTickX(pos, true))
-		})
-
-		const calculateDivider = (start: number, end: number): number => {
-			const range = end - start // Текущий диапазон графика
-			const dividers = [1e9, 500e6, 200e6, 100e6, 50e6, 20e6, 10e6, 5e6, 2e6, 1e6] // Возможные делители
-
-			for (const divider of dividers) {
-				if (Math.floor(range / divider) <= 10) {
-					// Ограничиваем максимальное количество отметок (например, до 10)
-					return divider
-				}
-			}
-
-			return 1e6 // Минимальный делитель по умолчанию
-		}
-		const createTicks = (start: number, end: number, divider: number) => {
-			const majorTicks: number[] = []
-			const minorTicks: number[] = []
-			const minorStep = divider / 5 // Например, 5 мелких отметок между основными
-
-			// Генерация основных отметок
-			for (let i = Math.ceil(start / divider) * divider; i <= end; i += divider) {
-				majorTicks.push(i)
-			}
-
-			// Генерация мелких отметок
-			for (let i = Math.ceil(start / minorStep) * minorStep; i <= end; i += minorStep) {
-				if (!majorTicks.includes(i)) {
-					minorTicks.push(i)
-				}
-			}
-
-			return { majorTicks, minorTicks }
-		}
-
 		this.axisY = this.spectrumChart
 			.getDefaultAxisY()
 			.setDefaultInterval(state => ({
@@ -279,7 +230,6 @@ export class PanoramaSpectrumChart {
 		console.log('create chart: ', this.chartName)
 	}
 
-	/*
 	deleteChart() {
 		console.log('delete chart: ', this.chartName)
 		this.chart?.dispose()
@@ -318,66 +268,6 @@ export class PanoramaSpectrumChart {
 			this.addMetadata(metadataList)
 		}
 	}
-		*/
-	addCustomTickX = (pos: number, isMinor: boolean) => {
-		this.axisX?.setTickStrategy(AxisTickStrategies.Empty)
-		const tickX = this.axisX?.addCustomTick(
-			isMinor ? UIElementBuilders.AxisTickMinor : UIElementBuilders.AxisTickMajor,
-		)
-		// Проверить, что tick не undefined
-		if (tickX) {
-			this.customTicks?.push(tickX)
-			console.log(this.customTicks)
-		}
-
-		return tickX
-	}
-
-	// createTicksInRangeX = (start: number, end: number) => {
-	// 	// this.clearCustomTics()
-	// 	console.log(`start value: ${start}, end value : ${end}`)
-	// 	let divider = 500_000_000
-	// 	for (let i = 100_000_000_000; i > 1; i = i / 10) {
-	// 		if (Math.floor((end - start) / i)) {
-	// 			divider = i / 2
-	// 			break
-	// 		}
-	// 	}
-
-	// 	const numMajorInterval = 3
-	// 	const numMinorInterval = 5
-
-	// 	const majorTickInterval = Math.ceil((end - start) / (numMajorInterval * divider)) * divider
-	// 	for (
-	// 		let majorTickPos = start - (start % majorTickInterval);
-	// 		majorTickPos <= end;
-	// 		majorTickPos += majorTickInterval
-	// 	) {
-	// 		if (majorTickPos >= start) {
-	// 			this.addCustomTickX(majorTickPos, false)
-	// 		}
-	// 	}
-
-	// 	let minorTickInterval = Math.floor(majorTickInterval / (numMinorInterval * 10)) * 10
-	// 	for (
-	// 		let minorTickPos = start - (start % minorTickInterval);
-	// 		minorTickPos <= end;
-	// 		minorTickPos += minorTickInterval
-	// 	) {
-	// 		if (minorTickPos >= start && minorTickPos % majorTickInterval !== 0) {
-	// 			this.addCustomTickX(minorTickPos, true)
-	// 		}
-	// 	}
-	// }
-
-	// clearCustomTics() {
-	// 	if (this.customTicks) {
-	// 		while (this.customTicks.length > 0) {
-	// 			const tic = this.customTicks.pop()
-	// 			tic?.dispose()
-	// 		}
-	// 	}
-	// }
 }
 
 export let spectrumPanoramaChart1 = new PanoramaSpectrumChart()

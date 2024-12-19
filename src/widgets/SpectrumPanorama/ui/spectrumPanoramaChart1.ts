@@ -3,76 +3,47 @@ import {
 	AxisTickStrategies,
 	ChartXY,
 	ColorHEX,
+	ColorRGBA,
 	CustomTick,
 	emptyFill,
 	emptyLine,
 	NumericTickStrategy,
 	PointLineAreaSeries,
+	PointLineSeries,
 	SolidFill,
 	SolidLine,
-	TickMarker,
 	TickStyle,
-	UIElementBuilders,
+	ZoomBandChart,
 } from '@lightningchart/lcjs'
 import { lc } from '../../../shared/libs/lightingChart/lcjs'
 import { platanTheme } from '../../../shared/libs/lightingChart/theme'
 import spectrumData from '../../../shared/dataTest/message.json'
-
-const freqTickFormatter = (tickValue: number) => {
-	return `${tickValue / 1_000_000_000} ГГц`
-}
-
-const tickNumFormatter = (tickValue: number): number => {
-	return tickValue / 1_000_000_000
-}
-
-const calculateDivider = (start: number, end: number): number => {
-	const range = end - start
-	const dividers = [10e9, 1e9, 500e6, 200e6, 100e6, 50e6, 20e6, 10e6, 5e6, 2e6, 1e6]
-
-	for (const divider of dividers) {
-		if (Math.floor(range / divider) <= 10) {
-			return divider
-		}
-	}
-	return 1e6
-}
-
-const createTicks = (start: number, end: number, divider: number) => {
-	const majorTicks: number[] = []
-	const minorTicks: number[] = []
-	const minorStep = divider / 5
-
-	for (let i = Math.ceil(start / divider) * divider; i <= end; i += divider) {
-		majorTicks.push(i)
-	}
-
-	for (let i = Math.ceil(start / minorStep) * minorStep; i <= end; i += minorStep) {
-		if (!majorTicks.includes(i)) {
-			minorTicks.push(i)
-		}
-	}
-	return { majorTicks, minorTicks }
-}
-
-const startPointSpectrum = 1e9
-const endPointSpectrum = 11e9
-const startPointBand = 1e9
-const endPointBand = 2e9
+import { tickNumFormatter, tickTextFormatter } from '../model/settingsSpectrumPanorama'
 
 export class PanoramaSpectrumChart {
 	chartName: string
 	lineSeries: PointLineAreaSeries | undefined
 	spectrumChart: ChartXY | undefined
+	zoomBandChart: ZoomBandChart | undefined
 	axisX: Axis | undefined
 	axisY: Axis | undefined
+	axisBandX: Axis | undefined
 	customTicks: CustomTick[] = []
 
 	constructor() {
 		this.chartName = 'Спектральная панорама'
 	}
 
-	createPanoramaChart(idContainerSpectrum: string) {
+	createPanoramaChart(
+		idContainerSpectrum: string,
+		idContainerZoomBand: string,
+		idContainerHeatMap: string,
+	) {
+		const startPointSpectrum = 1e9
+		const endPointSpectrum = 11e9
+		const startPointBand = 1e9
+		const endPointBand = 2e9
+
 		this.spectrumChart = lc
 			.ChartXY({
 				container: idContainerSpectrum,
@@ -81,8 +52,9 @@ export class PanoramaSpectrumChart {
 			})
 			.setTitle('Панорама спектрального диапазона')
 			.setTitlePosition('center-top')
-			.setPadding({ right: 3, left: 0, top: 0, bottom: 2 })
+			.setPadding({ right: 5, left: -5, top: 0, bottom: 0 })
 			.setTitleFont(font => font.setSize(16))
+			.setTitleMargin({ top: 0, bottom: 0 })
 
 		this.spectrumChart.onSeriesBackgroundMouseDoubleClick(() => {
 			this.spectrumChart?.forEachAxis(axis => axis.fit())
@@ -107,12 +79,15 @@ export class PanoramaSpectrumChart {
 				endMax: endPointSpectrum,
 			})
 			.setMouseInteractions(false)
+			// Configure NumericTickStrategy (настройка разметки оси X)
 			.setTickStrategy(AxisTickStrategies.Numeric, (tickStrategy: NumericTickStrategy) =>
 				tickStrategy
 					.setTickStyle((tickStyle: TickStyle) =>
 						tickStyle
 							.setLabelFillStyle(new SolidFill({ color: ColorHEX('#c4c4c4') }))
-							.setLabelFont(font => font.setWeight(400).setSize(14))
+							.setLabelFont(font => font.setSize(14))
+							// Сетка оси AxisX
+							.setGridStrokeStyle(emptyLine)
 							.setGridStrokeStyle(
 								new SolidLine({
 									thickness: 1,
@@ -122,30 +97,36 @@ export class PanoramaSpectrumChart {
 							.setTickStyle(
 								new SolidLine({
 									thickness: 1,
-									fillStyle: new SolidFill({ color: ColorHEX('#636363ff') }),
+									fillStyle: new SolidFill({ color: ColorHEX('#aaaaaaff') }),
 								}),
-							)
-							.setTickLength(20)
-							.setTickPadding(5),
+							),
 					)
-					.setMajorFormattingFunction(freqTickFormatter),
+					.setMajorTickStyle((tickStyle: TickStyle) =>
+						tickStyle
+							.setLabelFont(font => font.setWeight(400).setSize(14))
+							.setLabelAlignment(-1.2)
+							.setTickLength(-18)
+							.setTickPadding(0),
+					)
+					.setMinorTickStyle((tickStyle: TickStyle) =>
+						tickStyle
+							.setLabelFont(font => font.setWeight(400).setSize(12))
+							.setLabelAlignment(-1.2)
+							.setTickLength(-14)
+							.setTickPadding(0),
+					)
+					.setMajorFormattingFunction(tickPosition => tickTextFormatter(tickPosition))
+					.setMinorFormattingFunction(tickPosition => tickTextFormatter(tickPosition)),
 			)
-
-		this.axisX.onIntervalChange((_, start, end) => {
-			const divider = calculateDivider(start, end)
-			const { majorTicks, minorTicks } = createTicks(start, end, divider)
-
-			this.customTicks.forEach(tick => tick.dispose())
-			majorTicks.forEach(pos => this.addCustomTickX(pos, false))
-			minorTicks.forEach(pos => this.addCustomTickX(pos, true))
-			// console.log(this.customTicks)
-		})
+			.setTickStrategy(AxisTickStrategies.Numeric, strategy =>
+				strategy.setCursorFormatter((value, range, locale) => tickNumFormatter(value).toFixed(3)),
+			)
 
 		this.axisY = this.spectrumChart
 			.getDefaultAxisY()
 			.setDefaultInterval(state => ({
 				start: (state.dataMin ?? 0) - 5,
-				end: (state.dataMax ?? 0) + 10,
+				end: (state.dataMax ?? 0) + 12,
 			}))
 			.setMouseInteractions(false)
 			.setChartInteractions(false)
@@ -154,28 +135,108 @@ export class PanoramaSpectrumChart {
 			.setStrokeStyle(emptyLine)
 			.setTickStrategy('Empty')
 
+		//------Курсор--------------------------------------------------
+		this.spectrumChart.setCursorFormatting((_, hit, hits) => {
+			return [
+				[
+					{
+						text: `Параметры:`,
+						fillStyle: new SolidFill({ color: ColorHEX('#17dce3') }),
+					},
+				],
+				// [hit.series], // Имя LineSeries
+				[
+					{
+						text: `Частота`,
+						fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
+					},
+					,
+					'',
+					{
+						text: hit.axisX.formatValue(hit.x),
+						fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
+					},
+					{
+						text: `ГГц`,
+						fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
+					},
+				],
+				[
+					{
+						text: `Амплитуда`,
+						fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
+					},
+					,
+					'',
+					{
+						text: hit.y.toFixed(2),
+						fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
+					},
+					{
+						text: 'дБ',
+						fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
+					},
+				],
+			]
+		})
+		this.spectrumChart.setCursor(cursor =>
+			cursor
+				.setTickMarkerXVisible(false)
+				.setTickMarkerYVisible(false)
+				.setGridStrokeXStyle(
+					new SolidLine({ thickness: 1, fillStyle: new SolidFill({ color: ColorHEX('#a6a6a6') }) }),
+				)
+				.setGridStrokeYStyle(
+					new SolidLine({ thickness: 1, fillStyle: new SolidFill({ color: ColorHEX('#a6a6a6') }) }),
+				),
+		)
+		/*---------- Окно видимой части спектр-панорамы -----------*/
+		this.zoomBandChart = lc
+			.ZoomBandChart({
+				container: idContainerZoomBand,
+				theme: platanTheme,
+			})
+			.setTitle('')
+			.setPadding({ right: 5, left: -5, top: 0, bottom: 0 })
+			.setSeriesBackgroundStrokeStyle(emptyLine)
+			.setSplitterStrokeStyle(
+				new SolidLine({
+					thickness: 1,
+					fillStyle: new SolidFill({ color: ColorHEX('#1f5961') }),
+				}),
+			)
+			.setDefocusOverlayFillStyle(new SolidFill({ color: ColorHEX('#00000049') }))
+			.setKnobSize({ x: 6, y: 20 })
+			.setKnobFillStyle(new SolidFill({ color: ColorHEX('#00d6d6') }))
+			.setKnobStrokeStyle(
+				new SolidLine({ thickness: 1, fillStyle: new SolidFill({ color: ColorHEX('#1f5961') }) }),
+			)
+
+		if (this.lineSeries) {
+			this.zoomBandChart?.add(this.lineSeries)
+		} else {
+			console.error('Line series is not initialized yet.')
+		}
+		// this.zoomBandChart.getDefaultAxisX().setTickStrategy(AxisTickStrategies.Empty)
+
+		/*-------------- Данные -----------------------------*/
 		this.lineSeries = this.spectrumChart
 			.addPointLineAreaSeries({ dataPattern: 'ProgressiveX' })
 			.setName(`Спектральная панорама`)
 			.setAreaFillStyle(emptyFill)
 			.setPointFillStyle(emptyFill)
-			.appendJSON(spectrumData.points)
 			.setStrokeStyle(stroke => stroke.setThickness(1))
+
+		this.lineSeries.appendJSON(spectrumData.points)
+
+		console.log(this.lineSeries)
 
 		console.log('create chart: ', this.chartName)
 	}
 
-	addCustomTickX(pos: number, isMinor: boolean) {
-		// this.clearCustomTics()
-
-		const tick = this.axisX?.addCustomTick(
-			isMinor ? UIElementBuilders.AxisTickMinor : UIElementBuilders.AxisTickMajor,
-		)
-		console.log(this.customTicks)
-
-		if (tick) this.customTicks.push(tick)
-
-		return tick
-	}
+	// updateData(data:any){
+	// 	this.lineSeries?.appendJSON(data)
+	// 	this.zoomBandChart?.add(this.lineSeries)
+	// }
 }
 export let spectrumPanoramaChart1 = new PanoramaSpectrumChart()
