@@ -10,6 +10,7 @@ import {
 import config from '../../../config.json'
 import { AppDispatch, RootState } from '../../app/store/store'
 import { panoramaSpectrumData } from '../data/panoramaDataStorage'
+import { spectrumPanoramaChart1 } from '../../widgets/spectrumPanorama/ui/spectrumPanoramaChart1'
 
 const socket_URL = config.serverUrl
 
@@ -43,8 +44,9 @@ export const webSocketMiddleware: Middleware<{}, RootState, Dispatch<PayloadActi
 			socket.onmessage = event => {
 				const message: any = JSON.parse(event.data)
 				if (message['id'] === 0) {
-					console.log(message.points)
-					panoramaSpectrumData.update(message)
+					console.log(message)
+					// panoramaSpectrumData.update(message)
+					spectrumPanoramaChart1.updateData(message)
 				} else if (message['id'] === 1) {
 					console.log(message.radars)
 					dispatch(updateRadarsList(message))

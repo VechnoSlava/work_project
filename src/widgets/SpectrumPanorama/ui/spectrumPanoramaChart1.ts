@@ -1,15 +1,16 @@
 import {
 	Axis,
+	AxisScrollStrategies,
 	AxisTickStrategies,
 	ChartXY,
 	ColorHEX,
-	ColorRGBA,
 	CustomTick,
 	emptyFill,
 	emptyLine,
+	HeatmapScrollingGridSeriesIntensityValues,
 	NumericTickStrategy,
+	PalettedFill,
 	PointLineAreaSeries,
-	PointLineSeries,
 	SolidFill,
 	SolidLine,
 	TickStyle,
@@ -18,16 +19,20 @@ import {
 import { lc } from '../../../shared/libs/lightingChart/lcjs'
 import { platanTheme } from '../../../shared/libs/lightingChart/theme'
 import spectrumData from '../../../shared/dataTest/message.json'
-import { tickNumFormatter, tickTextFormatter } from '../model/settingsSpectrumPanorama'
+import { tickNumFormatter, tickTextFormatter, WFPalette } from '../model/settingsSpectrumPanorama'
 
 export class PanoramaSpectrumChart {
 	chartName: string
-	lineSeries: PointLineAreaSeries | undefined
 	spectrumChart: ChartXY | undefined
 	zoomBandChart: ZoomBandChart | undefined
+	waterfall: ChartXY | undefined
+	lineSeries: PointLineAreaSeries | undefined
+	heatmapSeries: HeatmapScrollingGridSeriesIntensityValues | undefined
 	axisX: Axis | undefined
 	axisY: Axis | undefined
 	axisBandX: Axis | undefined
+	axisXWF: Axis | undefined
+	axisYWF: Axis | undefined
 	customTicks: CustomTick[] = []
 
 	constructor() {
@@ -52,7 +57,7 @@ export class PanoramaSpectrumChart {
 			})
 			.setTitle('Панорама спектрального диапазона')
 			.setTitlePosition('center-top')
-			.setPadding({ right: 5, left: -5, top: 0, bottom: 0 })
+			.setPadding({ right: 5, left: 0, top: 0, bottom: 0 })
 			.setTitleFont(font => font.setSize(16))
 			.setTitleMargin({ top: 0, bottom: 0 })
 
@@ -190,6 +195,18 @@ export class PanoramaSpectrumChart {
 					new SolidLine({ thickness: 1, fillStyle: new SolidFill({ color: ColorHEX('#a6a6a6') }) }),
 				),
 		)
+
+		/*-------------- Данные -----------------------------*/
+		this.lineSeries = this.spectrumChart
+			.addPointLineAreaSeries({ dataPattern: 'ProgressiveX' })
+			.setName(`Спектральная панорама`)
+			.setAreaFillStyle(emptyFill)
+			.setPointFillStyle(emptyFill)
+			.setStrokeStyle(stroke => stroke.setThickness(1))
+			.setMaxSampleCount(12228)
+
+		// this.lineSeries.appendJSON(spectrumData.points)
+
 		/*---------- Окно видимой части спектр-панорамы -----------*/
 		this.zoomBandChart = lc
 			.ZoomBandChart({
@@ -197,7 +214,7 @@ export class PanoramaSpectrumChart {
 				theme: platanTheme,
 			})
 			.setTitle('')
-			.setPadding({ right: 5, left: -5, top: 0, bottom: 0 })
+			.setPadding({ right: 5, left: 0, top: 0, bottom: 0 })
 			.setSeriesBackgroundStrokeStyle(emptyLine)
 			.setSplitterStrokeStyle(
 				new SolidLine({
@@ -215,28 +232,82 @@ export class PanoramaSpectrumChart {
 		if (this.lineSeries) {
 			this.zoomBandChart?.add(this.lineSeries)
 		} else {
-			console.error('Line series is not initialized yet.')
+			console.log('Line series is not initialized yet.')
 		}
-		// this.zoomBandChart.getDefaultAxisX().setTickStrategy(AxisTickStrategies.Empty)
+		this.axisBandX = this.zoomBandChart.getDefaultAxisX().setTickStrategy(AxisTickStrategies.Empty)
 
-		/*-------------- Данные -----------------------------*/
-		this.lineSeries = this.spectrumChart
-			.addPointLineAreaSeries({ dataPattern: 'ProgressiveX' })
-			.setName(`Спектральная панорама`)
-			.setAreaFillStyle(emptyFill)
-			.setPointFillStyle(emptyFill)
-			.setStrokeStyle(stroke => stroke.setThickness(1))
+		/**----------- Водопад тепловой карты -------------*/
+		this.waterfall = lc
+			.ChartXY({
+				container: idContainerHeatMap,
+				theme: platanTheme,
+			})
+			.setTitle('')
+			.setPadding({ right: 5, left: 0, top: 0, bottom: 0 })
+			.setBackgroundStrokeStyle(emptyLine)
+			.setMouseInteractions(false)
 
-		this.lineSeries.appendJSON(spectrumData.points)
+		this.axisXWF = this.waterfall
+			.getDefaultAxisX()
+			.setMouseInteractions(false)
+			.setChartInteractions(false)
+			.setStrokeStyle(emptyLine)
+			.setAnimationZoom(undefined)
+			.setTickStrategy(AxisTickStrategies.Empty)
 
-		console.log(this.lineSeries)
+		this.axisYWF = this.waterfall
+			.getDefaultAxisY()
+			.setDefaultInterval(state => ({
+				start: (state.dataMax ?? 0) - 100,
+				end: state.dataMax ?? 0,
+				stopAxisAfter: false,
+			}))
+			.setMouseInteractions(false)
+			.setChartInteractions(false)
+			.setStrokeStyle(emptyLine)
+			.setAnimationZoom(undefined)
+			.setTickStrategy(AxisTickStrategies.Empty)
+			.setScrollStrategy(AxisScrollStrategies.progressive)
+
+		this.heatmapSeries = this.waterfall
+			.addHeatmapScrollingGridSeries({
+				scrollDimension: 'rows',
+				resolution: 1024 * 12,
+			})
+			.setFillStyle(new PalettedFill({ lut: WFPalette }))
+			.setWireframeStyle(emptyLine)
+			.setDataCleaning({ minDataPointCount: 1000 })
+
+		this.waterfall.setCursor(cursor =>
+			cursor
+				.setTickMarkerXVisible(false)
+				.setTickMarkerYVisible(false)
+				.setGridStrokeXStyle(
+					new SolidLine({ thickness: 1, fillStyle: new SolidFill({ color: ColorHEX('#a6a6a6') }) }),
+				)
+				.setGridStrokeYStyle(
+					new SolidLine({ thickness: 1, fillStyle: new SolidFill({ color: ColorHEX('#a6a6a6') }) }),
+				),
+		)
+
+		// this.heatmapSeries.addIntensityValues([spectrumData.psd])
 
 		console.log('create chart: ', this.chartName)
 	}
 
-	// updateData(data:any){
-	// 	this.lineSeries?.appendJSON(data)
-	// 	this.zoomBandChart?.add(this.lineSeries)
-	// }
+	updateData(data: any) {
+		console.log('start updatePanorama')
+
+		console.log(data.points)
+		console.log(data.psd)
+		this.lineSeries?.clear()
+		console.log('Panorama cleaned')
+
+		this.lineSeries?.add(data.points)
+		console.log('Panorama added')
+
+		// this.heatmapSeries?.addIntensityValues(data.psd)
+		console.log('end updatePanorama')
+	}
 }
 export let spectrumPanoramaChart1 = new PanoramaSpectrumChart()
