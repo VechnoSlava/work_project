@@ -289,6 +289,7 @@ export const CurrentTargetsTable = () => {
 		<div className={styles.table__container}>
 			<CustomTargetTable
 				checkboxSelection
+				disableMultipleRowSelection={true}
 				aria-label="Targets_table"
 				rows={currentTargets}
 				columns={columns}

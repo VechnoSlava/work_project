@@ -42,6 +42,10 @@ export interface IRadarsTads {
 	identification_data: string
 	id_signature: number
 }
+
+export interface ISelectedRowId {
+	uid: string
+}
 //--------------Входящие сообщения----------------------------------------
 export interface IWebSocket {
 	spectrumPanorama: {
@@ -64,7 +68,7 @@ interface WebSocketMessageBase {
 }
 
 export interface ISelectedRadars extends WebSocketMessageBase {
-	data: { uid: string }[]
+	data: ISelectedRowId[]
 }
 
 export interface ISelectedPulse extends WebSocketMessageBase {

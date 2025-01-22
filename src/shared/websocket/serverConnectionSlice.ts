@@ -8,7 +8,6 @@ export interface IConnectionState {
 	errorMessage: string | null
 	sendMessage: any
 	radars: IWebSocket['radarsList']['radars']
-	panoramaPoints: IWebSocket['spectrumPanorama']['points']
 }
 
 const initialState: IConnectionState = {
@@ -17,7 +16,6 @@ const initialState: IConnectionState = {
 	errorMessage: null,
 	sendMessage: null,
 	radars: [],
-	panoramaPoints: [],
 }
 
 export const serverConnectionSlice = createAppSlice({
@@ -48,18 +46,12 @@ export const serverConnectionSlice = createAppSlice({
 		updateRadarsList: create.reducer((state, action: PayloadAction<IWebSocket['radarsList']>) => {
 			state.radars = action.payload.radars
 		}),
-		// updatePanoramaSpectrum: create.reducer(
-		// 	(state, action: PayloadAction<IWebSocket['spectrumPanorama']>) => {
-		// 		state.panoramaPoints = action.payload.points
-		// 	},
-		// ),
 	}),
 	selectors: {
 		selectIsConnection: state => state.isConnection,
 		selectStateConnection: state => state.stateConnection,
 		selectErrorMessageConnection: state => state.errorMessage,
 		selectRadarsList: state => state.radars,
-		selectPanoramaSpectrumPoints: state => state.panoramaPoints,
 	},
 })
 
@@ -70,12 +62,10 @@ export const {
 	disconnectToServer,
 	sendMessage,
 	updateRadarsList,
-	// updatePanoramaSpectrum,
 } = serverConnectionSlice.actions
 export const {
 	selectIsConnection,
 	selectStateConnection,
 	selectErrorMessageConnection,
 	selectRadarsList,
-	selectPanoramaSpectrumPoints,
 } = serverConnectionSlice.selectors

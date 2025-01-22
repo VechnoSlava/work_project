@@ -8,17 +8,18 @@ import {
 	emptyFill,
 	emptyLine,
 	HeatmapScrollingGridSeriesIntensityValues,
+	isHitHeatmap,
 	NumericTickStrategy,
 	PalettedFill,
 	PointLineAreaSeries,
 	SolidFill,
 	SolidLine,
+	synchronizeAxisIntervals,
 	TickStyle,
 	ZoomBandChart,
 } from '@lightningchart/lcjs'
 import { lc } from '../../../shared/libs/lightingChart/lcjs'
 import { platanTheme } from '../../../shared/libs/lightingChart/theme'
-import spectrumData from '../../../shared/dataTest/message.json'
 import { tickNumFormatter, tickTextFormatter, WFPalette } from '../model/settingsSpectrumPanorama'
 
 export class PanoramaSpectrumChart {
@@ -145,14 +146,14 @@ export class PanoramaSpectrumChart {
 			return [
 				[
 					{
-						text: `Параметры:`,
+						text: `Параметры`,
 						fillStyle: new SolidFill({ color: ColorHEX('#17dce3') }),
 					},
 				],
 				// [hit.series], // Имя LineSeries
 				[
 					{
-						text: `Частота`,
+						text: `Частота:`,
 						fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
 					},
 					,
@@ -168,7 +169,7 @@ export class PanoramaSpectrumChart {
 				],
 				[
 					{
-						text: `Амплитуда`,
+						text: `Амплитуда:`,
 						fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
 					},
 					,
@@ -203,9 +204,7 @@ export class PanoramaSpectrumChart {
 			.setAreaFillStyle(emptyFill)
 			.setPointFillStyle(emptyFill)
 			.setStrokeStyle(stroke => stroke.setThickness(1))
-			.setMaxSampleCount(12228)
-
-		// this.lineSeries.appendJSON(spectrumData.points)
+		// .setMaxSampleCount(12228)
 
 		/*---------- Окно видимой части спектр-панорамы -----------*/
 		this.zoomBandChart = lc
@@ -277,6 +276,7 @@ export class PanoramaSpectrumChart {
 			.setFillStyle(new PalettedFill({ lut: WFPalette }))
 			.setWireframeStyle(emptyLine)
 			.setDataCleaning({ minDataPointCount: 1000 })
+			.setName('Тест')
 
 		this.waterfall.setCursor(cursor =>
 			cursor
@@ -290,24 +290,63 @@ export class PanoramaSpectrumChart {
 				),
 		)
 
-		// this.heatmapSeries.addIntensityValues([spectrumData.psd])
+		this.waterfall.setCursorFormatting((_, hit, hits) => {
+			if (!isHitHeatmap(hit)) return undefined
+			// `hit` is for a heatmap series
+			return [
+				[
+					{
+						text: `СПМ`,
+						fillStyle: new SolidFill({ color: ColorHEX('#17dce3') }),
+					},
+				],
+				[
+					{
+						text: `Отсчет по оси X:`,
+						fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
+					},
+					'',
+					{
+						text: hit.column.toFixed(0),
+						fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
+					},
+				],
+				[
+					{
+						text: `Отсчет по оси Y:`,
+						fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
+					},
+					'',
+					{
+						text: hit.row.toFixed(0),
+						fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
+					},
+				],
+				[
+					{
+						text: `Интенсивность:`,
+						fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
+					},
+					'',
+					{
+						text: hit.intensity.toFixed(3),
+						fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
+					},
+				],
+			]
+		})
 
 		console.log('create chart: ', this.chartName)
 	}
 
 	updateData(data: any) {
-		console.log('start updatePanorama')
-
-		console.log(data.points)
-		console.log(data.psd)
 		this.lineSeries?.clear()
-		console.log('Panorama cleaned')
-
-		this.lineSeries?.add(data.points)
-		console.log('Panorama added')
-
-		// this.heatmapSeries?.addIntensityValues(data.psd)
-		console.log('end updatePanorama')
+		// const arrX = data.points.map((point: any) => point.x)
+		// const arrY = data.points.map((point: any) => point.y)
+		// this.lineSeries?.addArraysXY(arrX, arrY)
+		this.lineSeries?.appendJSON(data.points, { x: 'x', y: 'y' })
+		this.heatmapSeries?.addIntensityValues([data.psd])
+		console.log('updateDataPanorama')
 	}
 }
-export let spectrumPanoramaChart1 = new PanoramaSpectrumChart()
+export let spectrumPanoramaChart = new PanoramaSpectrumChart()

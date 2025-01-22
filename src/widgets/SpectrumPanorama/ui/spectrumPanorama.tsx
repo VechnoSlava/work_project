@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
 import styles from './spectrumPanorama.module.css'
-import { spectrumPanoramaChart1 } from './spectrumPanoramaChart1'
+import { spectrumPanoramaChart } from './spectrumPanoramaChart'
 
 export function SpectrumPanorama() {
 	useEffect(() => {
 		const container = document.getElementById('spectrumPanorama') as HTMLDivElement | null
 		if (container) {
-			spectrumPanoramaChart1.createPanoramaChart(
+			spectrumPanoramaChart.createPanoramaChart(
 				'spectrumPanorama_spectrum',
 				'spectrumPanorama_band',
 				'spectrumPanorama_heatmap',
