@@ -46,7 +46,7 @@ export const webSocketMiddleware: Middleware<{}, RootState, Dispatch<PayloadActi
 					console.log(message)
 					spectrumPanoramaChart.updateData(message)
 				} else if (message['id'] === 1) {
-					console.log(message.radars)
+					console.log(message)
 					dispatch(updateRadarsList(message))
 				} else if (message['id'] === 2) {
 					console.log(message)

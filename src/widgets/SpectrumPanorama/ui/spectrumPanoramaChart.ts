@@ -14,13 +14,13 @@ import {
 	PointLineAreaSeries,
 	SolidFill,
 	SolidLine,
-	synchronizeAxisIntervals,
 	TickStyle,
 	ZoomBandChart,
 } from '@lightningchart/lcjs'
 import { lc } from '../../../shared/libs/lightingChart/lcjs'
 import { platanTheme } from '../../../shared/libs/lightingChart/theme'
 import { tickNumFormatter, tickTextFormatter, WFPalette } from '../model/settingsSpectrumPanorama'
+import { ISpectrumPanorama, IWebSocket } from '../../../shared/webSocket/IWebSocket'
 
 export class PanoramaSpectrumChart {
 	chartName: string
@@ -337,6 +337,13 @@ export class PanoramaSpectrumChart {
 		})
 
 		console.log('create chart: ', this.chartName)
+	}
+
+	deletePanoramaChart() {
+		console.log('delete chart: ', this.chartName)
+		this.spectrumChart?.dispose()
+		this.zoomBandChart?.dispose()
+		this.waterfall?.dispose()
 	}
 
 	updateData(data: any) {

@@ -23,7 +23,7 @@ export interface IRadarsList {
 	id_signature: number
 }
 
-export interface IRadarsTads {
+export interface IRadarsTadsTable {
 	id: number
 	uid: string
 	inner_id: number
@@ -51,6 +51,7 @@ export interface IWebSocket {
 	spectrumPanorama: {
 		id: 0
 		points: Array<ISpectrumPanorama>
+		psd: number[]
 	}
 
 	radarsList: {

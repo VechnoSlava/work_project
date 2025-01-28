@@ -5,10 +5,9 @@ import { CurrentTargetsTable } from '../../../widgets/currentTargetsTable'
 import { SplitFrame } from '../../../entities/splitFrame'
 import { MainMap } from '../../../widgets/mainMap'
 import { useState, useEffect } from 'react'
-import { Spectrogram } from '../../../widgets/spectrogram'
 import { RadarsTable } from '../../../widgets/radarsTable'
 import { SpectrumPanorama } from '../../../widgets/spectrumPanorama'
-import { FormTest } from '../../../features/formTest'
+import { RadarPulsesChart } from '../../../widgets/barChartRadarPulses'
 
 export const MainPage = () => {
 	console.log('RENDER MAIN_PAGE')
@@ -29,7 +28,7 @@ export const MainPage = () => {
 					<SpectrumPanorama key={3} />
 				</SplitFrame>
 				<SplitFrame frameDirection="horizontal" key={103}>
-					<FormTest key={5} />
+					<RadarPulsesChart key={5} />
 					{/* <SplitFrame frameDirection="vertical" key={104}>
 						<div key={4} />
 						<RadarsTable key={5} />

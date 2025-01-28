@@ -6,7 +6,6 @@ import { selectModeSecondWindow } from '../../../widgets/header/model/controlMod
 import { useEffect, useState } from 'react'
 import { RadarsTable } from '../../../widgets/radarsTable'
 import { CurrentTargetsTable } from '../../../widgets/currentTargetsTable'
-import { SpectrumPanoramaTest } from '../../../widgets/spectrumPanoramaTestData'
 
 export const HistoryPage = () => {
 	console.log('RENDER HISTORY_PAGE')
@@ -24,7 +23,7 @@ export const HistoryPage = () => {
 				<SplitFrame frameDirection="horizontal" key={202}>
 					{secondWindowOpened ? null : <MainMap key={1} />}
 					<RadarsTable key={2} />
-					<SpectrumPanoramaTest key={3} />
+					{/* <SpectrumPanoramaTest key={3} /> */}
 				</SplitFrame>
 				<SplitFrame frameDirection="horizontal" key={203}>
 					<SplitFrame frameDirection="vertical" key={204}>

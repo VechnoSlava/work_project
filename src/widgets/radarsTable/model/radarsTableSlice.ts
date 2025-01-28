@@ -25,12 +25,3 @@ export const radarsTableSlice = createAppSlice({
 
 export const { addSelectedRadars } = radarsTableSlice.actions
 export const { selectSelectedRadars } = radarsTableSlice.selectors
-
-// deleteSelectedRadars: create.reducer((state, action: PayloadAction<number>) => {
-// 	return {
-// 		...state,
-// 		selectedRadarsUids: state.selectedRadarsUids.filter(
-// 			radar => radar !== action.payload,
-// 		),
-// 	}
-// }),
