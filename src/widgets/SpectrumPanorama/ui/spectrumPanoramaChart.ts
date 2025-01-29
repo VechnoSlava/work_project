@@ -20,7 +20,6 @@ import {
 import { lc } from '../../../shared/libs/lightingChart/lcjs'
 import { platanTheme } from '../../../shared/libs/lightingChart/theme'
 import { tickNumFormatter, tickTextFormatter, WFPalette } from '../model/settingsSpectrumPanorama'
-import { ISpectrumPanorama, IWebSocket } from '../../../shared/webSocket/IWebSocket'
 
 export class PanoramaSpectrumChart {
 	chartName: string

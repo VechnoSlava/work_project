@@ -29,19 +29,9 @@ export const MainPage = () => {
 				</SplitFrame>
 				<SplitFrame frameDirection="horizontal" key={103}>
 					<RadarPulsesChart key={5} />
-					{/* <SplitFrame frameDirection="vertical" key={104}>
-						<div key={4} />
-						<RadarsTable key={5} />
-					</SplitFrame> */}
 					{secondWindowOpened ? null : <CurrentTargetsTable key={6} />}
 				</SplitFrame>
 			</SplitFrame>
 		</div>
 	)
-	// return (
-	// 	<SplitFrame frameDirection="horizontal" key={key}>
-	// 		<CurrentTargetsTable key={3} />
-	// 		<SpectrumPanorama key={4} />
-	// 	</SplitFrame>
-	// )
 }

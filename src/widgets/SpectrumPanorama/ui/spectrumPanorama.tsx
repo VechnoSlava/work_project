@@ -3,10 +3,6 @@ import styles from './spectrumPanorama.module.css'
 import { spectrumPanoramaChart } from './spectrumPanoramaChart'
 
 export function SpectrumPanorama() {
-	// useEffect(() => {
-	// 	return () => spectrumPanoramaChart.deletePanoramaChart()
-	// }, [])
-
 	useEffect(() => {
 		const container = document.getElementById('spectrumPanorama') as HTMLDivElement | null
 		if (container) {
@@ -18,6 +14,7 @@ export function SpectrumPanorama() {
 		} else {
 			console.error('Container not found')
 		}
+		return () => spectrumPanoramaChart.deletePanoramaChart()
 	}, [])
 
 	return (
