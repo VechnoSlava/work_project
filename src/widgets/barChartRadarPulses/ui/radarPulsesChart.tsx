@@ -10,6 +10,9 @@ export function RadarPulsesChart() {
 		} else {
 			console.error('Container not found')
 		}
+		return () => {
+			radarPulsesBarChart.deletePulsesBarChart()
+		}
 	}, [])
 
 	return <div className={styles.pulsesChart} id={'radarPulsesBarChart'}></div>

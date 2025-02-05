@@ -4,1010 +4,710 @@
 	"Tads": {
 		"tadChart": [
 			{
-				"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+				"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 				"data": [
 					{
-						"x": 100001503,
-						"y": 93
+						"x": 101749139,
+						"y": 117
 					},
 					{
-						"x": 100002224,
-						"y": 96
+						"x": 101749690,
+						"y": 155
 					},
 					{
-						"x": 100002946,
-						"y": 91
+						"x": 101750231,
+						"y": 212
 					},
 					{
-						"x": 100003667,
-						"y": 90
+						"x": 101750801,
+						"y": 280
 					},
 					{
-						"x": 100004388,
-						"y": 80
+						"x": 101751350,
+						"y": 361
 					},
 					{
-						"x": 100005109,
-						"y": 80
+						"x": 101751886,
+						"y": 442
 					},
 					{
-						"x": 100005830,
-						"y": 95
+						"x": 101752442,
+						"y": 541
 					},
 					{
-						"x": 100006552,
-						"y": 99
+						"x": 101753031,
+						"y": 630
 					},
 					{
-						"x": 100007273,
-						"y": 107
+						"x": 101753602,
+						"y": 721
 					},
 					{
-						"x": 100007994,
-						"y": 105
+						"x": 101754155,
+						"y": 841
 					},
 					{
-						"x": 100008715,
-						"y": 94
+						"x": 101754687,
+						"y": 897
 					},
 					{
-						"x": 100009437,
-						"y": 82
+						"x": 101755238,
+						"y": 965
 					},
 					{
-						"x": 100010158,
-						"y": 68
+						"x": 101756361,
+						"y": 1045
 					},
 					{
-						"x": 100010879,
-						"y": 75
+						"x": 101756931,
+						"y": 1075
 					},
 					{
-						"x": 100011600,
-						"y": 80
+						"x": 101757484,
+						"y": 1080
 					},
 					{
-						"x": 100012321,
-						"y": 77
+						"x": 101758020,
+						"y": 1040
 					},
 					{
-						"x": 100013043,
-						"y": 80
+						"x": 101758567,
+						"y": 992
 					},
 					{
-						"x": 100013764,
-						"y": 80
+						"x": 101759127,
+						"y": 937
 					},
 					{
-						"x": 100014485,
-						"y": 83
+						"x": 101759678,
+						"y": 871
 					},
 					{
-						"x": 100015206,
-						"y": 72
+						"x": 101760245,
+						"y": 771
 					},
 					{
-						"x": 100015928,
-						"y": 68
+						"x": 101760801,
+						"y": 672
 					},
 					{
-						"x": 100016649,
-						"y": 60
+						"x": 101761341,
+						"y": 581
 					},
 					{
-						"x": 100017370,
-						"y": 60
+						"x": 101761889,
+						"y": 482
 					},
 					{
-						"x": 100020255,
-						"y": 62
+						"x": 101762452,
+						"y": 383
 					},
 					{
-						"x": 100020976,
-						"y": 70
+						"x": 101763007,
+						"y": 293
 					},
 					{
-						"x": 100021698,
-						"y": 80
+						"x": 101763544,
+						"y": 216
 					},
 					{
-						"x": 100022419,
-						"y": 82
+						"x": 101764087,
+						"y": 146
 					},
 					{
-						"x": 100023140,
-						"y": 89
-					},
-					{
-						"x": 100023861,
-						"y": 96
-					},
-					{
-						"x": 100024582,
-						"y": 99
-					},
-					{
-						"x": 100025304,
-						"y": 104
-					},
-					{
-						"x": 100026025,
-						"y": 105
-					},
-					{
-						"x": 100026746,
+						"x": 101764640,
 						"y": 108
 					},
 					{
-						"x": 100027467,
-						"y": 100
+						"x": 103829978,
+						"y": 93
 					},
 					{
-						"x": 100028189,
-						"y": 109
+						"x": 103830525,
+						"y": 111
 					},
 					{
-						"x": 100028910,
-						"y": 95
-					},
-					{
-						"x": 100029631,
-						"y": 87
-					},
-					{
-						"x": 100030352,
-						"y": 91
-					},
-					{
-						"x": 100031074,
-						"y": 96
-					},
-					{
-						"x": 100031795,
-						"y": 88
-					},
-					{
-						"x": 100032516,
-						"y": 83
-					},
-					{
-						"x": 100033237,
-						"y": 83
-					},
-					{
-						"x": 100033958,
-						"y": 92
-					},
-					{
-						"x": 100034680,
-						"y": 101
-					},
-					{
-						"x": 100035401,
-						"y": 106
-					},
-					{
-						"x": 100036122,
-						"y": 126
-					},
-					{
-						"x": 100036843,
+						"x": 103831085,
 						"y": 143
 					},
 					{
-						"x": 100037565,
-						"y": 131
+						"x": 103831636,
+						"y": 185
 					},
 					{
-						"x": 100038286,
-						"y": 123
+						"x": 103832204,
+						"y": 242
 					},
 					{
-						"x": 100039007,
-						"y": 115
+						"x": 103832762,
+						"y": 311
 					},
 					{
-						"x": 100039728,
-						"y": 119
+						"x": 103833303,
+						"y": 391
 					},
 					{
-						"x": 100040449,
-						"y": 94
+						"x": 103833856,
+						"y": 482
 					},
 					{
-						"x": 100041171,
-						"y": 93
+						"x": 103834389,
+						"y": 551
 					},
 					{
-						"x": 100041892,
-						"y": 92
+						"x": 103834938,
+						"y": 638
 					},
 					{
-						"x": 100042613,
-						"y": 95
+						"x": 103835503,
+						"y": 707
 					},
 					{
-						"x": 100043334,
-						"y": 101
+						"x": 103836062,
+						"y": 788
 					},
 					{
-						"x": 100044056,
-						"y": 100
+						"x": 103836609,
+						"y": 850
 					},
 					{
-						"x": 100044777,
-						"y": 115
+						"x": 103837168,
+						"y": 914
 					},
 					{
-						"x": 100045498,
-						"y": 113
+						"x": 103837719,
+						"y": 938
 					},
 					{
-						"x": 100046219,
-						"y": 106
+						"x": 103838285,
+						"y": 955
 					},
 					{
-						"x": 100046941,
-						"y": 113
+						"x": 103838817,
+						"y": 955
 					},
 					{
-						"x": 100047662,
-						"y": 107
+						"x": 103839388,
+						"y": 941
 					},
 					{
-						"x": 100048383,
-						"y": 95
+						"x": 103839923,
+						"y": 899
 					},
 					{
-						"x": 100049104,
-						"y": 82
+						"x": 103840471,
+						"y": 851
 					},
 					{
-						"x": 100049826,
-						"y": 87
+						"x": 103841011,
+						"y": 799
 					},
 					{
-						"x": 100080838,
-						"y": 69
+						"x": 103841577,
+						"y": 706
 					},
 					{
-						"x": 100081560,
-						"y": 79
+						"x": 103842139,
+						"y": 620
 					},
 					{
-						"x": 100082281,
-						"y": 78
+						"x": 103842708,
+						"y": 538
 					},
 					{
-						"x": 100083002,
-						"y": 70
+						"x": 103843252,
+						"y": 448
 					},
 					{
-						"x": 100083723,
-						"y": 71
+						"x": 103843816,
+						"y": 357
 					},
 					{
-						"x": 100084445,
-						"y": 73
+						"x": 103844351,
+						"y": 280
 					},
 					{
-						"x": 100085166,
-						"y": 69
+						"x": 103844907,
+						"y": 202
 					},
 					{
-						"x": 100085887,
-						"y": 70
+						"x": 103845448,
+						"y": 140
 					},
 					{
-						"x": 100086608,
-						"y": 74
-					},
-					{
-						"x": 100087329,
-						"y": 78
-					},
-					{
-						"x": 100088051,
-						"y": 93
-					},
-					{
-						"x": 100088772,
-						"y": 94
-					},
-					{
-						"x": 100089493,
-						"y": 94
-					},
-					{
-						"x": 100090214,
-						"y": 87
-					},
-					{
-						"x": 100090936,
-						"y": 84
-					},
-					{
-						"x": 100091657,
-						"y": 67
-					},
-					{
-						"x": 100092378,
-						"y": 66
-					},
-					{
-						"x": 100093099,
-						"y": 63
+						"x": 103846017,
+						"y": 91
 					}
 				]
 			}
 		],
 		"tadTable": [
 			{
-				"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+				"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 				"data": [
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 0,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 381.83,
-						"pulse_amplitude": 93
+						"freq": 9407,
+						"pulse_length": 686.06,
+						"pulse_amplitude": 117
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 1,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 351.62,
-						"pulse_amplitude": 96
+						"freq": 9407,
+						"pulse_length": 550.04,
+						"pulse_amplitude": 155
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 2,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 345.47,
-						"pulse_amplitude": 91
+						"freq": 9407,
+						"pulse_length": 750.49,
+						"pulse_amplitude": 212
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 3,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 355.81,
-						"pulse_amplitude": 90
+						"freq": 9407.5,
+						"pulse_length": 675.82,
+						"pulse_amplitude": 280
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 4,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 443.42,
-						"pulse_amplitude": 80
+						"freq": 9407.5,
+						"pulse_length": 627.07,
+						"pulse_amplitude": 361
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 5,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 362.68,
-						"pulse_amplitude": 80
+						"freq": 9407.5,
+						"pulse_length": 564.26,
+						"pulse_amplitude": 442
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 6,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 355.44,
-						"pulse_amplitude": 95
+						"freq": 9408,
+						"pulse_length": 915.02,
+						"pulse_amplitude": 541
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 7,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 375.87,
-						"pulse_amplitude": 99
+						"freq": 9407.5,
+						"pulse_length": 850.74,
+						"pulse_amplitude": 630
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 8,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 339.28,
-						"pulse_amplitude": 107
+						"freq": 9407.5,
+						"pulse_length": 745.99,
+						"pulse_amplitude": 721
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 9,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 214.23,
-						"pulse_amplitude": 105
+						"freq": 9407,
+						"pulse_length": 492.48,
+						"pulse_amplitude": 841
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 10,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 370.88,
-						"pulse_amplitude": 94
+						"freq": 9407.5,
+						"pulse_length": 483.81,
+						"pulse_amplitude": 897
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 11,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 367.88,
-						"pulse_amplitude": 82
+						"freq": 9407.5,
+						"pulse_length": 448.78,
+						"pulse_amplitude": 965
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 12,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 382,
-						"pulse_amplitude": 68
+						"freq": 9408,
+						"pulse_length": 531.93,
+						"pulse_amplitude": 1045
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 13,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 368.68,
-						"pulse_amplitude": 75
+						"freq": 9407.5,
+						"pulse_length": 701.41,
+						"pulse_amplitude": 1075
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 14,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 297.21,
-						"pulse_amplitude": 80
+						"freq": 9407.5,
+						"pulse_length": 596.99,
+						"pulse_amplitude": 1080
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 15,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 367.36,
-						"pulse_amplitude": 77
+						"freq": 9407,
+						"pulse_length": 698.71,
+						"pulse_amplitude": 1040
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 16,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 353.09,
-						"pulse_amplitude": 80
+						"freq": 9407,
+						"pulse_length": 811.84,
+						"pulse_amplitude": 992
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 17,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 89.51,
-						"pulse_amplitude": 80
+						"freq": 9407.5,
+						"pulse_length": 480.96,
+						"pulse_amplitude": 937
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 18,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 285.35,
-						"pulse_amplitude": 83
+						"freq": 9407,
+						"pulse_length": 586.35,
+						"pulse_amplitude": 871
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 19,
 						"drill_id": 0,
-						"freq": 9412.5,
-						"pulse_length": 223.87,
-						"pulse_amplitude": 72
+						"freq": 9407,
+						"pulse_length": 850.3,
+						"pulse_amplitude": 771
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 20,
 						"drill_id": 0,
-						"freq": 9412.5,
-						"pulse_length": 377.93,
-						"pulse_amplitude": 68
+						"freq": 9407,
+						"pulse_length": 649.47,
+						"pulse_amplitude": 672
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 21,
 						"drill_id": 0,
-						"freq": 9412.5,
-						"pulse_length": 228.11,
-						"pulse_amplitude": 60
+						"freq": 9406,
+						"pulse_length": 597.92,
+						"pulse_amplitude": 581
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 22,
 						"drill_id": 0,
-						"freq": 9412,
-						"pulse_length": 376.7,
-						"pulse_amplitude": 60
+						"freq": 9407.5,
+						"pulse_length": 492.3,
+						"pulse_amplitude": 482
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 23,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 328.84,
-						"pulse_amplitude": 62
+						"freq": 9406.5,
+						"pulse_length": 841.26,
+						"pulse_amplitude": 383
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 24,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 365.37,
-						"pulse_amplitude": 70
+						"freq": 9406,
+						"pulse_length": 716.09,
+						"pulse_amplitude": 293
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 25,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 285.11,
-						"pulse_amplitude": 80
+						"freq": 9406,
+						"pulse_length": 383.15,
+						"pulse_amplitude": 216
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 26,
 						"drill_id": 0,
-						"freq": 9412.5,
-						"pulse_length": 276.38,
-						"pulse_amplitude": 82
+						"freq": 9406,
+						"pulse_length": 620.68,
+						"pulse_amplitude": 146
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 27,
 						"drill_id": 0,
-						"freq": 9412.5,
-						"pulse_length": 382.75,
-						"pulse_amplitude": 89
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 28,
-						"drill_id": 0,
-						"freq": 9412.5,
-						"pulse_length": 567.52,
-						"pulse_amplitude": 96
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 29,
-						"drill_id": 0,
-						"freq": 9412.5,
-						"pulse_length": 345.81,
-						"pulse_amplitude": 99
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 30,
-						"drill_id": 0,
-						"freq": 9413,
-						"pulse_length": 361.25,
-						"pulse_amplitude": 104
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 31,
-						"drill_id": 0,
-						"freq": 9413,
-						"pulse_length": 374.17,
-						"pulse_amplitude": 105
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 32,
-						"drill_id": 0,
-						"freq": 9411,
-						"pulse_length": 344.46,
+						"freq": 9406,
+						"pulse_length": 857.84,
 						"pulse_amplitude": 108
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 33,
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
+						"id": 28,
 						"drill_id": 0,
-						"freq": 9411,
-						"pulse_length": 358.35,
-						"pulse_amplitude": 100
+						"freq": 9407,
+						"pulse_length": 605.11,
+						"pulse_amplitude": 93
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 34,
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
+						"id": 29,
 						"drill_id": 0,
-						"freq": 9411,
-						"pulse_length": 668.84,
-						"pulse_amplitude": 109
+						"freq": 9407,
+						"pulse_length": 609.04,
+						"pulse_amplitude": 111
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 35,
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
+						"id": 30,
 						"drill_id": 0,
-						"freq": 9411,
-						"pulse_length": 166.23,
-						"pulse_amplitude": 95
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 36,
-						"drill_id": 0,
-						"freq": 9411,
-						"pulse_length": 359.76,
-						"pulse_amplitude": 87
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 37,
-						"drill_id": 0,
-						"freq": 9411,
-						"pulse_length": 333.61,
-						"pulse_amplitude": 91
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 38,
-						"drill_id": 0,
-						"freq": 9412,
-						"pulse_length": 683.92,
-						"pulse_amplitude": 96
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 39,
-						"drill_id": 0,
-						"freq": 9412,
-						"pulse_length": 355.03,
-						"pulse_amplitude": 88
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 40,
-						"drill_id": 0,
-						"freq": 9412,
-						"pulse_length": 301.11,
-						"pulse_amplitude": 83
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 41,
-						"drill_id": 0,
-						"freq": 9412,
-						"pulse_length": 580.65,
-						"pulse_amplitude": 83
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 42,
-						"drill_id": 0,
-						"freq": 9412.5,
-						"pulse_length": 400.02,
-						"pulse_amplitude": 92
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 43,
-						"drill_id": 0,
-						"freq": 9412.5,
-						"pulse_length": 308.86,
-						"pulse_amplitude": 101
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 44,
-						"drill_id": 0,
-						"freq": 9412.5,
-						"pulse_length": 422.56,
-						"pulse_amplitude": 106
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 45,
-						"drill_id": 0,
-						"freq": 9412.5,
-						"pulse_length": 291.91,
-						"pulse_amplitude": 126
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 46,
-						"drill_id": 0,
-						"freq": 9412.5,
-						"pulse_length": 115.02,
+						"freq": 9407,
+						"pulse_length": 600.72,
 						"pulse_amplitude": 143
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
+						"id": 31,
+						"drill_id": 0,
+						"freq": 9406.5,
+						"pulse_length": 111.23,
+						"pulse_amplitude": 185
+					},
+					{
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
+						"id": 32,
+						"drill_id": 0,
+						"freq": 9407,
+						"pulse_length": 493.4,
+						"pulse_amplitude": 242
+					},
+					{
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
+						"id": 33,
+						"drill_id": 0,
+						"freq": 9407,
+						"pulse_length": 661.2,
+						"pulse_amplitude": 311
+					},
+					{
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
+						"id": 34,
+						"drill_id": 0,
+						"freq": 9407,
+						"pulse_length": 907.61,
+						"pulse_amplitude": 391
+					},
+					{
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
+						"id": 35,
+						"drill_id": 0,
+						"freq": 9407,
+						"pulse_length": 652.27,
+						"pulse_amplitude": 482
+					},
+					{
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
+						"id": 36,
+						"drill_id": 0,
+						"freq": 9407,
+						"pulse_length": 535.54,
+						"pulse_amplitude": 551
+					},
+					{
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
+						"id": 37,
+						"drill_id": 0,
+						"freq": 9406.5,
+						"pulse_length": 665.04,
+						"pulse_amplitude": 638
+					},
+					{
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
+						"id": 38,
+						"drill_id": 0,
+						"freq": 9406.5,
+						"pulse_length": 747.4,
+						"pulse_amplitude": 707
+					},
+					{
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
+						"id": 39,
+						"drill_id": 0,
+						"freq": 9407,
+						"pulse_length": 359.19,
+						"pulse_amplitude": 788
+					},
+					{
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
+						"id": 40,
+						"drill_id": 0,
+						"freq": 9407,
+						"pulse_length": 889.83,
+						"pulse_amplitude": 850
+					},
+					{
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
+						"id": 41,
+						"drill_id": 0,
+						"freq": 9407,
+						"pulse_length": 805.05,
+						"pulse_amplitude": 914
+					},
+					{
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
+						"id": 42,
+						"drill_id": 0,
+						"freq": 9407,
+						"pulse_length": 400.31,
+						"pulse_amplitude": 938
+					},
+					{
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
+						"id": 43,
+						"drill_id": 0,
+						"freq": 9407.5,
+						"pulse_length": 702.97,
+						"pulse_amplitude": 955
+					},
+					{
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
+						"id": 44,
+						"drill_id": 0,
+						"freq": 9407,
+						"pulse_length": 525.83,
+						"pulse_amplitude": 955
+					},
+					{
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
+						"id": 45,
+						"drill_id": 0,
+						"freq": 9405.5,
+						"pulse_length": 555.77,
+						"pulse_amplitude": 941
+					},
+					{
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
+						"id": 46,
+						"drill_id": 0,
+						"freq": 9406,
+						"pulse_length": 590.75,
+						"pulse_amplitude": 899
+					},
+					{
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 47,
 						"drill_id": 0,
-						"freq": 9412.5,
-						"pulse_length": 344.55,
-						"pulse_amplitude": 131
+						"freq": 9407,
+						"pulse_length": 833.08,
+						"pulse_amplitude": 851
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 48,
 						"drill_id": 0,
-						"freq": 9412.5,
-						"pulse_length": 346.7,
-						"pulse_amplitude": 123
+						"freq": 9406.5,
+						"pulse_length": 595.28,
+						"pulse_amplitude": 799
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 49,
 						"drill_id": 0,
-						"freq": 9412.5,
-						"pulse_length": 340.18,
-						"pulse_amplitude": 115
+						"freq": 9406.5,
+						"pulse_length": 788.04,
+						"pulse_amplitude": 706
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 50,
 						"drill_id": 0,
-						"freq": 9412.5,
-						"pulse_length": 363.12,
-						"pulse_amplitude": 119
+						"freq": 9406.5,
+						"pulse_length": 564.32,
+						"pulse_amplitude": 620
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 51,
 						"drill_id": 0,
-						"freq": 9412.5,
-						"pulse_length": 337.77,
-						"pulse_amplitude": 94
+						"freq": 9407,
+						"pulse_length": 501.65,
+						"pulse_amplitude": 538
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 52,
 						"drill_id": 0,
-						"freq": 9412,
-						"pulse_length": 331.72,
-						"pulse_amplitude": 93
+						"freq": 9407,
+						"pulse_length": 843.98,
+						"pulse_amplitude": 448
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 53,
 						"drill_id": 0,
-						"freq": 9412,
-						"pulse_length": 237.29,
-						"pulse_amplitude": 92
+						"freq": 9407,
+						"pulse_length": 812.55,
+						"pulse_amplitude": 357
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 54,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 592.53,
-						"pulse_amplitude": 95
+						"freq": 9406,
+						"pulse_length": 614.09,
+						"pulse_amplitude": 280
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 55,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 323.58,
-						"pulse_amplitude": 101
+						"freq": 9406.5,
+						"pulse_length": 528.97,
+						"pulse_amplitude": 202
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 56,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 317.55,
-						"pulse_amplitude": 100
+						"freq": 9406,
+						"pulse_length": 520.32,
+						"pulse_amplitude": 140
 					},
 					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
+						"radar": "4eddc26a-f902-4e5d-4f26-2aa703aab898",
 						"id": 57,
 						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 68.68,
-						"pulse_amplitude": 115
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 58,
-						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 394.68,
-						"pulse_amplitude": 113
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 59,
-						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 421.1,
-						"pulse_amplitude": 106
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 60,
-						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 355.62,
-						"pulse_amplitude": 113
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 61,
-						"drill_id": 0,
-						"freq": 9412,
-						"pulse_length": 361.5,
-						"pulse_amplitude": 107
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 62,
-						"drill_id": 0,
-						"freq": 9412,
-						"pulse_length": 386.66,
-						"pulse_amplitude": 95
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 63,
-						"drill_id": 0,
-						"freq": 9412,
-						"pulse_length": 360.5,
-						"pulse_amplitude": 82
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 64,
-						"drill_id": 0,
-						"freq": 9412,
-						"pulse_length": 354.57,
-						"pulse_amplitude": 87
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 65,
-						"drill_id": 0,
-						"freq": 9411.5,
-						"pulse_length": 346.23,
-						"pulse_amplitude": 69
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 66,
-						"drill_id": 0,
-						"freq": 9411,
-						"pulse_length": 279.77,
-						"pulse_amplitude": 79
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 67,
-						"drill_id": 0,
-						"freq": 9413,
-						"pulse_length": 253.68,
-						"pulse_amplitude": 78
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 68,
-						"drill_id": 0,
-						"freq": 9413,
-						"pulse_length": 351.42,
-						"pulse_amplitude": 70
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 69,
-						"drill_id": 0,
-						"freq": 9413,
-						"pulse_length": 331.52,
-						"pulse_amplitude": 71
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 70,
-						"drill_id": 0,
-						"freq": 9413,
-						"pulse_length": 17.71,
-						"pulse_amplitude": 73
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 71,
-						"drill_id": 0,
-						"freq": 9412.5,
-						"pulse_length": 713.41,
-						"pulse_amplitude": 69
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 72,
-						"drill_id": 0,
-						"freq": 9412,
-						"pulse_length": 333.78,
-						"pulse_amplitude": 70
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 73,
-						"drill_id": 0,
-						"freq": 9412,
-						"pulse_length": 362.33,
-						"pulse_amplitude": 74
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 74,
-						"drill_id": 0,
-						"freq": 9412,
-						"pulse_length": 304.04,
-						"pulse_amplitude": 78
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 75,
-						"drill_id": 0,
-						"freq": 9412,
-						"pulse_length": 131.75,
-						"pulse_amplitude": 93
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 76,
-						"drill_id": 0,
-						"freq": 9412,
-						"pulse_length": 67.66,
-						"pulse_amplitude": 94
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 77,
-						"drill_id": 0,
-						"freq": 9412,
-						"pulse_length": 377.9,
-						"pulse_amplitude": 94
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 78,
-						"drill_id": 0,
-						"freq": 9412,
-						"pulse_length": 355.03,
-						"pulse_amplitude": 87
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 79,
-						"drill_id": 0,
-						"freq": 9412,
-						"pulse_length": 330.28,
-						"pulse_amplitude": 84
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 80,
-						"drill_id": 0,
-						"freq": 9412,
-						"pulse_length": 385.57,
-						"pulse_amplitude": 67
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 81,
-						"drill_id": 0,
-						"freq": 9412,
-						"pulse_length": 349.65,
-						"pulse_amplitude": 66
-					},
-					{
-						"radar": "172ffaec-5afe-4656-69bb-c142af91bd73",
-						"id": 82,
-						"drill_id": 0,
-						"freq": 9412,
-						"pulse_length": 224.4,
-						"pulse_amplitude": 63
+						"freq": 9407,
+						"pulse_length": 724.5,
+						"pulse_amplitude": 91
 					}
 				]
 			}
