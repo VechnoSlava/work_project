@@ -2,10 +2,10 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import timemachine from 'timemachine'
 import App from './app/App'
-// console.log(new Date())
+console.log(new Date())
 
 timemachine.reset()
-// console.log(new Date())
+console.log(new Date())
 
 const container = document.getElementById('root')
 const renderApp = (container: HTMLElement) => {

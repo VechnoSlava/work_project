@@ -62,7 +62,7 @@ export class RadarPulsesBarChart {
 			.getDefaultAxisX()
 			.setTitle('')
 			.setMarginAfterTicks(0)
-			.setMouseInteractions(false)
+			// .setMouseInteractions(false)
 			.setStrokeStyle(emptyLine)
 			.setTickStrategy('Empty')
 
@@ -72,10 +72,10 @@ export class RadarPulsesBarChart {
 				start: state.dataMin,
 				end: (state.dataMax ?? 0) + 100,
 			}))
-			.setMouseInteractions(false)
-			.setChartInteractions(false)
-			.setChartInteractionZoomByWheel(false)
-			.setChartInteractionZoomByDrag(false)
+			// .setMouseInteractions(false)
+			// .setChartInteractions(false)
+			// .setChartInteractionZoomByWheel(false)
+			// .setChartInteractionZoomByDrag(false)
 			.setStrokeStyle(emptyLine)
 			.setTickStrategy('Empty')
 
@@ -103,8 +103,8 @@ export class RadarPulsesBarChart {
 
 			this.segments.forEach((segment, i) => {
 				if (segment) {
-					segment.onMouseEnter(() => selectedPulse(i))
-					segment.onMouseClick(() => clickHandler(i))
+					segment.addEventListener('pointerenter', () => selectedPulse(i))
+					segment.addEventListener('click', () => clickHandler(i))
 				}
 			})
 

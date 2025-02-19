@@ -44,8 +44,6 @@ export class PanoramaSpectrumChart {
 		idContainerZoomBand: string,
 		idContainerHeatMap: string,
 	) {
-		const startPointSpectrum = 1e9
-		const endPointSpectrum = 11e9
 		const startPointBand = 1e9
 		const endPointBand = 2e9
 
@@ -61,10 +59,6 @@ export class PanoramaSpectrumChart {
 			.setTitleFont(font => font.setSize(16))
 			.setTitleMargin({ top: 0, bottom: 0 })
 
-		this.spectrumChart.onSeriesBackgroundMouseDoubleClick(() => {
-			this.spectrumChart?.forEachAxis(axis => axis.fit())
-		})
-
 		this.axisX = this.spectrumChart
 			.getDefaultAxisX()
 			.setTitle('')
@@ -77,13 +71,7 @@ export class PanoramaSpectrumChart {
 				}),
 			)
 			.setDefaultInterval({ start: startPointBand, end: endPointBand })
-			.setIntervalRestrictions({
-				startMin: startPointSpectrum,
-				startMax: endPointSpectrum,
-				endMin: startPointSpectrum,
-				endMax: endPointSpectrum,
-			})
-			.setMouseInteractions(false)
+
 			// Configure NumericTickStrategy (настройка разметки оси X)
 			.setTickStrategy(AxisTickStrategies.Numeric, (tickStrategy: NumericTickStrategy) =>
 				tickStrategy
@@ -123,22 +111,21 @@ export class PanoramaSpectrumChart {
 					.setMajorFormattingFunction(tickPosition => tickTextFormatter(tickPosition))
 					.setMinorFormattingFunction(tickPosition => tickTextFormatter(tickPosition)),
 			)
-			.setTickStrategy(AxisTickStrategies.Numeric, strategy =>
-				strategy.setCursorFormatter((value, range, locale) => tickNumFormatter(value).toFixed(3)),
+			.setTickStrategy(AxisTickStrategies.Numeric, (tickStrategy: NumericTickStrategy) =>
+				tickStrategy.setCursorFormatter((value, range, locale) =>
+					tickNumFormatter(value).toFixed(3),
+				),
 			)
 
 		this.axisY = this.spectrumChart
 			.getDefaultAxisY()
 			.setDefaultInterval(state => ({
 				start: (state.dataMin ?? 0) - 5,
-				end: (state.dataMax ?? 0) + 12,
+				end: (state.dataMax ?? 0) + 10,
 			}))
-			.setMouseInteractions(false)
-			.setChartInteractions(false)
-			.setChartInteractionZoomByWheel(false)
-			.setChartInteractionZoomByDrag(false)
 			.setStrokeStyle(emptyLine)
 			.setTickStrategy('Empty')
+			.setUserInteractions(undefined)
 
 		//------Курсор--------------------------------------------------
 		this.spectrumChart.setCursorFormatting((_, hit, hits) => {
@@ -196,6 +183,10 @@ export class PanoramaSpectrumChart {
 				),
 		)
 
+		/*---------------- Сброс масштаба при двойном клике --------------------*/
+		this.spectrumChart.background.addEventListener('dblclick', () => {
+			this.spectrumChart?.forEachAxis(axis => axis.fit())
+		})
 		/*-------------- Данные -----------------------------*/
 		this.lineSeries = this.spectrumChart
 			.addPointLineAreaSeries({ dataPattern: 'ProgressiveX' })
@@ -243,12 +234,9 @@ export class PanoramaSpectrumChart {
 			.setTitle('')
 			.setPadding({ right: 5, left: 0, top: 0, bottom: 0 })
 			.setBackgroundStrokeStyle(emptyLine)
-			.setMouseInteractions(false)
 
 		this.axisXWF = this.waterfall
 			.getDefaultAxisX()
-			.setMouseInteractions(false)
-			.setChartInteractions(false)
 			.setStrokeStyle(emptyLine)
 			.setAnimationZoom(undefined)
 			.setTickStrategy(AxisTickStrategies.Empty)
@@ -260,8 +248,6 @@ export class PanoramaSpectrumChart {
 				end: state.dataMax ?? 0,
 				stopAxisAfter: false,
 			}))
-			.setMouseInteractions(false)
-			.setChartInteractions(false)
 			.setStrokeStyle(emptyLine)
 			.setAnimationZoom(undefined)
 			.setTickStrategy(AxisTickStrategies.Empty)
@@ -277,7 +263,7 @@ export class PanoramaSpectrumChart {
 			.setDataCleaning({ minDataPointCount: 1000 })
 			.setName('Тест')
 
-		this.waterfall.setCursor(cursor =>
+		this.waterfall?.setCursor(cursor =>
 			cursor
 				.setTickMarkerXVisible(false)
 				.setTickMarkerYVisible(false)
