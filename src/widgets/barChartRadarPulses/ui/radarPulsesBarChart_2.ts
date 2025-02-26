@@ -23,6 +23,16 @@ const selectedStrokeStyle = new SolidLine({
 	fillStyle: new SolidFill({ color: ColorHEX('#03d461') }),
 })
 
+const mouseEnterBarHandler = (bar: SegmentFigure) => {
+	bar.setStrokeStyle(selectedStrokeStyle)
+}
+const mouseLeaveBarHandler = (bar: SegmentFigure) => {
+	bar.setStrokeStyle(mainStrokeStyle)
+}
+
+const clickHandler = (i: number) => {
+	console.log('индекс импульса:', i)
+}
 export class RadarPulsesBarChart {
 	chartName: string
 	barChart: ChartXY | undefined
@@ -30,8 +40,6 @@ export class RadarPulsesBarChart {
 	segments!: (SegmentFigure | undefined)[]
 	axisX: Axis | undefined
 	axisY: Axis | undefined
-	originalDimensions: { startX: number; endX: number; startY: number; endY: number }[] = [] // Храним исходные размеры
-	selectedIndex: number | null = null // Индекс выделенного сегмента
 
 	constructor() {
 		this.chartName = 'График импульсов РЛС'
@@ -94,25 +102,12 @@ export class RadarPulsesBarChart {
 			this.segmentsSeries = this.barChart.addSegmentSeries()
 
 			this.segments = dataTest?.Tads?.tadChart[0]?.data.map(point => {
-				const segment = this.segmentsSeries?.add({
+				return this.segmentsSeries?.add({
 					startX: point.x,
 					endX: point.x,
 					startY: 0,
 					endY: point.y,
 				})
-
-				// Сохраняем исходные размеры сегмента
-				if (segment) {
-					segment.setStrokeStyle(mainStrokeStyle)
-					this.originalDimensions.push({
-						startX: point.x,
-						endX: point.x,
-						startY: 0,
-						endY: point.y,
-					})
-				}
-
-				return segment
 			})
 
 			if (this.axisX && this.segmentsSeries) {
@@ -122,62 +117,15 @@ export class RadarPulsesBarChart {
 			const hoveredPulse = (i: number) => {
 				this.segments.forEach((bar, index) => {
 					if (bar) {
-						if (index === i) {
-							// Увеличиваем высоту текущего сегмента
-							bar.setDimensions({
-								startX: this.originalDimensions[index].startX,
-								endX: this.originalDimensions[index].endX,
-								startY: this.originalDimensions[index].startY,
-								endY: this.originalDimensions[index].endY * 1.1, // Увеличиваем высоту
-							})
-						} else {
-							// Восстанавливаем исходные размеры для остальных сегментов
-							bar.setDimensions(this.originalDimensions[index])
-						}
+						bar.setStrokeStyle(index === i ? selectedStrokeStyle : mainStrokeStyle)
 					}
 				})
-
 				console.log(i)
-			}
-
-			const restoreOriginalDimensions = () => {
-				this.segments.forEach((bar, index) => {
-					if (bar) {
-						bar.setDimensions(this.originalDimensions[index]) // Восстанавливаем исходные размеры
-					}
-				})
-			}
-
-			const clickHandler = (i: number) => {
-				if (this.selectedIndex !== null) {
-					// Восстанавливаем стиль предыдущего выделенного сегмента
-					const previousSegment = this.segments[this.selectedIndex]
-					if (previousSegment) {
-						previousSegment.setStrokeStyle(mainStrokeStyle)
-					}
-				}
-
-				// Выделяем новый сегмент
-				const currentSegment = this.segments[i]
-				if (currentSegment) {
-					currentSegment.setStrokeStyle(selectedStrokeStyle)
-					this.selectedIndex = i // Сохраняем индекс выделенного сегмента
-				}
-
-				// Выводим параметры сегмента в консоль
-				const point = dataTest?.Tads?.tadChart[0]?.data[i]
-				if (point) {
-					console.log('Параметры сегмента:', {
-						x: point.x,
-						y: point.y,
-					})
-				}
 			}
 
 			this.segments.forEach((segment, i) => {
 				if (segment) {
 					segment.addEventListener('pointerenter', () => hoveredPulse(i))
-					segment.addEventListener('pointerleave', restoreOriginalDimensions) // Восстанавливаем размеры при уходе курсора
 					segment.addEventListener('click', () => clickHandler(i))
 				}
 			})
@@ -242,7 +190,6 @@ export class RadarPulsesBarChart {
 				.setGridStrokeYStyle(emptyLine),
 		)
 	}
-
 	deletePulsesBarChart() {
 		console.log('delete chart:', this.chartName)
 		this.barChart?.dispose()

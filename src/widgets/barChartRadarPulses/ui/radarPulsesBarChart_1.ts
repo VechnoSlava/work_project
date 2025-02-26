@@ -49,7 +49,6 @@ export class RadarPulsesBarChart {
 			.setTitle('')
 			.setUnits('ГГц')
 			.setMarginAfterTicks(0)
-			.setMouseInteractions(false)
 			.setStrokeStyle(emptyLine)
 		// .setTickStrategy('Empty')
 
@@ -59,10 +58,6 @@ export class RadarPulsesBarChart {
 				start: state.dataMin,
 				end: (state.dataMax ?? 0) + 10,
 			}))
-			.setMouseInteractions(false)
-			.setChartInteractions(false)
-			.setChartInteractionZoomByWheel(false)
-			.setChartInteractionZoomByDrag(false)
 			.setStrokeStyle(emptyLine)
 			.setTickStrategy('Empty')
 
