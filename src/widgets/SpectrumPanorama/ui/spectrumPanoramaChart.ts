@@ -19,7 +19,12 @@ import {
 } from '@lightningchart/lcjs'
 import { lc } from '../../../shared/libs/lightingChart/lcjs'
 import { platanTheme } from '../../../shared/libs/lightingChart/theme'
-import { tickNumFormatter, tickTextFormatter, WFPalette } from '../model/settingsSpectrumPanorama'
+import {
+	cursorGridStrokeStyle,
+	tickNumFormatter,
+	tickTextFormatter,
+	WFPalette,
+} from '../model/settingsSpectrumPanorama'
 
 export class PanoramaSpectrumChart {
 	chartName: string
@@ -45,8 +50,9 @@ export class PanoramaSpectrumChart {
 		idContainerHeatMap: string,
 	) {
 		const startPointBand = 1e9
-		const endPointBand = 2e9
+		const endPointBand = 3e9
 
+		/*------------ График панорамы ------------*/
 		this.spectrumChart = lc
 			.ChartXY({
 				container: idContainerSpectrum,
@@ -57,8 +63,29 @@ export class PanoramaSpectrumChart {
 			.setTitlePosition('center-top')
 			.setPadding({ right: 5, left: 0, top: 0, bottom: 0 })
 			.setTitleFont(font => font.setSize(16))
-			.setTitleMargin({ top: 0, bottom: 0 })
+			.setTitleMargin(0)
 
+		/*------------ Настройка взаимодействия с пользователем ------------*/
+		this.spectrumChart.setUserInteractions({
+			pan: {
+				rmb: false,
+				lmb: false,
+				mmb: { drag: {} },
+				sensitivity: 1.5,
+			},
+			rectangleZoom: {
+				lmb: {},
+				rmb: false,
+				mmb: false,
+			},
+			zoom: {
+				rmb: {
+					drag: {},
+				},
+				wheel: {},
+			},
+		})
+		/*------------ Настройка Оси X ------------*/
 		this.axisX = this.spectrumChart
 			.getDefaultAxisX()
 			.setTitle('')
@@ -72,7 +99,8 @@ export class PanoramaSpectrumChart {
 			)
 			.setDefaultInterval({ start: startPointBand, end: endPointBand })
 
-			// Configure NumericTickStrategy (настройка разметки оси X)
+		// Configure NumericTickStrategy (настройка разметки оси X)
+		this.axisX
 			.setTickStrategy(AxisTickStrategies.Numeric, (tickStrategy: NumericTickStrategy) =>
 				tickStrategy
 					.setTickStyle((tickStyle: TickStyle) =>
@@ -117,17 +145,25 @@ export class PanoramaSpectrumChart {
 				),
 			)
 
+		/*------------ Настройка Оси Y ------------*/
 		this.axisY = this.spectrumChart
 			.getDefaultAxisY()
 			.setDefaultInterval(state => ({
 				start: (state.dataMin ?? 0) - 5,
-				end: (state.dataMax ?? 0) + 10,
+				end: (state.dataMax ?? 0) + 12,
 			}))
 			.setStrokeStyle(emptyLine)
 			.setTickStrategy('Empty')
 			.setUserInteractions(undefined)
 
-		//------Курсор--------------------------------------------------
+		/*------------- Настройка Курсора ------------------------*/
+		this.spectrumChart.setCursor(cursor =>
+			cursor
+				.setTickMarkerXVisible(false)
+				.setTickMarkerYVisible(false)
+				.setGridStrokeXStyle(cursorGridStrokeStyle)
+				.setGridStrokeYStyle(cursorGridStrokeStyle),
+		)
 		this.spectrumChart.setCursorFormatting((_, hit, hits) => {
 			return [
 				[
@@ -171,30 +207,14 @@ export class PanoramaSpectrumChart {
 				],
 			]
 		})
-		this.spectrumChart.setCursor(cursor =>
-			cursor
-				.setTickMarkerXVisible(false)
-				.setTickMarkerYVisible(false)
-				.setGridStrokeXStyle(
-					new SolidLine({ thickness: 1, fillStyle: new SolidFill({ color: ColorHEX('#a6a6a6') }) }),
-				)
-				.setGridStrokeYStyle(
-					new SolidLine({ thickness: 1, fillStyle: new SolidFill({ color: ColorHEX('#a6a6a6') }) }),
-				),
-		)
 
-		/*---------------- Сброс масштаба при двойном клике --------------------*/
-		this.spectrumChart.background.addEventListener('dblclick', () => {
-			this.spectrumChart?.forEachAxis(axis => axis.fit())
-		})
 		/*-------------- Данные -----------------------------*/
 		this.lineSeries = this.spectrumChart
 			.addPointLineAreaSeries({ dataPattern: 'ProgressiveX' })
 			.setName(`Спектральная панорама`)
 			.setAreaFillStyle(emptyFill)
 			.setPointFillStyle(emptyFill)
-			.setStrokeStyle(stroke => stroke.setThickness(1))
-		// .setMaxSampleCount(12228)
+			.setStrokeStyle(stroke => stroke.setThickness(-1))
 
 		/*---------- Окно видимой части спектр-панорамы -----------*/
 		this.zoomBandChart = lc
@@ -234,6 +254,8 @@ export class PanoramaSpectrumChart {
 			.setTitle('')
 			.setPadding({ right: 5, left: 0, top: 0, bottom: 0 })
 			.setBackgroundStrokeStyle(emptyLine)
+
+		this.waterfall.setUserInteractions(undefined)
 
 		this.axisXWF = this.waterfall
 			.getDefaultAxisX()

@@ -1,4 +1,4 @@
-import { LUT, ColorRGBA } from '@lightningchart/lcjs'
+import { LUT, ColorRGBA, SolidLine, SolidFill, ColorHEX } from '@lightningchart/lcjs'
 
 // Цветовая палитра для теплового водопада
 export const WFPalette = new LUT({
@@ -24,3 +24,10 @@ export const tickTextFormatter = (tickValue: number): string => {
 export const tickNumFormatter = (tickValue: number): number => {
 	return tickValue / GHz_FACTOR
 }
+
+// Стили
+
+export const cursorGridStrokeStyle = new SolidLine({
+	thickness: 1,
+	fillStyle: new SolidFill({ color: ColorHEX('#a6a6a6') }),
+})
