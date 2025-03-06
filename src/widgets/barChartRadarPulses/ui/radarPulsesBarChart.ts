@@ -2,11 +2,14 @@ import {
 	Axis,
 	ChartXY,
 	ColorHEX,
+	ColorRGBA,
+	CursorXY,
 	emptyLine,
 	SegmentFigure,
 	SegmentSeries,
 	SolidFill,
 	SolidLine,
+	UIOrigins,
 } from '@lightningchart/lcjs'
 import { lc } from '../../../shared/libs/lightingChart/lcjs'
 import { platanTheme } from '../../../shared/libs/lightingChart/theme'
@@ -15,12 +18,12 @@ import { setIntervalAxisX } from '../model/utils'
 
 const mainStrokeStyle = new SolidLine({
 	thickness: 5,
-	fillStyle: new SolidFill({ color: ColorHEX('#02d6e5') }),
+	fillStyle: new SolidFill({ color: ColorHEX('#008697') }),
 })
 
 const selectedStrokeStyle = new SolidLine({
 	thickness: 10,
-	fillStyle: new SolidFill({ color: ColorHEX('#03d461') }),
+	fillStyle: new SolidFill({ color: ColorHEX('#00fc15') }),
 })
 
 export class RadarPulsesBarChart {
@@ -32,6 +35,7 @@ export class RadarPulsesBarChart {
 	axisY: Axis | undefined
 	originalDimensions: { startX: number; endX: number; startY: number; endY: number }[] = [] // Храним исходные размеры
 	selectedIndex: number | null = null // Индекс выделенного сегмента
+	cursor: CursorXY | undefined
 
 	constructor() {
 		this.chartName = 'График импульсов РЛС'
@@ -101,7 +105,7 @@ export class RadarPulsesBarChart {
 					endY: point.y,
 				})
 
-				// Сохраняем исходные размеры сегмента
+				// Применяем изначальный стиль к сегменту
 				if (segment) {
 					segment.setStrokeStyle(mainStrokeStyle)
 					this.originalDimensions.push({
@@ -128,7 +132,7 @@ export class RadarPulsesBarChart {
 								startX: this.originalDimensions[index].startX,
 								endX: this.originalDimensions[index].endX,
 								startY: this.originalDimensions[index].startY,
-								endY: this.originalDimensions[index].endY * 1.1, // Увеличиваем высоту
+								endY: this.originalDimensions[index].endY * 1.1,
 							})
 						} else {
 							// Восстанавливаем исходные размеры для остальных сегментов
@@ -136,14 +140,12 @@ export class RadarPulsesBarChart {
 						}
 					}
 				})
-
-				console.log(i)
 			}
 
 			const restoreOriginalDimensions = () => {
 				this.segments.forEach((bar, index) => {
 					if (bar) {
-						bar.setDimensions(this.originalDimensions[index]) // Восстанавливаем исходные размеры
+						bar.setDimensions(this.originalDimensions[index])
 					}
 				})
 			}
@@ -161,15 +163,28 @@ export class RadarPulsesBarChart {
 				const currentSegment = this.segments[i]
 				if (currentSegment) {
 					currentSegment.setStrokeStyle(selectedStrokeStyle)
-					this.selectedIndex = i // Сохраняем индекс выделенного сегмента
+					this.selectedIndex = i
 				}
 
 				// Выводим параметры сегмента в консоль
 				const point = dataTest?.Tads?.tadChart[0]?.data[i]
+				const obj = dataTest?.Tads?.tadTable[0]?.data[i]
 				if (point) {
+					console.log('Количество импульсов:', dataTest.Tads.tadChart[0].data.length)
+					console.log('Количество объектов:', dataTest.Tads.tadTable[0].data.length)
+
 					console.log('Параметры сегмента:', {
 						x: point.x,
 						y: point.y,
+					})
+
+					console.log('Параметры объекта:', {
+						drill: obj.drill_id,
+						freq: obj.freq,
+						id: obj.id,
+						amp: obj.pulse_amplitude,
+						pulseLength: obj.pulse_length,
+						radar: obj.radar,
 					})
 				}
 			}
@@ -177,72 +192,40 @@ export class RadarPulsesBarChart {
 			this.segments.forEach((segment, i) => {
 				if (segment) {
 					segment.addEventListener('pointerenter', () => hoveredPulse(i))
-					segment.addEventListener('pointerleave', restoreOriginalDimensions) // Восстанавливаем размеры при уходе курсора
+					segment.addEventListener('pointerleave', restoreOriginalDimensions)
 					segment.addEventListener('click', () => clickHandler(i))
 				}
 			})
 		}
 
-		/*-------------------Cursor---------------------------*/
-		this.barChart.setCursorFormatting((_, hit, hits) => {
-			if (!hit || !hit.series) return undefined
+		/*------------------- Cursor ---------------------------*/
+		this.barChart.setCursorMode(undefined).setSeriesHighlightOnHover(false)
 
-			// Проверяем, что попадание произошло на сегмент
-			if (hit.series instanceof SegmentSeries) {
-				const xValue = hit.x // Значение по оси X
-				const yValue = hit.y // Значение по оси Y
+		// this.cursor = this.barChart
+		// 	.addCursor()
+		// 	.setTickMarkerXVisible(false)
+		// 	.setTickMarkerYVisible(false)
+		// 	.setGridStrokeXStyle(emptyLine)
+		// 	.setGridStrokeYStyle(emptyLine)
+		// .setResultTable(table => table.setContent('Этот импульс!'))
 
-				return [
-					[
-						{
-							text: `Параметры`,
-							fillStyle: new SolidFill({ color: ColorHEX('#17dce3') }),
-						},
-					],
-					[
-						{
-							text: `Время:`,
-							fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
-						},
-						'',
-						{
-							text: xValue.toFixed(2),
-							fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
-						},
-						{
-							text: 'с',
-							fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
-						},
-					],
-					[
-						{
-							text: `Амплитуда:`,
-							fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
-						},
-						'',
-						{
-							text: yValue.toFixed(2),
-							fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
-						},
-						{
-							text: 'дБ',
-							fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
-						},
-					],
-				]
-			}
-
-			return undefined
-		})
-		this.barChart.setCursor(cursor =>
-			cursor
-				.setTickMarkerXVisible(false)
-				.setTickMarkerYVisible(false)
-				.setGridStrokeXStyle(emptyLine)
-				.setGridStrokeYStyle(emptyLine),
-		)
+		if (this.segmentsSeries) {
+			this.barChart.setCursor(cursor =>
+				cursor.setResultTable(resultTable =>
+					resultTable
+						.setOrigin(UIOrigins.RightTop)
+						.setTextFillStyle(new SolidFill({ color: ColorRGBA(255, 0, 0) }))
+						.setTextFont(font => font.setSize(12).setFamily('sans-serif'))
+						.setBackground(background =>
+							background.setFillStyle(new SolidFill({ color: ColorRGBA(0, 0, 0, 0) })),
+						)
+						.setContent('Этот импульс!'),
+				),
+			)
+		}
 	}
 
+	/*--------------- Dispose chart ------------------*/
 	deletePulsesBarChart() {
 		console.log('delete chart:', this.chartName)
 		this.barChart?.dispose()
