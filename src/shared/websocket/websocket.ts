@@ -6,10 +6,12 @@ import {
 	disconnectToServer,
 	updateRadarsList,
 	sendMessage,
+	updateTads,
 } from './serverConnectionSlice'
 import config from '../../../config.json'
 import { AppDispatch, RootState } from '../../app/store/store'
 import { spectrumPanoramaChart } from '../../widgets/spectrumPanorama/ui/spectrumPanoramaChart'
+import { IWebSocket } from './IWebSocket'
 
 const socket_URL = config.serverUrl
 
@@ -43,13 +45,16 @@ export const webSocketMiddleware: Middleware<{}, RootState, Dispatch<PayloadActi
 			socket.onmessage = event => {
 				const message: any = JSON.parse(event.data)
 				if (message['id'] === 0) {
-					console.log(message)
+					// console.log(message)
 					spectrumPanoramaChart.updateData(message)
 				} else if (message['id'] === 1) {
-					console.log(message)
+					// console.log(message)
 					dispatch(updateRadarsList(message))
+					console.log('Таблица целей РЛС обновлена')
 				} else if (message['id'] === 2) {
 					console.log(message)
+					dispatch(updateTads(message))
+					console.log('Данные импульсов РЛС получены')
 				}
 			}
 		}

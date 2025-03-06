@@ -1,8 +1,13 @@
+/**
+ * Данные для графика спектральной панорамы
+ */
 export interface ISpectrumPanorama {
 	x: number
 	y: number
 }
-
+/**
+ * Параметры РЛС для таблицы целей
+ */
 export interface IRadarsList {
 	id: number
 	uid: string
@@ -22,25 +27,32 @@ export interface IRadarsList {
 	identification_data: string
 	id_signature: number
 }
-
-export interface IRadarsTadsTable {
+/**
+ * Данные для графика импульсов РЛС
+ */
+export interface IBarChartPulses {
+	x: number
+	y: number
+}
+/** График импульсов РЛС */
+export interface ITadChartRadar {
+	radarUid: string
+	data: Array<IBarChartPulses>
+}
+/** Параметры импульса РЛС для таблицы */
+export interface ITadRadarList {
+	radar: string
 	id: number
-	uid: string
-	inner_id: number
-	pulse_length: number
-	rot_period: number
+	drill_id: number
 	freq: number
-	PRI: number
-	comment: string
-	bearing: {
-		id: number
-		bearing: number
-		origin: number[]
-	}
-	path: unknown
-	detection_time: string
-	identification_data: string
-	id_signature: number
+	pulse_length: number
+	pulse_amplitude: number
+}
+
+/** Таблица импульсов РЛС */
+export interface IRadarsTadsTable {
+	radarUid: string
+	data: Array<ITadRadarList>
 }
 
 export interface ISelectedRowId {
@@ -48,19 +60,25 @@ export interface ISelectedRowId {
 }
 //--------------Входящие сообщения----------------------------------------
 export interface IWebSocket {
+	/**Спектральная панорама */
 	spectrumPanorama: {
 		id: 0
 		points: Array<ISpectrumPanorama>
 		psd: number[]
 	}
-
+	/**Таблица целей */
 	radarsList: {
 		id: 1
 		radars: Array<IRadarsList>
 	}
-
+	/**Таблица и график импульсов цели */
 	radarTads: {
 		id: 2
+		frame: number
+		Tads: {
+			tadChart: Array<ITadChartRadar>
+			tadTable: Array<IRadarsTadsTable>
+		}
 	}
 }
 //--------------Исходящие сообщения----------------------------------------
@@ -73,7 +91,7 @@ export interface ISelectedRadars extends WebSocketMessageBase {
 }
 
 export interface ISelectedPulse extends WebSocketMessageBase {
-	radar: string
+	pulse: string
 }
 
 export type WebSocketMessage = ISelectedRadars | ISelectedPulse

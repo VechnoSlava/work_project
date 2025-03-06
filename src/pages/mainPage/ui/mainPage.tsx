@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react'
 import { RadarsTable } from '../../../widgets/radarsTable'
 import { SpectrumPanorama } from '../../../widgets/spectrumPanorama'
 import { RadarPulsesChart } from '../../../widgets/barChartRadarPulses'
+import { RadarPulsesChartTest } from '../../../widgets/barChartRadarPulsesTest'
 
 export const MainPage = () => {
 	console.log('RENDER MAIN_PAGE')
@@ -29,7 +30,8 @@ export const MainPage = () => {
 				</SplitFrame>
 				<SplitFrame frameDirection="horizontal" key={103}>
 					<RadarPulsesChart key={5} />
-					{secondWindowOpened ? null : <CurrentTargetsTable key={6} />}
+					{/* {secondWindowOpened ? null : <CurrentTargetsTable key={6} />} */}
+					<RadarPulsesChartTest key={7} />
 				</SplitFrame>
 			</SplitFrame>
 		</div>
