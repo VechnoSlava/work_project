@@ -10,8 +10,8 @@ import {
 } from './serverConnectionSlice'
 import config from '../../../config.json'
 import { AppDispatch, RootState } from '../../app/store/store'
-import { spectrumPanoramaChart } from '../../widgets/spectrumPanorama/ui/spectrumPanoramaChart'
 import { IWebSocket } from './IWebSocket'
+import { spectrumPanoramaChart } from '../../widgets/spectrumPanorama'
 
 const socket_URL = config.serverUrl
 

@@ -36,7 +36,7 @@ export interface IBarChartPulses {
 }
 /** График импульсов РЛС */
 export interface ITadChartRadar {
-	radarUid: string
+	radar: string
 	data: Array<IBarChartPulses>
 }
 /** Параметры импульса РЛС для таблицы */
@@ -51,29 +51,34 @@ export interface ITadRadarList {
 
 /** Таблица импульсов РЛС */
 export interface IRadarsTadsTable {
-	radarUid: string
+	radar: string
 	data: Array<ITadRadarList>
 }
 
-export interface ISelectedRowId {
+export interface ISelectedRadarUid {
 	uid: string
+}
+export interface ISelectedTadId {
+	id: number | null
 }
 //--------------Входящие сообщения----------------------------------------
 export interface IWebSocket {
 	/**Спектральная панорама */
 	spectrumPanorama: {
-		id: 0
+		id: number
 		points: Array<ISpectrumPanorama>
 		psd: number[]
 	}
 	/**Таблица целей */
 	radarsList: {
-		id: 1
+		id: number
+		frame: number
+		url: string
 		radars: Array<IRadarsList>
 	}
 	/**Таблица и график импульсов цели */
 	radarTads: {
-		id: 2
+		id: number
 		frame: number
 		Tads: {
 			tadChart: Array<ITadChartRadar>
@@ -87,11 +92,14 @@ interface WebSocketMessageBase {
 }
 
 export interface ISelectedRadars extends WebSocketMessageBase {
-	data: ISelectedRowId[]
+	data: ISelectedRadarUid[]
 }
 
 export interface ISelectedPulse extends WebSocketMessageBase {
-	pulse: string
+	data: {
+		id: ISelectedTadId
+		radar: ISelectedRadarUid
+	}
 }
 
 export type WebSocketMessage = ISelectedRadars | ISelectedPulse
