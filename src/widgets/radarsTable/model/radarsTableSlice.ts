@@ -4,10 +4,12 @@ import { ISelectedRadarUid } from '../../../shared/webSocket/IWebSocket'
 
 export interface IRadarsState {
 	selectedRadarsUids: ISelectedRadarUid[]
+	colorsSelectedRadar: string[]
 }
 
 const initialState: IRadarsState = {
 	selectedRadarsUids: [],
+	colorsSelectedRadar: [],
 }
 
 export const radarsTableSlice = createAppSlice({
