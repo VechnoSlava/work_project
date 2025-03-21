@@ -1,15 +1,15 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import { createAppSlice } from '../../../app/store/createAppSlice'
-import { ISelectedRadarUid } from '../../../shared/webSocket/IWebSocket'
+import { ISelectedColorsRadar, ISelectedRadarUid } from '../../../shared/webSocket/IWebSocket'
 
 export interface IRadarsState {
 	selectedRadarsUids: ISelectedRadarUid[]
-	colorsSelectedRadar: string[]
+	selectedColorsRadars: ISelectedColorsRadar[]
 }
 
 const initialState: IRadarsState = {
 	selectedRadarsUids: [],
-	colorsSelectedRadar: [],
+	selectedColorsRadars: [],
 }
 
 export const radarsTableSlice = createAppSlice({
@@ -19,11 +19,15 @@ export const radarsTableSlice = createAppSlice({
 		addSelectedRadars: create.reducer((state, action: PayloadAction<ISelectedRadarUid[]>) => {
 			state.selectedRadarsUids = action.payload
 		}),
+		addSelectedColor: create.reducer((state, action: PayloadAction<ISelectedColorsRadar[]>) => {
+			state.selectedColorsRadars = action.payload
+		}),
 	}),
 	selectors: {
 		selectSelectedRadars: state => state.selectedRadarsUids,
+		selectSelectedColorsRadars: state => state.selectedColorsRadars,
 	},
 })
 
-export const { addSelectedRadars } = radarsTableSlice.actions
-export const { selectSelectedRadars } = radarsTableSlice.selectors
+export const { addSelectedRadars, addSelectedColor } = radarsTableSlice.actions
+export const { selectSelectedRadars, selectSelectedColorsRadars } = radarsTableSlice.selectors

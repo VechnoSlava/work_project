@@ -26,6 +26,7 @@ export interface IRadarsList {
 	detection_time: string
 	identification_data: string
 	id_signature: number
+	color?: string
 }
 /**
  * Данные для графика импульсов РЛС
@@ -57,6 +58,9 @@ export interface IRadarsTadsTable {
 
 export interface ISelectedRadarUid {
 	uid: string
+}
+export interface ISelectedColorsRadar {
+	colors: string
 }
 export interface ISelectedTadId {
 	id: number | null

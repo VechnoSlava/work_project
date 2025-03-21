@@ -1,6 +1,7 @@
 import { type PayloadAction } from '@reduxjs/toolkit/react'
 import { createAppSlice } from '../../app/store/createAppSlice'
 import { IRadarsList, IWebSocket, WebSocketMessage } from './IWebSocket'
+import { generateDistinctColor } from '../utils/utils'
 
 export interface IConnectionState {
 	isConnection: boolean
@@ -50,7 +51,22 @@ export const serverConnectionSlice = createAppSlice({
 			state.sendMessage = action.payload
 		}),
 		updateRadarsList: create.reducer((state, action: PayloadAction<IWebSocket['radarsList']>) => {
-			state.radars = action.payload.radars
+			const existingRadarsMap = new Map(state.radars.map(radar => [radar.id, radar]))
+
+			state.radars = action.payload.radars.map(newRadar => {
+				const existingRadar = existingRadarsMap.get(newRadar.id)
+
+				// Сохраняем цвет если он уже был сгенерирован
+				if (existingRadar?.color) {
+					return { ...newRadar, color: existingRadar.color }
+				}
+
+				// Генерируем новый цвет если его нет
+				return {
+					...newRadar,
+					color: generateDistinctColor(newRadar.id),
+				}
+			})
 		}),
 		updateTads: create.reducer((state, action: PayloadAction<IWebSocket['radarTads']>) => {
 			state.tads = action.payload.Tads

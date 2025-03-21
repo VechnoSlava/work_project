@@ -20,10 +20,29 @@ import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
 import { formatDateTimeRu, formatNumber } from '../../../shared/utils/utils'
 import { IRadarsList, WebSocketMessage } from '../../../shared/webSocket/IWebSocket'
 import { selectRadarsList, sendMessage } from '../../../shared/webSocket/serverConnectionSlice'
-import { addSelectedRadars } from '../model/radarsTableSlice'
+import { addSelectedColor, addSelectedRadars } from '../model/radarsTableSlice'
 
 //Form table DataGrid
 const columns: GridColDef[] = [
+	{
+		field: 'color',
+		headerName: 'Цвет',
+		width: 55,
+		sortable: false,
+		filterable: false,
+		disableColumnMenu: true,
+		renderCell: params => (
+			<div
+				style={{
+					backgroundColor: params.row.color || '#fff',
+					width: 16,
+					height: 16,
+					borderRadius: '50%',
+					border: '1px solid rgba(255, 255, 255, 0.23)',
+				}}
+			/>
+		),
+	},
 	{ field: 'id', headerName: '№', width: 30 },
 	{
 		field: 'uid',
@@ -123,18 +142,32 @@ export const RadarsTable = () => {
 				const selectedRow = dataRadars.find(row => row.id === id)
 				return selectedRow ? { uid: selectedRow.uid } : null
 			})
-			.filter(uidObj => uidObj !== null) //Remove null values
+			.filter(uidObj => uidObj !== null)
 		return selectedUids
 	}
+
+	const getSelectedColorsRadars = () => {
+		const selectedColors = rowSelectionModel
+			.map(id => {
+				const selectedRow = dataRadars.find(row => row.id === id)
+				return selectedRow ? { colors: selectedRow.color! } : null
+			})
+			.filter(uidObj => uidObj !== null)
+		return selectedColors
+	}
+
 	//Send selected id on server for get data pulses
 	const sendMessageToWebSocket = () => {
 		const selectedRadars = getSelectedUids()
+		const selectedColors = getSelectedColorsRadars()
+		dispatch(addSelectedRadars(selectedRadars))
+		dispatch(addSelectedColor(selectedColors))
 		const message: WebSocketMessage = {
 			id: 102,
 			data: selectedRadars,
 		}
 		console.log('Message sent:', message)
-		dispatch(addSelectedRadars(selectedRadars))
+		// console.log('selected', { selectedRadars, selectedColors })
 		dispatch(sendMessage(message))
 	}
 
