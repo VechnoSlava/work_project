@@ -60,7 +60,7 @@ export interface ISelectedRadarUid {
 	uid: string
 }
 export interface ISelectedColorsRadar {
-	colors: string
+	color: string
 }
 export interface ISelectedTadId {
 	id: number | null

@@ -1,2 +1,8 @@
 export { RadarsTable } from './ui/radarsTable'
-export { radarsTableSlice, selectSelectedRadars } from './model/radarsTableSlice'
+export {
+	radarsTableSlice,
+	addSelectedRadars,
+	addSelectedColor,
+	selectSelectedRadars,
+	selectSelectedColorsRadars,
+} from './model/radarsTableSlice'

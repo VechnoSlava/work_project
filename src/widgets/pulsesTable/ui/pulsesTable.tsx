@@ -57,7 +57,7 @@ export const PulsesTable = () => {
 	const dispatch = useAppDispatch()
 
 	const dataTadsTable = useAppSelector(selectTadsTable)
-	console.log(dataTadsTable)
+	// console.log(dataTadsTable)
 
 	let dataImpulses: ITadRadarList[] = []
 

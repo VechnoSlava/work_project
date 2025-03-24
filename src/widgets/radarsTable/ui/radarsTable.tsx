@@ -150,7 +150,7 @@ export const RadarsTable = () => {
 		const selectedColors = rowSelectionModel
 			.map(id => {
 				const selectedRow = dataRadars.find(row => row.id === id)
-				return selectedRow ? { colors: selectedRow.color! } : null
+				return selectedRow ? { color: selectedRow.color! } : null
 			})
 			.filter(uidObj => uidObj !== null)
 		return selectedColors

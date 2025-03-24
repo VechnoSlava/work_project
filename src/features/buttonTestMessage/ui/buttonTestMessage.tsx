@@ -7,6 +7,7 @@ import { spectrumPanoramaChart } from '../../../widgets/spectrumPanorama'
 import dataPanorama from '../../../shared/dataTest/messageId_0.json'
 import dataRadarsTable from '../../../shared/dataTest/messageId_1.json'
 import dataPulses from '../../../shared/dataTest/messageId_2.json'
+import { addSelectedColor } from '../../../widgets/radarsTable'
 
 export const ButtonTestMessage = () => {
 	const dispatch = useAppDispatch()
@@ -15,6 +16,7 @@ export const ButtonTestMessage = () => {
 		spectrumPanoramaChart.updateData(dataPanorama)
 		dispatch(updateRadarsList(dataRadarsTable))
 		dispatch(updateTads(dataPulses))
+		dispatch(addSelectedColor([{ color: '#a5e052' }, { color: '#e05281' }]))
 	}
 
 	return (
