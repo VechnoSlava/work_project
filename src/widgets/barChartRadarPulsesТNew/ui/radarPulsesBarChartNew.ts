@@ -13,16 +13,20 @@ import { lc } from '../../../shared/libs/lightingChart/lcjs'
 import { platanTheme } from '../../../shared/libs/lightingChart/theme'
 import { setIntervalAxisX } from '../model/utils'
 import { store } from '../../../app/store/store'
+import { ISelectedColorsRadar } from '../../../shared/webSocket/IWebSocket'
 
-const mainStrokeStyle = new SolidLine({
-	thickness: 5,
-	fillStyle: new SolidFill({ color: ColorHEX('#008697') }),
-})
+const mainStrokeStyle = (colors: ISelectedColorsRadar[], numSer: number) => {
+	return new SolidLine({
+		thickness: 5,
+		fillStyle: new SolidFill({ color: ColorHEX(`${colors[numSer].color}`) }),
+	})
+}
 
-const selectedStrokeStyle = new SolidLine({
-	thickness: 10,
-	fillStyle: new SolidFill({ color: ColorHEX('#00fc15') }),
-})
+const selectedStrokeStyle = () =>
+	new SolidLine({
+		thickness: 10,
+		fillStyle: new SolidFill({ color: ColorHEX('#f1f3f0') }),
+	})
 
 export class RadarPulsesBarChartNew {
 	chartName: string
@@ -34,9 +38,11 @@ export class RadarPulsesBarChartNew {
 	segmentsSeries: SegmentSeries[] | undefined
 	segments: SegmentFigure[][] | undefined
 	hoveredSegment: SegmentFigure | undefined
+	leavedSegment: SegmentFigure | undefined
 	selectedSegment: SegmentFigure | undefined
 	selectedIndex: [number, number] | undefined
 	hoveredIndex: [number, number] | undefined
+	colorsSeries: ISelectedColorsRadar[] | undefined
 
 	constructor() {
 		this.chartName = 'График импульсов РЛС'
@@ -100,8 +106,15 @@ export class RadarPulsesBarChartNew {
 
 	/*--------------- Dispose chart ------------------*/
 	deletePulsesBarChart() {
-		console.log('delete chart:', this.chartName)
-		this.barChart?.dispose()
+		if (this.barChart) {
+			// Clear data chart
+			this.segments?.forEach(arr => arr.forEach(segment => segment.dispose()))
+			this.segments = []
+			this.segmentsSeries?.forEach(series => series.dispose())
+			this.segmentsSeries = []
+			console.log('delete chart:', this.chartName)
+			this.barChart.dispose()
+		}
 	}
 
 	hoveredPulse(segment: SegmentFigure, numSer: number, numPul: number) {
@@ -110,37 +123,55 @@ export class RadarPulsesBarChartNew {
 			return
 		}
 
-		const dimensions = segment.getDimensions()
-		dimensions.endY = dimensions.endY + 100
-		segment.setDimensions(dimensions)
-		this.hoveredSegment = segment
-		console.log('Hovered pulse', numSer, numPul)
+		const resetSegment = (s: SegmentFigure) => {
+			const dim = s.getDimensions()
+			s.setDimensions({ ...dim, endY: dim.endY / 1.1 })
+		}
+
+		const activateSegment = (s: SegmentFigure) => {
+			const dim = s.getDimensions()
+			s.setDimensions({ ...dim, endY: dim.endY * 1.1 })
+			this.hoveredSegment = s
+		}
+
+		if (this.hoveredSegment) resetSegment(this.hoveredSegment)
+		activateSegment(segment)
+		this.leavedSegment = undefined
+		console.log(`Hovered pulse${this.hoveredSegment ? '1' : '2'}`, numSer, numPul)
 	}
 
 	leavedPulse(segment: SegmentFigure, numSer: number, numPul: number) {
-		if (segment !== this.hoveredSegment) {
-			console.log('This is not the pulse!')
+		if (!this.hoveredSegment || segment !== this.hoveredSegment) {
+			console.log('False leave')
 			return
 		}
 
-		if (segment === this.hoveredSegment) {
-			const dimensions = segment.getDimensions()
-			dimensions.endY = dimensions.endY - 100
-			segment.setDimensions(dimensions)
-			this.hoveredSegment = undefined
-			console.log('Leaved pulse', numSer, numPul)
-		}
+		const dim = segment.getDimensions()
+		segment.setDimensions({ ...dim, endY: dim.endY / 1.1 })
+		this.leavedSegment = segment
+		this.hoveredSegment = undefined
+		console.log('Leaved pulse', numSer, numPul)
 	}
 
-	clickPulse(segment: SegmentFigure, numSer: number, numPul: number) {
-		if (segment !== this.selectedSegment) {
-			const previousSegment = this.selectedSegment
-			previousSegment?.setStrokeStyle(mainStrokeStyle)
+	clickPulse(
+		segment: SegmentFigure,
+		numSer: number,
+		numPul: number,
+		colorsSeries: ISelectedColorsRadar[],
+	) {
+		const resetPrevious = () => {
+			if (this.selectedSegment && this.selectedSegment !== segment) {
+				const serIndex = this.segments?.findIndex(arr => arr.includes(this.selectedSegment!)) ?? -1
+				if (serIndex > -1) {
+					this.selectedSegment.setStrokeStyle(mainStrokeStyle(colorsSeries, serIndex))
+				}
+			}
 		}
 
-		segment.setStrokeStyle(selectedStrokeStyle)
+		resetPrevious()
+		segment.setStrokeStyle(selectedStrokeStyle())
 		this.selectedSegment = segment
-		console.log('Selected pulse', numSer, numPul)
+		console.log('Selected pulse', numSer, numPul, colorsSeries[numSer].color)
 	}
 
 	updateSegmentSeries() {
@@ -166,8 +197,11 @@ export class RadarPulsesBarChartNew {
 						startY: 0,
 						endY: point.y,
 					})
+					segment.setStrokeStyle(mainStrokeStyle(colorsSeries, numSer))
 
-					segment.addEventListener('click', () => this.clickPulse(segment, numSer, numPul))
+					segment.addEventListener('click', () =>
+						this.clickPulse(segment, numSer, numPul, colorsSeries),
+					)
 					segment.addEventListener('pointerenter', () => this.hoveredPulse(segment, numSer, numPul))
 					segment.addEventListener('pointerleave', () => this.leavedPulse(segment, numSer, numPul))
 
