@@ -7,10 +7,8 @@ import { MainMap } from '../../../widgets/mainMap'
 import { useState, useEffect } from 'react'
 import { RadarsTable } from '../../../widgets/radarsTable'
 import { SpectrumPanorama } from '../../../widgets/spectrumPanorama'
-import { RadarPulsesChart } from '../../../widgets/barChartRadarPulses'
-import { RadarPulsesChartTest } from '../../../widgets/barChartRadarPulsesTest'
 import { PulsesTable } from '../../../widgets/pulsesTable'
-import { RadarPulsesChartNew } from '../../../widgets/barChartRadarPulsesТNew'
+import { RadarPulsesChart } from '../../../widgets/barChartRadarPulses'
 
 export const MainPage = () => {
 	console.log('RENDER MAIN_PAGE')
@@ -31,7 +29,7 @@ export const MainPage = () => {
 					<SpectrumPanorama key={3} />
 				</SplitFrame>
 				<SplitFrame frameDirection="horizontal" key={103}>
-					<RadarPulsesChartNew key={5} />
+					<RadarPulsesChart key={5} />
 
 					{/* <RadarPulsesChart key={5} /> */}
 					{/* {secondWindowOpened ? null : <CurrentTargetsTable key={6} />} */}
