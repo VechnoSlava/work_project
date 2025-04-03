@@ -1,5 +1,5 @@
 import styles from './pulsesTable.module.css'
-import { useEffect, useState } from 'react'
+import { MouseEventHandler, useEffect, useState } from 'react'
 import { GridColDef, GridRowSelectionModel } from '@mui/x-data-grid'
 import { MenuItem, Typography } from '@mui/material'
 import { PiMapPinAreaBold } from 'react-icons/pi'
