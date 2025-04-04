@@ -11,10 +11,7 @@ import {
 } from '../../../shared/tables/customPulsesGridTable'
 
 export const PulsesGridTable = () => {
-	// const theme = useTheme()
 	const dataTadsTable = useAppSelector(selectTadsTable)
-	// const dataImpulses = dataTadsTable.length > 0 ? dataTadsTable[0].data : []
-
 	const dataImpulses = dataTadsTable.length > 0 ? dataTadsTable.flatMap(table => table.data) : []
 
 	return (
@@ -52,14 +49,12 @@ export const PulsesGridTable = () => {
 				>
 					<TableHead>
 						<TableRow>
-							<StyledTableHeaderCell sx={{ width: 20 }} align="center">
-								№
-							</StyledTableHeaderCell>
+							<StyledTableHeaderCell align="center">№</StyledTableHeaderCell>
 							<StyledTableHeaderCell title="sda" align="left">
 								РЛС
 							</StyledTableHeaderCell>
-							<StyledTableHeaderCell align="left">Центральная частота</StyledTableHeaderCell>
-							<StyledTableHeaderCell align="left">Длительность импульса</StyledTableHeaderCell>
+							<StyledTableHeaderCell align="left">Центр. частота</StyledTableHeaderCell>
+							<StyledTableHeaderCell align="left">Длит. импульса</StyledTableHeaderCell>
 							<StyledTableHeaderCell align="left">Амплитуда</StyledTableHeaderCell>
 						</TableRow>
 					</TableHead>
@@ -72,9 +67,9 @@ export const PulsesGridTable = () => {
 								>
 									<StyledTableCell align="center">{row.id}</StyledTableCell>
 									<StyledTableCell align="left">{row.radar?.slice(0, 8)}</StyledTableCell>
-									<StyledTableCell align="right">{formatNumber(row.freq)}</StyledTableCell>
-									<StyledTableCell align="right">{formatNumber(row.pulse_length)}</StyledTableCell>
-									<StyledTableCell align="right">
+									<StyledTableCell align="left">{formatNumber(row.freq)}</StyledTableCell>
+									<StyledTableCell align="left">{formatNumber(row.pulse_length)}</StyledTableCell>
+									<StyledTableCell align="left">
 										{formatNumber(row.pulse_amplitude)?.split(',').shift()}
 									</StyledTableCell>
 								</StyledTableRow>

@@ -41,4 +41,6 @@ export const StyledTableHeaderCell = styled(TableCell)(({ theme }) => ({
 	fontSize: 14,
 	fontWeight: 400,
 	borderColor: '#656b6e56',
+	whiteSpace: 'nowrap', // Запрещаем перенос текста
+	lineHeight: '1.5rem', // Фиксированная высота строки
 }))
