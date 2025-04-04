@@ -1,13 +1,4 @@
-import {
-	TableRow,
-	TableContainer,
-	Table,
-	TableHead,
-	TableBody,
-	Box,
-	useTheme,
-	Paper,
-} from '@mui/material'
+import { TableRow, TableContainer, Table, TableHead, TableBody, Box, Paper } from '@mui/material'
 import styles from './pulsesGridTable.module.css'
 import { formatNumber } from '../../../shared/utils/utils'
 import { useAppSelector } from '../../../app/store/hooks'
@@ -22,7 +13,9 @@ import {
 export const PulsesGridTable = () => {
 	// const theme = useTheme()
 	const dataTadsTable = useAppSelector(selectTadsTable)
-	const dataImpulses = dataTadsTable.length > 0 ? dataTadsTable[0].data : []
+	// const dataImpulses = dataTadsTable.length > 0 ? dataTadsTable[0].data : []
+
+	const dataImpulses = dataTadsTable.length > 0 ? dataTadsTable.flatMap(table => table.data) : []
 
 	return (
 		<div className={styles.table__container}>
@@ -62,7 +55,9 @@ export const PulsesGridTable = () => {
 							<StyledTableHeaderCell sx={{ width: 20 }} align="center">
 								№
 							</StyledTableHeaderCell>
-							<StyledTableHeaderCell align="left">РЛС</StyledTableHeaderCell>
+							<StyledTableHeaderCell title="sda" align="left">
+								РЛС
+							</StyledTableHeaderCell>
 							<StyledTableHeaderCell align="left">Центральная частота</StyledTableHeaderCell>
 							<StyledTableHeaderCell align="left">Длительность импульса</StyledTableHeaderCell>
 							<StyledTableHeaderCell align="left">Амплитуда</StyledTableHeaderCell>
@@ -71,7 +66,10 @@ export const PulsesGridTable = () => {
 					<TableBody>
 						{dataImpulses.length > 0 ? (
 							dataImpulses.map((row, index) => (
-								<StyledTableRow key={row.id} className={index % 2 === 0 ? 'even' : 'odd'}>
+								<StyledTableRow
+									key={`${row.radar}-${row.id}`}
+									className={index % 2 === 0 ? 'even' : 'odd'}
+								>
 									<StyledTableCell align="center">{row.id}</StyledTableCell>
 									<StyledTableCell align="left">{row.radar?.slice(0, 8)}</StyledTableCell>
 									<StyledTableCell align="right">{formatNumber(row.freq)}</StyledTableCell>
