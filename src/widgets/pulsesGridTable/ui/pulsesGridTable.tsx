@@ -1,4 +1,15 @@
-import { TableRow, TableContainer, Table, TableHead, TableBody, Box, Paper } from '@mui/material'
+import { useState, useMemo } from 'react'
+import {
+	TableRow,
+	TableContainer,
+	Table,
+	TableHead,
+	TableBody,
+	Box,
+	Paper,
+	TableSortLabel,
+} from '@mui/material'
+import { visuallyHidden } from '@mui/utils'
 import styles from './pulsesGridTable.module.css'
 import { formatNumber } from '../../../shared/utils/utils'
 import { useAppSelector } from '../../../app/store/hooks'
@@ -10,9 +21,102 @@ import {
 	StyledTableRow,
 } from '../../../shared/tables/customPulsesGridTable'
 
+type Order = 'asc' | 'desc'
+
+function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
+	if (b[orderBy] < a[orderBy]) return -1
+	if (b[orderBy] > a[orderBy]) return 1
+	return 0
+}
+
+function getComparator<Key extends keyof any>(
+	order: Order,
+	orderBy: Key,
+): (a: { [key in Key]: number | string }, b: { [key in Key]: number | string }) => number {
+	return order === 'desc'
+		? (a, b) => descendingComparator(a, b, orderBy)
+		: (a, b) => -descendingComparator(a, b, orderBy)
+}
+interface HeadCell {
+	id: keyof ITadRadarList
+	label: string
+	sortable: boolean
+}
+
+const headCells: readonly HeadCell[] = [
+	{ id: 'id', label: '№', sortable: false },
+	{ id: 'radar', label: 'РЛС', sortable: true },
+	{ id: 'freq', label: 'Центр. частота', sortable: true },
+	{ id: 'pulse_length', label: 'Длит. импульса', sortable: true },
+	{ id: 'pulse_amplitude', label: 'Амплитуда', sortable: true },
+]
+
+interface EnhancedTableProps {
+	onRequestSort: (event: React.MouseEvent<unknown>, property: keyof ITadRadarList) => void
+	order: Order
+	orderBy: string
+}
+
+function EnhancedTableHead({ order, orderBy, onRequestSort }: EnhancedTableProps) {
+	const createSortHandler =
+		(property: keyof ITadRadarList) => (event: React.MouseEvent<unknown>) => {
+			onRequestSort(event, property)
+		}
+
+	return (
+		<TableHead>
+			<TableRow>
+				{headCells.map(headCell => (
+					<StyledTableHeaderCell
+						key={headCell.id}
+						align="left"
+						sortDirection={orderBy === headCell.id ? order : false}
+					>
+						{headCell.sortable ? (
+							<TableSortLabel
+								active={orderBy === headCell.id}
+								direction={orderBy === headCell.id ? order : 'asc'}
+								onClick={createSortHandler(headCell.id)}
+								sx={{ color: 'inherit !important' }}
+							>
+								{headCell.label}
+								{orderBy === headCell.id ? (
+									<Box component="span" sx={visuallyHidden}>
+										{order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+									</Box>
+								) : null}
+							</TableSortLabel>
+						) : (
+							<span style={{ cursor: 'default' }}>{headCell.label}</span>
+						)}
+					</StyledTableHeaderCell>
+				))}
+			</TableRow>
+		</TableHead>
+	)
+}
+
 export const PulsesGridTable = () => {
+	const [order, setOrder] = useState<Order>('asc')
+	const [orderBy, setOrderBy] = useState<keyof ITadRadarList>('radar')
 	const dataTadsTable = useAppSelector(selectTadsTable)
-	const dataImpulses = dataTadsTable.length > 0 ? dataTadsTable.flatMap(table => table.data) : []
+
+	const dataImpulses = useMemo(() => dataTadsTable.flatMap(table => table.data), [dataTadsTable])
+
+	const sortedData = useMemo(
+		() => [...dataImpulses].sort(getComparator(order, orderBy)),
+		[dataImpulses, order, orderBy],
+	)
+
+	const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof ITadRadarList) => {
+		// Проверяем разрешена ли сортировка для столбца
+		const headCell = headCells.find(cell => cell.id === property)
+		if (!headCell?.sortable) return
+
+		const isAsc = orderBy === property && order === 'asc'
+		setOrder(isAsc ? 'desc' : 'asc')
+		setOrderBy(property)
+	}
 
 	return (
 		<div className={styles.table__container}>
@@ -47,25 +151,15 @@ export const PulsesGridTable = () => {
 						},
 					}}
 				>
-					<TableHead>
-						<TableRow>
-							<StyledTableHeaderCell align="center">№</StyledTableHeaderCell>
-							<StyledTableHeaderCell title="sda" align="left">
-								РЛС
-							</StyledTableHeaderCell>
-							<StyledTableHeaderCell align="left">Центр. частота</StyledTableHeaderCell>
-							<StyledTableHeaderCell align="left">Длит. импульса</StyledTableHeaderCell>
-							<StyledTableHeaderCell align="left">Амплитуда</StyledTableHeaderCell>
-						</TableRow>
-					</TableHead>
+					<EnhancedTableHead order={order} orderBy={orderBy} onRequestSort={handleRequestSort} />
 					<TableBody>
-						{dataImpulses.length > 0 ? (
-							dataImpulses.map((row, index) => (
+						{sortedData.length > 0 ? (
+							sortedData.map((row, index) => (
 								<StyledTableRow
 									key={`${row.radar}-${row.id}`}
 									className={index % 2 === 0 ? 'even' : 'odd'}
 								>
-									<StyledTableCell align="center">{row.id}</StyledTableCell>
+									<StyledTableCell align="left">{row.id}</StyledTableCell>
 									<StyledTableCell align="left">{row.radar?.slice(0, 8)}</StyledTableCell>
 									<StyledTableCell align="left">{formatNumber(row.freq)}</StyledTableCell>
 									<StyledTableCell align="left">{formatNumber(row.pulse_length)}</StyledTableCell>
