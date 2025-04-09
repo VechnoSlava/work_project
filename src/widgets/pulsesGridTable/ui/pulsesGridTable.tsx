@@ -84,7 +84,29 @@ function EnhancedTableHead({ order, orderBy, onRequestSort }: EnhancedTableProps
 export const PulsesGridTable = () => {
 	const [order, setOrder] = useState<Order>('asc')
 	const [orderBy, setOrderBy] = useState<keyof ITadRadarList>('radar')
+	const [selectedRowId, setSelectedRowId] = useState<string | null>(null)
 	const dataTadsTable = useAppSelector(selectTadsTable)
+
+	const handleRowClick = (row: ITadRadarList) => {
+		const uniqueKey = `${row.radar}-${row.id}`
+		const isSelected = selectedRowId === uniqueKey
+
+		setSelectedRowId(isSelected ? null : uniqueKey)
+
+		// Вывод данных строки в консоль
+		if (!isSelected) {
+			console.log('Selected row data:', {
+				id: row.id,
+				radar: row.radar,
+				freq: row.freq,
+				pulse_length: row.pulse_length,
+				pulse_amplitude: row.pulse_amplitude,
+				drill_id: row.drill_id,
+			})
+		} else {
+			console.log('Row deselected')
+		}
+	}
 
 	const dataImpulses = useMemo(() => dataTadsTable.flatMap(table => table.data), [dataTadsTable])
 
@@ -143,6 +165,8 @@ export const PulsesGridTable = () => {
 								<StyledTableRow
 									key={`${row.radar}-${row.id}`}
 									className={index % 2 === 0 ? 'even' : 'odd'}
+									onClick={() => handleRowClick(row)}
+									selected={selectedRowId === `${row.radar}-${row.id}`}
 								>
 									<StyledTableCell align="left">{row.id}</StyledTableCell>
 									<StyledTableCell align="left">{row.radar?.slice(0, 8)}</StyledTableCell>
