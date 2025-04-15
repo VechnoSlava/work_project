@@ -1,0 +1,214 @@
+{
+    "id": 1,
+    "frame": 5,
+    "url": "url",
+    "radars": [
+        {
+            "id": 1,
+            "uid": "fa30be27-8c17-4c86-6de2-503035b3dbe5",
+            "inner_id": 0,
+            "pulse_length": 607.3371,
+            "rot_period": 127,
+            "freq": 9402.5,
+            "PRI": 1442,
+            "comment": "-",
+            "bearing": {
+                "id": 0,
+                "bearing": 16.04,
+                "origin": [
+                    0,
+                    0
+                ]
+            },
+            "path": null,
+            "detection_time": "2025-04-10T11:52:31+03:00",
+            "identification_data": "fa30be27-8c17-4c86-6de2-503035b3dbe5Identification",
+            "id_signature": 2,
+            "color": "3914AF"
+        },
+        {
+            "id": 2,
+            "uid": "e8c4887e-f5b6-462b-4664-ccf9cd58d42a",
+            "inner_id": 1,
+            "pulse_length": 635.67535,
+            "rot_period": 127,
+            "freq": 9417.333,
+            "PRI": 1200,
+            "comment": "-",
+            "bearing": {
+                "id": 0,
+                "bearing": 16.04,
+                "origin": [
+                    0,
+                    0
+                ]
+            },
+            "path": null,
+            "detection_time": "2025-04-10T11:52:31+03:00",
+            "identification_data": "e8c4887e-f5b6-462b-4664-ccf9cd58d42aIdentification",
+            "id_signature": 3,
+            "color": "FFD300"
+        },
+        {
+            "id": 3,
+            "uid": "4acd8d49-df79-4a2f-61eb-bbaf5b0147b5",
+            "inner_id": 2,
+            "pulse_length": 606.36346,
+            "rot_period": 127,
+            "freq": 9458.167,
+            "PRI": 593,
+            "comment": "-",
+            "bearing": {
+                "id": 0,
+                "bearing": 16.04,
+                "origin": [
+                    0,
+                    0
+                ]
+            },
+            "path": null,
+            "detection_time": "2025-04-10T11:52:31+03:00",
+            "identification_data": "4acd8d49-df79-4a2f-61eb-bbaf5b0147b5Identification",
+            "id_signature": 4,
+            "color": "00CC00"
+        },
+        {
+            "id": 4,
+            "uid": "b6bceb06-4149-46e0-6e2c-3893c07f476d",
+            "inner_id": 3,
+            "pulse_length": 631.9093,
+            "rot_period": 127,
+            "freq": 9407,
+            "PRI": 554,
+            "comment": "-",
+            "bearing": {
+                "id": 0,
+                "bearing": 16.04,
+                "origin": [
+                    0,
+                    0
+                ]
+            },
+            "path": null,
+            "detection_time": "2025-04-10T11:52:31+03:00",
+            "identification_data": "b6bceb06-4149-46e0-6e2c-3893c07f476dIdentification",
+            "id_signature": 5,
+            "color": "FF4900"
+        },
+        {
+            "id": 5,
+            "uid": "5bbcc825-2d42-4129-4d6a-1a078de71732",
+            "inner_id": 4,
+            "pulse_length": 598.70685,
+            "rot_period": 127,
+            "freq": 9452.25,
+            "PRI": 882,
+            "comment": "-",
+            "bearing": {
+                "id": 0,
+                "bearing": 16.04,
+                "origin": [
+                    0,
+                    0
+                ]
+            },
+            "path": null,
+            "detection_time": "2025-04-10T11:52:31+03:00",
+            "identification_data": "5bbcc825-2d42-4129-4d6a-1a078de71732Identification",
+            "id_signature": 6,
+            "color": "530FAD"
+        },
+        {
+            "id": 6,
+            "uid": "058221f7-e1f0-42f4-5497-dabdb8901009",
+            "inner_id": 5,
+            "pulse_length": 394.48758,
+            "rot_period": 127,
+            "freq": 9411.954,
+            "PRI": 722,
+            "comment": "-",
+            "bearing": {
+                "id": 0,
+                "bearing": 16.04,
+                "origin": [
+                    0,
+                    0
+                ]
+            },
+            "path": null,
+            "detection_time": "2025-04-10T11:52:31+03:00",
+            "identification_data": "058221f7-e1f0-42f4-5497-dabdb8901009Identification",
+            "id_signature": 7,
+            "color": "FFE800"
+        },
+        {
+            "id": 7,
+            "uid": "c96fe5ac-b021-49b9-6427-ebc69a1d4a05",
+            "inner_id": 6,
+            "pulse_length": 382.28235,
+            "rot_period": 127,
+            "freq": 9406.4,
+            "PRI": 808,
+            "comment": "-",
+            "bearing": {
+                "id": 0,
+                "bearing": 15.74,
+                "origin": [
+                    0,
+                    0
+                ]
+            },
+            "path": null,
+            "detection_time": "2025-04-10T11:52:31+03:00",
+            "identification_data": "c96fe5ac-b021-49b9-6427-ebc69a1d4a05Identification",
+            "id_signature": 10,
+            "color": "00AF64"
+        },
+        {
+            "id": 8,
+            "uid": "a5c40e3b-41fb-45c0-5294-a4ec479a4d73",
+            "inner_id": 7,
+            "pulse_length": 389.16675,
+            "rot_period": 127,
+            "freq": 9392.929,
+            "PRI": 564,
+            "comment": "-",
+            "bearing": {
+                "id": 0,
+                "bearing": 16.04,
+                "origin": [
+                    0,
+                    0
+                ]
+            },
+            "path": null,
+            "detection_time": "2025-04-10T11:52:31+03:00",
+            "identification_data": "a5c40e3b-41fb-45c0-5294-a4ec479a4d73Identification",
+            "id_signature": 8,
+            "color": "FF7400"
+        },
+        {
+            "id": 9,
+            "uid": "ad78387b-4aff-406a-5177-89ab2f293786",
+            "inner_id": 8,
+            "pulse_length": 386.51093,
+            "rot_period": 127,
+            "freq": 9384.75,
+            "PRI": 659,
+            "comment": "-",
+            "bearing": {
+                "id": 0,
+                "bearing": 16.04,
+                "origin": [
+                    0,
+                    0
+                ]
+            },
+            "path": null,
+            "detection_time": "2025-04-10T11:52:31+03:00",
+            "identification_data": "ad78387b-4aff-406a-5177-89ab2f293786Identification",
+            "id_signature": 9,
+            "color": "7109AA"
+        }
+    ]
+}

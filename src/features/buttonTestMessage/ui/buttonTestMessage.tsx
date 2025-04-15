@@ -4,10 +4,11 @@ import { useAppDispatch } from '../../../app/store/hooks'
 import { ButtonMenuHead } from '../../../shared/buttons'
 import { updateRadarsList, updateTads } from '../../../shared/webSocket/serverConnectionSlice'
 import { spectrumPanoramaChart } from '../../../widgets/spectrumPanorama'
-import dataPanorama from '../../../shared/dataTest/messageId_0.json'
-import dataRadarsTable from '../../../shared/dataTest/messageId_1.json'
-import dataPulses from '../../../shared/dataTest/messageId_2.json'
-import { addSelectedColor } from '../../../widgets/radarsTable'
+import dataPanorama from '../../../shared/dataTest/message id=0.json'
+import dataRadarsTable from '../../../shared/dataTest/message id=1.json'
+import dataPulses from '../../../shared/dataTest/message id=2.json'
+import dataSelectedRadars from '../../../shared/dataTest/message id=102 (click_radars).json'
+import { addSelectedRadars } from '../../../widgets/radarsTable'
 
 export const ButtonTestMessage = () => {
 	const dispatch = useAppDispatch()
@@ -15,8 +16,8 @@ export const ButtonTestMessage = () => {
 	const handleTestMessage = () => {
 		spectrumPanoramaChart.updateData(dataPanorama)
 		dispatch(updateRadarsList(dataRadarsTable))
+		dispatch(addSelectedRadars(dataSelectedRadars))
 		dispatch(updateTads(dataPulses))
-		dispatch(addSelectedColor([{ color: '#a5e052' }, { color: '#e05281' }]))
 	}
 
 	return (

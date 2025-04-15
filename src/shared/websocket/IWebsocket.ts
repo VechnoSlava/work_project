@@ -28,6 +28,13 @@ export interface IRadarsList {
 	id_signature: number
 	color?: string
 }
+
+/** Выбранные РЛС в таблице целей */
+export interface ISelectedRadars {
+	uid: string
+	color: string
+}
+
 /**
  * Данные для графика импульсов РЛС
  */
@@ -56,12 +63,6 @@ export interface IRadarsTadsTable {
 	data: Array<ITadRadarList>
 }
 
-export interface ISelectedRadarUid {
-	uid: string
-}
-export interface ISelectedColorsRadar {
-	color: string
-}
 export interface ISelectedTadId {
 	id: number | null
 }
@@ -91,19 +92,21 @@ export interface IWebSocket {
 	}
 }
 //--------------Исходящие сообщения----------------------------------------
-interface WebSocketMessageBase {
+export interface WebSocketMessageBase {
 	id: number
 }
 
-export interface ISelectedRadars extends WebSocketMessageBase {
-	data: ISelectedRadarUid[]
+export interface ISelectedRadarsList extends WebSocketMessageBase {
+	data: {
+		uid: ISelectedRadars['uid'] // использование lookup-типа
+	}[]
 }
 
 export interface ISelectedPulse extends WebSocketMessageBase {
 	data: {
 		id: ISelectedTadId
-		radar: ISelectedRadarUid
+		// radar: ISelectedRadarUid
 	}
 }
 
-export type WebSocketMessage = ISelectedRadars | ISelectedPulse
+export type WebSocketMessage = ISelectedRadarsList | ISelectedPulse

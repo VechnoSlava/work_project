@@ -20,7 +20,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
 import { formatDateTimeRu, formatNumber } from '../../../shared/utils/utils'
 import { IRadarsList, WebSocketMessage } from '../../../shared/webSocket/IWebSocket'
 import { selectRadarsList, sendMessage } from '../../../shared/webSocket/serverConnectionSlice'
-import { addSelectedColor, addSelectedRadars } from '../model/radarsTableSlice'
+import { addSelectedRadars } from '../model/radarsTableSlice'
 
 //Form table DataGrid
 const columns: GridColDef[] = [
@@ -140,34 +140,23 @@ export const RadarsTable = () => {
 		const selectedUids = rowSelectionModel
 			.map(id => {
 				const selectedRow = dataRadars.find(row => row.id === id)
-				return selectedRow ? { uid: selectedRow.uid } : null
+				return selectedRow ? { uid: selectedRow.uid, color: selectedRow.color } : null
 			})
-			.filter(uidObj => uidObj !== null)
+			.filter(uidObj => uidObj !== null) as Array<{ uid: string; color: string }>
 		return selectedUids
 	}
 
-	const getSelectedColorsRadars = () => {
-		const selectedColors = rowSelectionModel
-			.map(id => {
-				const selectedRow = dataRadars.find(row => row.id === id)
-				return selectedRow ? { color: selectedRow.color! } : null
-			})
-			.filter(uidObj => uidObj !== null)
-		return selectedColors
-	}
-
-	//Send selected id on server for get data pulses
+	// Send selected id on server for get data pulses
 	const sendMessageToWebSocket = () => {
 		const selectedRadars = getSelectedUids()
-		const selectedColors = getSelectedColorsRadars()
 		dispatch(addSelectedRadars(selectedRadars))
-		dispatch(addSelectedColor(selectedColors))
+		console.log(selectedRadars)
+
 		const message: WebSocketMessage = {
 			id: 102,
-			data: selectedRadars,
+			data: selectedRadars.map(({ uid }) => ({ uid })),
 		}
 		console.log('Message sent:', message)
-		// console.log('selected', { selectedRadars, selectedColors })
 		dispatch(sendMessage(message))
 	}
 
@@ -276,7 +265,7 @@ export const RadarsTable = () => {
 				}
 				slotProps={{
 					root: {
-						onContextMenu: event => {
+						onContextMenu: (event: any) => {
 							event.preventDefault()
 							handleContextMenuClose()
 						},

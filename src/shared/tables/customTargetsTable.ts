@@ -150,7 +150,7 @@ export const CustomTargetTable = styled(DataGrid)(({ theme }) => ({
 	[`& [data-field="color"]`]: {
 		'&.MuiDataGrid-cell': {
 			display: 'flex !important',
-			// justifyContent: 'center',
+			justifyContent: 'center',
 			alignItems: 'center',
 		},
 	},

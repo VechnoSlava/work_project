@@ -2,7 +2,7 @@ export { RadarsTable } from './ui/radarsTable'
 export {
 	radarsTableSlice,
 	addSelectedRadars,
-	addSelectedColor,
+	// addSelectedColor,
 	selectSelectedRadars,
-	selectSelectedColorsRadars,
+	// selectSelectedColorsRadars,
 } from './model/radarsTableSlice'

@@ -13,12 +13,12 @@ import { lc } from '../../../shared/libs/lightingChart/lcjs'
 import { platanTheme } from '../../../shared/libs/lightingChart/theme'
 import { setIntervalAxisX } from '../model/utils'
 import { store } from '../../../app/store/store'
-import { ISelectedColorsRadar } from '../../../shared/webSocket/IWebSocket'
+// import { ISelectedColorsRadar } from '../../../shared/webSocket/IWebSocket'
 
-const mainStrokeStyle = (colors: ISelectedColorsRadar[], numSer: number) => {
+const mainStrokeStyle = (colors: string[], numSer: number) => {
 	return new SolidLine({
 		thickness: 5,
-		fillStyle: new SolidFill({ color: ColorHEX(`${colors[numSer].color}`) }),
+		fillStyle: new SolidFill({ color: ColorHEX(`${colors[numSer]}`) }),
 	})
 }
 
@@ -42,7 +42,7 @@ export class RadarPulsesBarChart {
 	selectedSegment: SegmentFigure | undefined
 	selectedIndex: [number, number] | undefined
 	hoveredIndex: [number, number] | undefined
-	colorsSeries: ISelectedColorsRadar[] | undefined
+	colorsSeries: string[] | undefined
 
 	constructor() {
 		this.chartName = 'График импульсов РЛС'
@@ -155,12 +155,7 @@ export class RadarPulsesBarChart {
 		console.log('Leaved pulse', numSer, numPul)
 	}
 
-	clickPulse(
-		segment: SegmentFigure,
-		numSer: number,
-		numPul: number,
-		colorsSeries: ISelectedColorsRadar[],
-	) {
+	clickPulse(segment: SegmentFigure, numSer: number, numPul: number, colorsSeries: string[]) {
 		const resetPrevious = () => {
 			if (this.selectedSegment && this.selectedSegment !== segment) {
 				const serIndex = this.segments?.findIndex(arr => arr.includes(this.selectedSegment!)) ?? -1
@@ -173,7 +168,7 @@ export class RadarPulsesBarChart {
 		resetPrevious()
 		segment.setStrokeStyle(selectedStrokeStyle())
 		this.selectedSegment = segment
-		console.log('Selected pulse', numSer, numPul, colorsSeries[numSer].color)
+		console.log('Selected pulse', numSer, numPul, colorsSeries[numSer])
 	}
 
 	updateSegmentSeries() {
@@ -186,7 +181,8 @@ export class RadarPulsesBarChart {
 
 			// Add data chart
 			const tadChart = store.getState().serverConnection.tads.tadChart
-			const colorsSeries = store.getState().radarsTable.selectedColorsRadars
+			const colorsSeries = store.getState().radarsTable.selectedRadars.map(radar => radar.color)
+			console.log(colorsSeries)
 
 			for (let numSer = 0; numSer < tadChart.length; numSer++) {
 				const segmentsSeries = this.barChart.addSegmentSeries()

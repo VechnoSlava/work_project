@@ -32,7 +32,7 @@ export const MainPage = () => {
 				<SplitFrame frameDirection="horizontal" key={103}>
 					<SplitFrame frameDirection="vertical" key={104}>
 						<RadarPulsesChart key={5} />
-						<PulsesTable key={7} />
+						{!secondWindowOpened ? null : <PulsesTable key={7} />}
 					</SplitFrame>
 					<PulsesGridTable key={8} />
 					{/* <RadarPulsesChart key={5} /> */}

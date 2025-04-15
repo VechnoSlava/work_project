@@ -338,7 +338,7 @@ export const CurrentTargetsTable = () => {
 				}
 				slotProps={{
 					root: {
-						onContextMenu: event => {
+						onContextMenu: (event: any) => {
 							event.preventDefault()
 							handleClose()
 						},

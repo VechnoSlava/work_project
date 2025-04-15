@@ -9,7 +9,6 @@ export interface IConnectionState {
 	errorMessage: string | null
 	sendMessage: any
 	radars: IWebSocket['radarsList']['radars']
-	// radars: Array<IRadarsList>
 	tads: IWebSocket['radarTads']['Tads']
 }
 
