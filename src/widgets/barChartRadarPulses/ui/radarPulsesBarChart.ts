@@ -13,7 +13,8 @@ import { lc } from '../../../shared/libs/lightingChart/lcjs'
 import { platanTheme } from '../../../shared/libs/lightingChart/theme'
 import { setIntervalAxisX } from '../model/utils'
 import { store } from '../../../app/store/store'
-// import { ISelectedColorsRadar } from '../../../shared/webSocket/IWebSocket'
+import { addSelectedPulse, IRadarsState } from '../../pulsesGridTable'
+import { useAppDispatch } from '../../../app/store/hooks'
 
 const mainStrokeStyle = (colors: string[], numSer: number) => {
 	return new SolidLine({
@@ -168,7 +169,61 @@ export class RadarPulsesBarChart {
 		resetPrevious()
 		segment.setStrokeStyle(selectedStrokeStyle())
 		this.selectedSegment = segment
+
+		const selectedRadars = store.getState().radarsTable.selectedRadars
+		if (!selectedRadars[numSer]) {
+			console.error('Радар не найден для серии:', numSer)
+			return
+		}
+
+		store.dispatch(
+			addSelectedPulse({
+				id: numPul,
+				radar: selectedRadars[numSer].uid,
+			}),
+		)
+
 		console.log('Selected pulse', numSer, numPul, colorsSeries[numSer])
+		console.log('Selected pulse INFO', selectedRadars[numSer].uid)
+	}
+
+	clickPulseFromTable(numSer: number, numPul: number | null, colorsSeries: string[]) {
+		if (numSer === -1 || !this.segmentsSeries?.[numSer]) {
+			console.log('Неверный индекс серии:', numSer)
+			return
+		}
+		if (numPul === null) {
+			console.log('Импульса с таким индексом не найдено:', numPul)
+			return
+		}
+		if (!this.segments?.[numSer]?.[numPul]) {
+			console.log(`Импульс ${numPul} не найден в серии ${numSer}`)
+			return
+		}
+		const segment = this.segments[numSer][numPul]
+
+		if (this.selectedSegment && this.selectedSegment !== segment) {
+			const prevSerIndex = this.segments.findIndex(arr => arr.includes(this.selectedSegment!))
+			if (prevSerIndex > -1) {
+				this.selectedSegment.setStrokeStyle(mainStrokeStyle(colorsSeries, prevSerIndex))
+			}
+		}
+		segment.setStrokeStyle(selectedStrokeStyle())
+		this.selectedSegment = segment
+
+		console.log('Selected pulse from table:', numSer, numPul, colorsSeries[numSer])
+	}
+
+	selectPulseFromTable(dataSelectedPulse: IRadarsState['selectedPulse']) {
+		const { id, radar } = dataSelectedPulse
+		const colorsSeries = store.getState().radarsTable.selectedRadars.map(radar => radar.color)
+		const radarsIds = store.getState().radarsTable.selectedRadars.map(radar => radar.uid)
+		const indexRadarSeries = radarsIds.indexOf(radar)
+		if (indexRadarSeries === -1) {
+			console.log(`Радар с UID ${radar} не найден в выбранных радарах`)
+			return
+		}
+		this.clickPulseFromTable(indexRadarSeries, id, colorsSeries)
 	}
 
 	updateSegmentSeries() {

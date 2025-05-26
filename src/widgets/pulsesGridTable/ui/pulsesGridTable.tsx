@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import {
 	TableRow,
 	TableContainer,
@@ -12,7 +12,7 @@ import {
 import { visuallyHidden } from '@mui/utils'
 import styles from './pulsesGridTable.module.css'
 import { formatNumber } from '../../../shared/utils/utils'
-import { useAppSelector } from '../../../app/store/hooks'
+import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
 import { selectTadsTable } from '../../../shared/webSocket/serverConnectionSlice'
 import { ITadRadarList } from '../../../shared/webSocket/IWebSocket'
 import {
@@ -21,6 +21,7 @@ import {
 	StyledTableRow,
 } from '../../../shared/tables/customPulsesGridTable'
 import { getComparator, Order } from '../model/utils'
+import { addSelectedPulse, selectSelectedPulse } from '../index'
 
 interface HeadCell {
 	id: keyof ITadRadarList
@@ -86,30 +87,40 @@ export const PulsesGridTable = () => {
 	const [orderBy, setOrderBy] = useState<keyof ITadRadarList>('radar')
 	const [selectedRowId, setSelectedRowId] = useState<string | null>(null)
 	const dataTadsTable = useAppSelector(selectTadsTable)
+	const dispatch = useAppDispatch()
+	const selectedPulses = useAppSelector(selectSelectedPulse)
+
+	useEffect(() => {
+		const { id, radar } = selectedPulses
+		if (id !== null && radar) {
+			const selectedKey = `${radar}-${id}`
+			setSelectedRowId(selectedKey)
+			setTimeout(() => {
+				const element = document.querySelector(`[data-key="${selectedKey}"]`)
+				element?.scrollIntoView({
+					behavior: 'smooth',
+					block: 'center',
+				})
+			}, 100)
+			console.log(selectedKey)
+		} else {
+			setSelectedRowId(null)
+			console.log('RETURN EFFECT')
+			return
+		}
+	}, [selectedPulses])
 
 	const handleRowClick = (row: ITadRadarList) => {
-		const uniqueKey = `${row.radar}-${row.id}`
-		const isSelected = selectedRowId === uniqueKey
+		// const uniqueKey = `${row.radar}-${row.id}`
+		// const isSelected = selectedRowId === uniqueKey
+		// setSelectedRowId(isSelected ? null : uniqueKey)
+		// setSelectedRowId(uniqueKey)
 
-		setSelectedRowId(isSelected ? null : uniqueKey)
-
-		// Вывод данных строки в консоль
-		if (!isSelected) {
-			console.log('Selected row data:', {
-				id: row.id,
-				radar: row.radar,
-				freq: row.freq,
-				pulse_length: row.pulse_length,
-				pulse_amplitude: row.pulse_amplitude,
-				drill_id: row.drill_id,
-			})
-		} else {
-			console.log('Row deselected')
-		}
+		console.log({ id: row.id, radar: row.radar })
+		dispatch(addSelectedPulse({ id: row.id, radar: row.radar }))
 	}
 
 	const dataImpulses = useMemo(() => dataTadsTable.flatMap(table => table.data), [dataTadsTable])
-
 	const sortedData = useMemo(
 		() => [...dataImpulses].sort(getComparator(order, orderBy)),
 		[dataImpulses, order, orderBy],
@@ -164,6 +175,7 @@ export const PulsesGridTable = () => {
 							sortedData.map((row, index) => (
 								<StyledTableRow
 									key={`${row.radar}-${row.id}`}
+									data-key={`${row.radar}-${row.id}`}
 									className={index % 2 === 0 ? 'even' : 'odd'}
 									onClick={() => handleRowClick(row)}
 									selected={selectedRowId === `${row.radar}-${row.id}`}

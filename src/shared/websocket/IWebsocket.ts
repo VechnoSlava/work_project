@@ -65,6 +65,7 @@ export interface IRadarsTadsTable {
 
 export interface ISelectedTadId {
 	id: number | null
+	radar: string
 }
 //--------------Входящие сообщения----------------------------------------
 export interface IWebSocket {
@@ -103,10 +104,7 @@ export interface ISelectedRadarsList extends WebSocketMessageBase {
 }
 
 export interface ISelectedPulse extends WebSocketMessageBase {
-	data: {
-		id: ISelectedTadId
-		// radar: ISelectedRadarUid
-	}
+	data: ISelectedTadId
 }
 
 export type WebSocketMessage = ISelectedRadarsList | ISelectedPulse
