@@ -217,7 +217,7 @@ export class RadarPulsesBarChart {
 		segment.setStrokeStyle(selectedStrokeStyle())
 		this.selectedSegment = segment
 
-		console.log('Selected pulse from table:', numSer, numPul, colorsSeries[numSer])
+		// console.log('Selected pulse from table:', numSer, numPul, colorsSeries[numSer])
 	}
 
 	selectPulseFromTable(dataSelectedPulse: IRadarsState['selectedPulse']) {
@@ -226,7 +226,7 @@ export class RadarPulsesBarChart {
 		const radarsIds = store.getState().radarsTable.selectedRadars.map(radar => radar.uid)
 		const indexRadarSeries = radarsIds.indexOf(radar)
 		if (indexRadarSeries === -1) {
-			console.log(`Радар с UID ${radar} не найден в выбранных радарах`)
+			// console.log(`Радар с UID ${radar} не найден в выбранных радарах`)
 			return
 		}
 		this.clickPulseFromTable(indexRadarSeries, id, colorsSeries)
@@ -244,7 +244,7 @@ export class RadarPulsesBarChart {
 			// Add data chart
 			const tadChart = store.getState().serverConnection.tads.tadChart
 			const colorsSeries = store.getState().radarsTable.selectedRadars.map(radar => radar.color)
-			console.log(colorsSeries)
+			// console.log(colorsSeries)
 
 			for (let numSer = 0; numSer < tadChart.length; numSer++) {
 				const segmentsSeries = this.barChart.addSegmentSeries()
@@ -278,6 +278,7 @@ export class RadarPulsesBarChart {
 			start: state.dataMin,
 			end: (state.dataMax ?? 0) * 1.2,
 		}))
+		console.log('updateRadarPulsesBarChart')
 	}
 }
 export let radarPulsesBarChart = new RadarPulsesBarChart()

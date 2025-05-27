@@ -102,25 +102,22 @@ export const PulsesGridTable = () => {
 					block: 'center',
 				})
 			}, 100)
-			console.log(selectedKey)
+			// console.log(selectedKey)
+			const message: WebSocketMessage = {
+				id: 103,
+				data: [{ id, radar }],
+			}
+			dispatch(sendMessage(message))
 		} else {
 			setSelectedRowId(null)
-			console.log('RETURN EFFECT')
+			// console.log('RETURN EFFECT')
 			return
 		}
 	}, [selectedPulses])
 
 	const handleRowClick = (row: ITadRadarList) => {
-		const infoPulse = { id: row.id, radar: row.radar }
-		console.log(infoPulse)
-		dispatch(addSelectedPulse(infoPulse))
-		const message: WebSocketMessage = {
-			id: 103,
-			data: [infoPulse],
-		}
-
-		console.log('Message sent:', message)
-		dispatch(sendMessage(message))
+		const selectedPulse = { id: row.id, radar: row.radar }
+		dispatch(addSelectedPulse(selectedPulse))
 	}
 
 	const dataImpulses = useMemo(() => dataTadsTable.flatMap(table => table.data), [dataTadsTable])

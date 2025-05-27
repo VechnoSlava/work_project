@@ -68,6 +68,7 @@ export const webSocketMiddleware: Middleware<{}, RootState, Dispatch<PayloadActi
 		else if (sendMessage.match(action)) {
 			if (socket && socket.readyState === WebSocket.OPEN) {
 				socket.send(JSON.stringify(action.payload))
+				console.log('Message sent:', action.payload)
 			} else {
 				console.log('WebSocket is not open!')
 			}

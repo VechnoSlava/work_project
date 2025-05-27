@@ -208,7 +208,7 @@ export class InfoPulseChart {
 		this.lineSeriesTimeChart?.clear()
 		this.lineSeriesSpectrumChart?.clear()
 		this.lineSeriesIntervalChart?.clear()
-		console.log('updateDataInfoPulseChart CLEANED')
+		// console.log('updateDataInfoPulseChart CLEANED')
 
 		this.lineSeriesTimeChart?.appendJSON(data.Pulses.time[0], { x: 'x', y: 'y' })
 		this.lineSeriesSpectrumChart?.appendJSON(data.Pulses.psd[0], { x: 'x', y: 'y' })

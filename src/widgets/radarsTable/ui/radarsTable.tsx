@@ -150,13 +150,12 @@ export const RadarsTable = () => {
 	const sendMessageToWebSocket = () => {
 		const selectedRadars = getSelectedUids()
 		dispatch(addSelectedRadars(selectedRadars))
-		console.log(selectedRadars)
+		console.log('Выбраны радары', selectedRadars)
 
 		const message: WebSocketMessage = {
 			id: 102,
 			data: selectedRadars.map(({ uid }) => ({ uid })),
 		}
-		console.log('Message sent:', message)
 		dispatch(sendMessage(message))
 	}
 

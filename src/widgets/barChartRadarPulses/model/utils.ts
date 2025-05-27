@@ -33,7 +33,7 @@ export const setIntervalAxisX = (axis: Axis, seriesArray: SegmentSeries[] | unde
 	const AXIS_PADDING_FACTOR = 10
 
 	if (!seriesArray || seriesArray.length === 0) {
-		console.log('Недостаточно данных для масштабирования оси X')
+		// console.log('Недостаточно данных для масштабирования оси X')
 		return
 	}
 
