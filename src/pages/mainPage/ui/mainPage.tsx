@@ -10,6 +10,7 @@ import { SpectrumPanorama } from '../../../widgets/spectrumPanorama'
 import { PulsesTable } from '../../../widgets/pulsesTable'
 import { RadarPulsesChart } from '../../../widgets/barChartRadarPulses'
 import { PulsesGridTable } from '../../../widgets/pulsesGridTable'
+import { InfoChartRadarPulse } from '../../../widgets/infoChartRadarPulse'
 
 export const MainPage = () => {
 	console.log('RENDER MAIN_PAGE')
@@ -32,11 +33,9 @@ export const MainPage = () => {
 				<SplitFrame frameDirection="horizontal" key={103}>
 					<SplitFrame frameDirection="vertical" key={104}>
 						<RadarPulsesChart key={5} />
-						{!secondWindowOpened ? null : <PulsesTable key={7} />}
+						<PulsesGridTable key={6} />
 					</SplitFrame>
-					<PulsesGridTable key={8} />
-					{/* <RadarPulsesChart key={5} /> */}
-					{/* {secondWindowOpened ? null : <CurrentTargetsTable key={6} />} */}
+					<InfoChartRadarPulse key={9} />
 				</SplitFrame>
 			</SplitFrame>
 		</div>
