@@ -355,6 +355,9 @@ export class PanoramaSpectrumChart {
 
 	updateData(data: any) {
 		this.lineSeries?.clear()
+		console.log('spectrumPanorama CLEANED')
+		console.log(data)
+
 		// const arrX = data.points.map((point: any) => point.x)
 		// const arrY = data.points.map((point: any) => point.y)
 		// this.lineSeries?.addArraysXY(arrX, arrY)

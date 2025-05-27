@@ -12,6 +12,7 @@ import config from '../../../config.json'
 import { AppDispatch, RootState } from '../../app/store/store'
 import { IWebSocket } from './IWebSocket'
 import { spectrumPanoramaChart } from '../../widgets/spectrumPanorama'
+import { infoPulseChart } from '../../widgets/infoChartRadarPulse'
 
 const socket_URL = config.serverUrl
 
@@ -45,16 +46,21 @@ export const webSocketMiddleware: Middleware<{}, RootState, Dispatch<PayloadActi
 			socket.onmessage = event => {
 				const message: any = JSON.parse(event.data)
 				if (message['id'] === 0) {
-					console.log(message)
+					console.log('Получены данные:', message)
 					spectrumPanoramaChart.updateData(message)
+					console.log('Данные спектральной панорамы получены')
 				} else if (message['id'] === 1) {
-					console.log(message)
+					console.log('Получены данные:', message)
 					dispatch(updateRadarsList(message))
-					console.log('Таблица целей РЛС обновлена')
+					console.log('Данные таблицы целей РЛС получены')
 				} else if (message['id'] === 2) {
-					console.log(message)
+					console.log('Получены данные:', message)
 					dispatch(updateTads(message))
 					console.log('Данные импульсов РЛС получены')
+				} else if (message['id'] === 3) {
+					console.log('Получены данные:', message)
+					infoPulseChart.updateDataInfoPulseChart(message)
+					console.log('Данные графиков импульса получены')
 				}
 			}
 		}

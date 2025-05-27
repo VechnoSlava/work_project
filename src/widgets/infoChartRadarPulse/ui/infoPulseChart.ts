@@ -47,9 +47,6 @@ export class InfoPulseChart {
 		idContainerSpectrumChart: string,
 		idContainerIntervalChart: string,
 	) {
-		const startPointBand = 1e9
-		const endPointBand = 3e9
-
 		/*------------ График осциллограммы ------------*/
 		this.timeChart = lc
 			.ChartXY({
@@ -95,18 +92,17 @@ export class InfoPulseChart {
 					fillStyle: new SolidFill({ color: ColorHEX('#cfcfcf20') }),
 				}),
 			)
-			.setDefaultInterval({ start: startPointBand, end: endPointBand })
 
 		/*------------ Настройка Оси Y ------------*/
-		this.axisYTimeChart = this.timeChart
-			.getDefaultAxisY()
-			.setDefaultInterval(state => ({
-				start: (state.dataMin ?? 0) - 5,
-				end: (state.dataMax ?? 0) + 12,
-			}))
-			.setStrokeStyle(emptyLine)
-			.setTickStrategy('Empty')
-			.setUserInteractions(undefined)
+		// this.axisYTimeChart = this.timeChart
+		// 	.getDefaultAxisY()
+		// 	.setDefaultInterval(state => ({
+		// 		start: (state.dataMin ?? 0) - 5,
+		// 		end: (state.dataMax ?? 0) + 12,
+		// 	}))
+		// 	.setStrokeStyle(emptyLine)
+		// 	.setTickStrategy('Empty')
+		// 	.setUserInteractions(undefined)
 
 		/*-------------- Данные графика осциллограммы -----------------------------*/
 		this.lineSeriesTimeChart = this.timeChart
@@ -212,9 +208,11 @@ export class InfoPulseChart {
 		this.lineSeriesTimeChart?.clear()
 		this.lineSeriesSpectrumChart?.clear()
 		this.lineSeriesIntervalChart?.clear()
-		this.lineSeriesTimeChart?.appendJSON(data.points, { x: 'x', y: 'y' })
-		this.lineSeriesSpectrumChart?.appendJSON(data.points, { x: 'x', y: 'y' })
-		this.lineSeriesIntervalChart?.appendJSON(data.points, { x: 'x', y: 'y' })
+		console.log('updateDataInfoPulseChart CLEANED')
+
+		this.lineSeriesTimeChart?.appendJSON(data.Pulses.time[0], { x: 'x', y: 'y' })
+		this.lineSeriesSpectrumChart?.appendJSON(data.Pulses.psd[0], { x: 'x', y: 'y' })
+		this.lineSeriesIntervalChart?.appendJSON(data.Pulses.wobble[0], { x: 'x', y: 'y' })
 		console.log('updateDataInfoPulseChart')
 	}
 }

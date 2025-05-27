@@ -62,10 +62,18 @@ export interface IRadarsTadsTable {
 	radar: string
 	data: Array<ITadRadarList>
 }
-
+/** Выбранный импульс */
 export interface ISelectedTadId {
 	id: number | null
 	radar: string
+}
+
+/**
+ * Данные для графиков импульса
+ */
+export interface IChartInfoPulse {
+	x: number
+	y: number
 }
 //--------------Входящие сообщения----------------------------------------
 export interface IWebSocket {
@@ -91,6 +99,16 @@ export interface IWebSocket {
 			tadTable: IRadarsTadsTable[]
 		}
 	}
+	pulseInfo: {
+		id: number
+		frame: number
+		Pulses: {
+			time: IChartInfoPulse[][]
+			psd: IChartInfoPulse[][]
+			wobble: IChartInfoPulse[][]
+			fDiscr: number
+		}
+	}
 }
 //--------------Исходящие сообщения----------------------------------------
 export interface WebSocketMessageBase {
@@ -99,12 +117,12 @@ export interface WebSocketMessageBase {
 
 export interface ISelectedRadarsList extends WebSocketMessageBase {
 	data: {
-		uid: ISelectedRadars['uid'] // использование lookup-типа
+		uid: ISelectedRadars['uid']
 	}[]
 }
 
 export interface ISelectedPulse extends WebSocketMessageBase {
-	data: ISelectedTadId
+	data: ISelectedTadId[]
 }
 
 export type WebSocketMessage = ISelectedRadarsList | ISelectedPulse

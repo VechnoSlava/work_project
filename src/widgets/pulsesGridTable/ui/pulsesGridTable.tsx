@@ -111,16 +111,12 @@ export const PulsesGridTable = () => {
 	}, [selectedPulses])
 
 	const handleRowClick = (row: ITadRadarList) => {
-		// const uniqueKey = `${row.radar}-${row.id}`
-		// const isSelected = selectedRowId === uniqueKey
-		// setSelectedRowId(isSelected ? null : uniqueKey)
-		// setSelectedRowId(uniqueKey)
 		const infoPulse = { id: row.id, radar: row.radar }
 		console.log(infoPulse)
 		dispatch(addSelectedPulse(infoPulse))
 		const message: WebSocketMessage = {
 			id: 103,
-			data: infoPulse,
+			data: [infoPulse],
 		}
 
 		console.log('Message sent:', message)
