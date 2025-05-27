@@ -29,6 +29,12 @@ const selectedStrokeStyle = () =>
 		fillStyle: new SolidFill({ color: ColorHEX('#f1f3f0') }),
 	})
 
+// const resizingAxisY = (stateYMax: number | undefined) => {
+// 	stateYMax ?? 0
+
+// 	stateYMax * 0.2
+// }
+
 export class RadarPulsesBarChart {
 	chartName: string
 	barChart: ChartXY | undefined
@@ -232,6 +238,7 @@ export class RadarPulsesBarChart {
 			this.segments?.forEach(arr => arr.forEach(segment => segment.dispose()))
 			this.segments = []
 			this.segmentsSeries?.forEach(series => series.dispose())
+			this.segmentsSeries?.forEach(series => series.clear())
 			this.segmentsSeries = []
 
 			// Add data chart
@@ -267,6 +274,10 @@ export class RadarPulsesBarChart {
 		}
 
 		setIntervalAxisX(this.axisX!, this.segmentsSeries)
+		this.axisY?.setDefaultInterval(state => ({
+			start: state.dataMin,
+			end: (state.dataMax ?? 0) * 1.2,
+		}))
 	}
 }
 export let radarPulsesBarChart = new RadarPulsesBarChart()

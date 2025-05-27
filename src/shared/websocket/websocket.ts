@@ -45,10 +45,10 @@ export const webSocketMiddleware: Middleware<{}, RootState, Dispatch<PayloadActi
 			socket.onmessage = event => {
 				const message: any = JSON.parse(event.data)
 				if (message['id'] === 0) {
-					// console.log(message)
+					console.log(message)
 					spectrumPanoramaChart.updateData(message)
 				} else if (message['id'] === 1) {
-					// console.log(message)
+					console.log(message)
 					dispatch(updateRadarsList(message))
 					console.log('Таблица целей РЛС обновлена')
 				} else if (message['id'] === 2) {

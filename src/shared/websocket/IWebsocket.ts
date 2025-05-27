@@ -72,7 +72,7 @@ export interface IWebSocket {
 	/**Спектральная панорама */
 	spectrumPanorama: {
 		id: number
-		points: Array<ISpectrumPanorama>
+		points: ISpectrumPanorama[]
 		psd: number[]
 	}
 	/**Таблица целей */
@@ -80,15 +80,15 @@ export interface IWebSocket {
 		id: number
 		frame: number
 		url: string
-		radars: Array<IRadarsList>
+		radars: IRadarsList[]
 	}
 	/**Таблица и график импульсов цели */
 	radarTads: {
 		id: number
 		frame: number
 		Tads: {
-			tadChart: Array<ITadChartRadar>
-			tadTable: Array<IRadarsTadsTable>
+			tadChart: ITadChartRadar[]
+			tadTable: IRadarsTadsTable[]
 		}
 	}
 }

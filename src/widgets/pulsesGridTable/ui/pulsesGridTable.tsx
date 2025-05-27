@@ -13,8 +13,8 @@ import { visuallyHidden } from '@mui/utils'
 import styles from './pulsesGridTable.module.css'
 import { formatNumber } from '../../../shared/utils/utils'
 import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
-import { selectTadsTable } from '../../../shared/webSocket/serverConnectionSlice'
-import { ITadRadarList } from '../../../shared/webSocket/IWebSocket'
+import { selectTadsTable, sendMessage } from '../../../shared/webSocket/serverConnectionSlice'
+import { ITadRadarList, WebSocketMessage } from '../../../shared/webSocket/IWebSocket'
 import {
 	StyledTableCell,
 	StyledTableHeaderCell,
@@ -115,9 +115,16 @@ export const PulsesGridTable = () => {
 		// const isSelected = selectedRowId === uniqueKey
 		// setSelectedRowId(isSelected ? null : uniqueKey)
 		// setSelectedRowId(uniqueKey)
+		const infoPulse = { id: row.id, radar: row.radar }
+		console.log(infoPulse)
+		dispatch(addSelectedPulse(infoPulse))
+		const message: WebSocketMessage = {
+			id: 103,
+			data: infoPulse,
+		}
 
-		console.log({ id: row.id, radar: row.radar })
-		dispatch(addSelectedPulse({ id: row.id, radar: row.radar }))
+		console.log('Message sent:', message)
+		dispatch(sendMessage(message))
 	}
 
 	const dataImpulses = useMemo(() => dataTadsTable.flatMap(table => table.data), [dataTadsTable])

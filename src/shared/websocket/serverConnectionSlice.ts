@@ -8,7 +8,7 @@ export interface IConnectionState {
 	stateConnection: 'idle' | 'connecting' | 'success' | 'failed'
 	errorMessage: string | null
 	sendMessage: any
-	radars: IWebSocket['radarsList']['radars']
+	radars: IWebSocket['radarsList']['radars'] | []
 	tads: IWebSocket['radarTads']['Tads']
 }
 
@@ -50,21 +50,19 @@ export const serverConnectionSlice = createAppSlice({
 			state.sendMessage = action.payload
 		}),
 		updateRadarsList: create.reducer((state, action: PayloadAction<IWebSocket['radarsList']>) => {
-			const existingRadarsMap = new Map(state.radars.map(radar => [radar.id, radar]))
+			const payloadRadars = action.payload.radars ?? []
+			const currentRadars = state.radars ?? []
+			const existingRadarsMap = new Map(currentRadars.map(radar => [radar.id, radar]))
 
-			state.radars = action.payload.radars.map(newRadar => {
+			state.radars = payloadRadars.map(newRadar => {
 				const existingRadar = existingRadarsMap.get(newRadar.id)
 
-				// Сохраняем цвет если он уже был сгенерирован
-				if (existingRadar?.color) {
-					return { ...newRadar, color: existingRadar.color }
-				}
-
-				// Генерируем новый цвет если его нет
-				return {
-					...newRadar,
-					color: generateDistinctColor(newRadar.id),
-				}
+				return existingRadar?.color
+					? { ...newRadar, color: existingRadar.color }
+					: {
+							...newRadar,
+							color: generateDistinctColor(newRadar.id),
+						}
 			})
 		}),
 		updateTads: create.reducer((state, action: PayloadAction<IWebSocket['radarTads']>) => {
