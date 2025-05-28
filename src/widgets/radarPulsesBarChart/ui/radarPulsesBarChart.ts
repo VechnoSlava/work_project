@@ -217,6 +217,14 @@ export class RadarPulsesBarChart {
 		segment.setStrokeStyle(selectedStrokeStyle())
 		this.selectedSegment = segment
 
+		const dim = segment.getDimensions()
+		console.log(dim)
+
+		this.axisX?.setInterval({
+			start: dim.startX - dim.startX * 0.00008,
+			end: dim.startX + dim.startX * 0.00008,
+			animate: 500,
+		})
 		// console.log('Selected pulse from table:', numSer, numPul, colorsSeries[numSer])
 	}
 
