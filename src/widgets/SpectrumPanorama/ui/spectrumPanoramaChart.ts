@@ -149,8 +149,8 @@ export class PanoramaSpectrumChart {
 		this.axisY = this.spectrumChart
 			.getDefaultAxisY()
 			.setDefaultInterval(state => ({
-				start: (state.dataMin ?? 0) - 5,
-				end: (state.dataMax ?? 0) + 12,
+				start: (state.dataMin ?? 0) * 1.1,
+				end: (state.dataMax ?? 0) * 1.2,
 			}))
 			.setStrokeStyle(emptyLine)
 			.setTickStrategy('Empty')
@@ -175,22 +175,6 @@ export class PanoramaSpectrumChart {
 				// [hit.series], // Имя LineSeries
 				[
 					{
-						text: `Частота:`,
-						fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
-					},
-					,
-					'',
-					{
-						text: hit.axisX.formatValue(hit.x),
-						fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
-					},
-					{
-						text: `ГГц`,
-						fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
-					},
-				],
-				[
-					{
 						text: `Амплитуда:`,
 						fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
 					},
@@ -202,6 +186,22 @@ export class PanoramaSpectrumChart {
 					},
 					{
 						text: 'дБ',
+						fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
+					},
+				],
+				[
+					{
+						text: `Частота:`,
+						fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
+					},
+					,
+					'',
+					{
+						text: hit.axisX.formatValue(hit.x),
+						fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
+					},
+					{
+						text: `ГГц`,
 						fillStyle: new SolidFill({ color: ColorHEX('#63f7dc') }),
 					},
 				],

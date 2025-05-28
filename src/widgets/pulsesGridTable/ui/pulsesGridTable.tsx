@@ -98,7 +98,7 @@ export const PulsesGridTable = () => {
 			setTimeout(() => {
 				const element = document.querySelector(`[data-key="${selectedKey}"]`)
 				element?.scrollIntoView({
-					behavior: 'smooth',
+					behavior: 'instant',
 					block: 'center',
 				})
 			}, 100)

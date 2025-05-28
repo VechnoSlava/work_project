@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react'
 import { RadarsTable } from '../../../widgets/radarsTable'
 import { SpectrumPanorama } from '../../../widgets/spectrumPanorama'
 import { PulsesTable } from '../../../widgets/pulsesTable'
-import { RadarPulsesChart } from '../../../widgets/barChartRadarPulses'
+import { RadarPulsesChart } from '../../../widgets/radarPulsesBarChart'
 import { PulsesGridTable } from '../../../widgets/pulsesGridTable'
 import { InfoChartRadarPulse } from '../../../widgets/infoChartRadarPulse'
 

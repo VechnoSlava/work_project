@@ -128,7 +128,7 @@ export class RadarPulsesBarChart {
 
 	hoveredPulse(segment: SegmentFigure, numSer: number, numPul: number) {
 		if (this.hoveredSegment === segment) {
-			console.log('This Pulse already hovered!')
+			// console.log('This Pulse already hovered!')
 			return
 		}
 
@@ -146,12 +146,12 @@ export class RadarPulsesBarChart {
 		if (this.hoveredSegment) resetSegment(this.hoveredSegment)
 		activateSegment(segment)
 		this.leavedSegment = undefined
-		console.log(`Hovered pulse${this.hoveredSegment ? '1' : '2'}`, numSer, numPul)
+		// console.log(`Hovered pulse${this.hoveredSegment ? '1' : '2'}`, numSer, numPul)
 	}
 
 	leavedPulse(segment: SegmentFigure, numSer: number, numPul: number) {
 		if (!this.hoveredSegment || segment !== this.hoveredSegment) {
-			console.log('False leave')
+			// console.log('False leave')
 			return
 		}
 
@@ -159,7 +159,7 @@ export class RadarPulsesBarChart {
 		segment.setDimensions({ ...dim, endY: dim.endY / 1.1 })
 		this.leavedSegment = segment
 		this.hoveredSegment = undefined
-		console.log('Leaved pulse', numSer, numPul)
+		// console.log('Leaved pulse', numSer, numPul)
 	}
 
 	clickPulse(segment: SegmentFigure, numSer: number, numPul: number, colorsSeries: string[]) {
@@ -189,8 +189,8 @@ export class RadarPulsesBarChart {
 			}),
 		)
 
-		console.log('Selected pulse', numSer, numPul, colorsSeries[numSer])
-		console.log('Selected pulse INFO', selectedRadars[numSer].uid)
+		// console.log('Selected pulse', numSer, numPul, colorsSeries[numSer])
+		// console.log('Selected pulse INFO', selectedRadars[numSer].uid)
 	}
 
 	clickPulseFromTable(numSer: number, numPul: number | null, colorsSeries: string[]) {

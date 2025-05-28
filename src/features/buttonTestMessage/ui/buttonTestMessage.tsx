@@ -8,7 +8,9 @@ import dataPanorama from '../../../shared/dataTest/message id=0.json'
 import dataRadarsTable from '../../../shared/dataTest/message id=1.json'
 import dataPulses from '../../../shared/dataTest/message id=2.json'
 import dataSelectedRadars from '../../../shared/dataTest/message id=102 (click_radars).json'
+import dataSelectedPulse from '../../../shared/dataTest/message id=3.json'
 import { addSelectedRadars } from '../../../widgets/radarsTable'
+import { infoPulseChart } from '../../../widgets/infoChartRadarPulse'
 
 export const ButtonTestMessage = () => {
 	const dispatch = useAppDispatch()
@@ -18,6 +20,7 @@ export const ButtonTestMessage = () => {
 		dispatch(updateRadarsList(dataRadarsTable))
 		dispatch(addSelectedRadars(dataSelectedRadars))
 		dispatch(updateTads(dataPulses))
+		infoPulseChart.updateDataInfoPulseChart(dataSelectedPulse)
 	}
 
 	return (
