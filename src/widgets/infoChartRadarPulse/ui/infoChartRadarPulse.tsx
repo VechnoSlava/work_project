@@ -1,8 +1,12 @@
 import { useEffect } from 'react'
 import styles from './infoChartRadarPulse.module.css'
 import { infoPulseChart } from './infoPulseChart'
+import { useAppSelector } from '../../../app/store/hooks'
+import { selectSelectedRadars } from '../../radarsTable'
 
 export function InfoChartRadarPulse() {
+	const changeSelectedRadar = useAppSelector(selectSelectedRadars)
+
 	useEffect(() => {
 		const container = document.getElementById('infoChartPulse') as HTMLDivElement | null
 		if (container) {
@@ -16,6 +20,10 @@ export function InfoChartRadarPulse() {
 		}
 		return () => infoPulseChart.deleteInfoPulseChart()
 	}, [])
+
+	useEffect(() => {
+		infoPulseChart.cleanInfoPulseChart()
+	}, [changeSelectedRadar])
 
 	return (
 		<div className={styles.infoChartPulse} id={'infoChartPulse'}>

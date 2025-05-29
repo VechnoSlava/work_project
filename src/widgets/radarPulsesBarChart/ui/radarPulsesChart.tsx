@@ -26,7 +26,9 @@ export function RadarPulsesChart() {
 	}, [dataTadsChart])
 
 	useEffect(() => {
-		radarPulsesBarChart.selectPulseFromTable(dataSelectedPulse)
+		if (dataSelectedPulse) radarPulsesBarChart.selectPulseFromTable(dataSelectedPulse)
+		// console.log('PULSE!!!')
+		return
 	}, [dataSelectedPulse])
 
 	return <div className={styles.pulsesChart} id={'radarPulsesBarChart'}></div>

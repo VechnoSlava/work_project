@@ -1,19 +1,13 @@
-import { LUT, ColorRGBA, SolidLine, SolidFill, ColorHEX, ChartXY } from '@lightningchart/lcjs'
+import {
+	SolidLine,
+	SolidFill,
+	ColorHEX,
+	ChartXY,
+	Axis,
+	PointLineAreaSeries,
+} from '@lightningchart/lcjs'
 
-// Цветовая палитра для теплового водопада
-export const WFPalette = new LUT({
-	steps: [
-		{ value: 0, color: ColorRGBA(53, 154, 208, 0) },
-		{ value: 255 * 0.2, color: ColorRGBA(53, 154, 208, 255 * 0.2) },
-		{ value: 255 * 0.4, color: ColorRGBA(53, 154, 208, 255 * 0.4) },
-		{ value: 255 * 0.6, color: ColorRGBA(53, 154, 208, 255 * 0.6) },
-		{ value: 255 * 0.8, color: ColorRGBA(53, 154, 208, 255 * 0.8) },
-		{ value: 255, color: ColorRGBA(53, 154, 208, 255) },
-	],
-	interpolate: true,
-})
-
-/*------------ Настройка взаимодействия с пользователем ------------*/
+/**--- Настройка взаимодействия с пользователем ---*/
 export const userInteractions = (chart: ChartXY) => {
 	chart.setUserInteractions({
 		pan: {
@@ -35,6 +29,7 @@ export const userInteractions = (chart: ChartXY) => {
 		},
 	})
 }
+
 // Форматеры
 const GHz_FACTOR = 1_000_000
 const NS_FACTOR = 1_000_000
@@ -69,3 +64,36 @@ export const cursorGridStrokeStyle = new SolidLine({
 })
 
 export const cursorTextColor = new SolidFill({ color: ColorHEX('#63f7dc') })
+
+/**--- Сброс масштабирования графика ---*/
+export const setIntervalTimeAxisXY = (
+	axisX: Axis,
+	axisY: Axis,
+	seriesArray: PointLineAreaSeries,
+) => {
+	const boundariesSeries = seriesArray.getBoundaries()
+	const {
+		min: { x: minX, y: minY },
+		max: { x: maxX, y: maxY },
+	} = boundariesSeries
+	axisX.setInterval({ start: minX, end: maxX, animate: 500 })
+	axisY.setInterval({ start: minY, end: maxY * 1.3, animate: 500 })
+	axisX.setIntervalRestrictions({ startMin: minX, endMax: maxX })
+	axisY.setIntervalRestrictions({ startMin: minY, endMax: maxY * 1.3 })
+}
+
+export const setIntervalSpectrumAxisXY = (
+	axisX: Axis,
+	axisY: Axis,
+	seriesArray: PointLineAreaSeries,
+) => {
+	const boundariesSeries = seriesArray.getBoundaries()
+	const {
+		min: { x: minX, y: minY },
+		max: { x: maxX, y: maxY },
+	} = boundariesSeries
+	axisX.setInterval({ start: minX, end: maxX, animate: 500 })
+	axisY.setInterval({ start: minY * 1.1, end: maxY * 1.2, animate: 500 })
+	axisX.setIntervalRestrictions({ startMin: minX, endMax: maxX })
+	axisY.setIntervalRestrictions({ startMin: minY * 1.1, endMax: maxY * 1.2 })
+}

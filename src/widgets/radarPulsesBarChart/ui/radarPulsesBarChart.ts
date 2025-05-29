@@ -218,8 +218,6 @@ export class RadarPulsesBarChart {
 		this.selectedSegment = segment
 
 		const dim = segment.getDimensions()
-		console.log(dim)
-
 		this.axisX?.setInterval({
 			start: dim.startX - dim.startX * 0.00008,
 			end: dim.startX + dim.startX * 0.00008,
@@ -245,8 +243,8 @@ export class RadarPulsesBarChart {
 			// Clear data chart
 			this.segments?.forEach(arr => arr.forEach(segment => segment.dispose()))
 			this.segments = []
-			this.segmentsSeries?.forEach(series => series.dispose())
 			this.segmentsSeries?.forEach(series => series.clear())
+			this.segmentsSeries?.forEach(series => series.dispose())
 			this.segmentsSeries = []
 
 			// Add data chart

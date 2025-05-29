@@ -1,31 +1,24 @@
 import {
 	Axis,
-	AxisScrollStrategies,
 	AxisTickStrategies,
 	ChartXY,
 	ColorHEX,
-	CustomTick,
 	emptyFill,
 	emptyLine,
-	emptyTick,
-	HeatmapScrollingGridSeriesIntensityValues,
-	isHitHeatmap,
 	NumericTickStrategy,
-	PalettedFill,
 	PointLineAreaSeries,
 	SolidFill,
 	SolidLine,
 	TickStyle,
-	ZoomBandChart,
 } from '@lightningchart/lcjs'
 import { lc } from '../../../shared/libs/lightingChart/lcjs'
 import { platanTheme } from '../../../shared/libs/lightingChart/theme'
 import {
 	cursorGridStrokeStyle,
 	cursorTextColor,
-	powerNumFormatter,
+	setIntervalSpectrumAxisXY,
+	setIntervalTimeAxisXY,
 	tickTextFormatter,
-	timeCursorFormatter,
 	timeTickFormatter,
 	userInteractions,
 } from '../model/settingsInfoPulseChart'
@@ -132,10 +125,6 @@ export class InfoPulseChart {
 		/*------------ Настройка Оси Y ------------*/
 		this.axisYTimeChart = this.timeChart
 			.getDefaultAxisY()
-			.setDefaultInterval(state => ({
-				start: (state.dataMin ?? 0) * 1.0,
-				end: (state.dataMax ?? 0) * 1.3,
-			}))
 			.setStrokeStyle(emptyLine)
 			.setTickStrategy('Empty')
 			.setUserInteractions(undefined)
@@ -264,10 +253,6 @@ export class InfoPulseChart {
 		/*------------ Настройка Оси Y ------------*/
 		this.axisYSpectrumChart = this.spectrumChart
 			.getDefaultAxisY()
-			.setDefaultInterval(state => ({
-				start: (state.dataMin ?? 0) * 1.1,
-				end: (state.dataMax ?? 0) * 1.2,
-			}))
 			.setStrokeStyle(emptyLine)
 			.setTickStrategy('Empty')
 			.setUserInteractions(undefined)
@@ -336,9 +321,7 @@ export class InfoPulseChart {
 			.setPadding({ right: 5, left: 0, top: 0, bottom: 0 })
 			.setTitleFont(font => font.setSize(14))
 			.setTitleMargin(0)
-
-		/*--- Настройка взаимодействия с пользователем ---*/
-		userInteractions(this.intervalChart)
+			.setUserInteractions(undefined)
 
 		/*------------ Настройка Оси X ------------*/
 		this.axisXIntervalChart = this.intervalChart
@@ -352,7 +335,14 @@ export class InfoPulseChart {
 			.setStrokeStyle(emptyLine)
 			.setTickStrategy('Empty')
 			.setUserInteractions(undefined)
-
+		/*--- Настройка курсора ---*/
+		this.intervalChart.setCursor(cursor =>
+			cursor
+				.setTickMarkerXVisible(false)
+				.setTickMarkerYVisible(false)
+				.setGridStrokeXStyle(cursorGridStrokeStyle)
+				.setGridStrokeYStyle(cursorGridStrokeStyle),
+		)
 		/*--- Данные графика интервалов импульса ---*/
 		this.lineSeriesIntervalChart = this.intervalChart
 			.addPointLineAreaSeries({ dataPattern: 'ProgressiveX' })
@@ -364,22 +354,49 @@ export class InfoPulseChart {
 		console.log('create chart: ', this.chartName)
 	}
 
+	cleanInfoPulseChart() {
+		this.lineSeriesTimeChart?.clear()
+		this.lineSeriesSpectrumChart?.clear()
+		this.lineSeriesIntervalChart?.clear()
+		// console.log('CLEANED chart: ', this.chartName)
+		// console.log(
+		// 	this.lineSeriesTimeChart,
+		// 	this.lineSeriesSpectrumChart,
+		// 	this.lineSeriesIntervalChart,
+		// )
+	}
+
 	deleteInfoPulseChart() {
-		console.log('delete chart: ', this.chartName)
+		this.lineSeriesTimeChart?.clear()
+		this.lineSeriesSpectrumChart?.clear()
+		this.lineSeriesIntervalChart?.clear()
 		this.timeChart?.dispose()
 		this.spectrumChart?.dispose()
 		this.intervalChart?.dispose()
+		console.log('delete chart: ', this.chartName)
 	}
 
 	updateDataInfoPulseChart(data: IWebSocket['pulseInfo']) {
 		this.lineSeriesTimeChart?.clear()
 		this.lineSeriesSpectrumChart?.clear()
 		this.lineSeriesIntervalChart?.clear()
-		// console.log('updateDataInfoPulseChart CLEANED')
 
 		this.lineSeriesTimeChart?.appendJSON(data.Pulses.time[0], { x: 'x', y: 'y' })
 		this.lineSeriesSpectrumChart?.appendJSON(data.Pulses.psd[0], { x: 'x', y: 'y' })
 		this.lineSeriesIntervalChart?.appendJSON(data.Pulses.wobble[0], { x: 'x', y: 'y' })
+
+		if (this.axisYTimeChart && this.axisXTimeChart && this.lineSeriesTimeChart) {
+			setIntervalTimeAxisXY(this.axisXTimeChart, this.axisYTimeChart, this.lineSeriesTimeChart)
+		}
+
+		if (this.axisYSpectrumChart && this.axisXSpectrumChart && this.lineSeriesSpectrumChart) {
+			setIntervalSpectrumAxisXY(
+				this.axisXSpectrumChart,
+				this.axisYSpectrumChart,
+				this.lineSeriesSpectrumChart,
+			)
+		}
+
 		console.log('updateDataInfoPulseChart')
 	}
 }
