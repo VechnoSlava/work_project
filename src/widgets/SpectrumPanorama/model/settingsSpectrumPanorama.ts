@@ -1,4 +1,12 @@
-import { LUT, ColorRGBA, SolidLine, SolidFill, ColorHEX } from '@lightningchart/lcjs'
+import {
+	LUT,
+	ColorRGBA,
+	SolidLine,
+	SolidFill,
+	ColorHEX,
+	Axis,
+	PointLineAreaSeries,
+} from '@lightningchart/lcjs'
 
 // Цветовая палитра для теплового водопада
 export const WFPalette = new LUT({
@@ -31,3 +39,14 @@ export const cursorGridStrokeStyle = new SolidLine({
 	thickness: 1,
 	fillStyle: new SolidFill({ color: ColorHEX('#a6a6a6') }),
 })
+
+/**--- Масштабирование графика панорамы ---*/
+export const setIntervalSpectrumAxisXY = (axisY: Axis, seriesArray: PointLineAreaSeries) => {
+	const boundariesSeries = seriesArray.getBoundaries()
+	const {
+		min: { y: minY },
+		max: { y: maxY },
+	} = boundariesSeries
+	axisY.setInterval({ start: minY * 1.1, end: maxY * 1.2, animate: 500 })
+	axisY.setIntervalRestrictions({ startMin: minY * 1.1, endMax: maxY * 1.2 })
+}

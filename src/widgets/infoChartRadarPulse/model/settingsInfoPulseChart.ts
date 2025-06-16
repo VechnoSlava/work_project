@@ -81,7 +81,7 @@ export const setIntervalTimeAxisXY = (
 	axisX.setIntervalRestrictions({ startMin: minX, endMax: maxX })
 	axisY.setIntervalRestrictions({ startMin: minY, endMax: maxY * 1.3 })
 }
-
+/**--- Сброс масштабирования графика ---*/
 export const setIntervalSpectrumAxisXY = (
 	axisX: Axis,
 	axisY: Axis,

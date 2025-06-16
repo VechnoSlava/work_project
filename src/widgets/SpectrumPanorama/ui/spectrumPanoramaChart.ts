@@ -21,6 +21,7 @@ import { lc } from '../../../shared/libs/lightingChart/lcjs'
 import { platanTheme } from '../../../shared/libs/lightingChart/theme'
 import {
 	cursorGridStrokeStyle,
+	setIntervalSpectrumAxisXY,
 	tickNumFormatter,
 	tickTextFormatter,
 	WFPalette,
@@ -148,10 +149,10 @@ export class PanoramaSpectrumChart {
 		/*------------ Настройка Оси Y ------------*/
 		this.axisY = this.spectrumChart
 			.getDefaultAxisY()
-			.setDefaultInterval(state => ({
-				start: (state.dataMin ?? 0) * 1.1,
-				end: (state.dataMax ?? 0) * 1.2,
-			}))
+			// .setDefaultInterval(state => ({
+			// 	start: (state.dataMin ?? 0) * 1.1,
+			// 	end: (state.dataMax ?? 0) * 1.2,
+			// }))
 			.setStrokeStyle(emptyLine)
 			.setTickStrategy('Empty')
 			.setUserInteractions(undefined)
@@ -355,11 +356,11 @@ export class PanoramaSpectrumChart {
 
 	updateData(data: any) {
 		this.lineSeries?.clear()
-		// const arrX = data.points.map((point: any) => point.x)
-		// const arrY = data.points.map((point: any) => point.y)
-		// this.lineSeries?.addArraysXY(arrX, arrY)
 		this.lineSeries?.appendJSON(data.points, { x: 'x', y: 'y' })
 		this.heatmapSeries?.addIntensityValues([data.psd])
+		if (this.axisX && this.axisY && this.lineSeries) {
+			setIntervalSpectrumAxisXY(this.axisY, this.lineSeries)
+		}
 		console.log('updateDataPanorama')
 	}
 }
