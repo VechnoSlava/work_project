@@ -1,30 +1,39 @@
-import styles from './formFiltersSideMenu.module.css'
+import styles from './formFiltersMain.module.css'
 import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
 import { InputFilterForm } from '../../../shared/inputs/inputFilterForm'
 import { FieldAccordion } from '../../../entities/fieldFilters'
 import { SelectFrequency } from '../../../entities/selectFrequency'
 
-interface IFormFilters {
-	minFrequency: Number
-	maxFrequency: Number
-	metricPrefix: Number
+interface IFormFiltersMain {
+	minFrequency: number
+	maxFrequency: number
+	metricPrefix: string
 	deleteFilter: boolean
-	minT: Number
-	maxT: Number
+	minT: number
+	maxT: number
 }
 
-export const FormFiltersSideMenu = () => {
+export const FormFiltersMain = () => {
 	const {
 		handleSubmit,
 		formState: { errors },
 		control,
-		register,
-	} = useForm<IFormFilters>({
+	} = useForm<IFormFiltersMain>({
 		mode: 'all',
+		defaultValues: {
+			minFrequency: 0,
+			maxFrequency: 0,
+			metricPrefix: '1000000',
+			deleteFilter: false,
+			minT: 0,
+			maxT: 0,
+		},
 	})
 
-	const onSubmit: SubmitHandler<IFormFilters> = data => console.log('data:', data)
-	const onError: SubmitErrorHandler<IFormFilters> = data => console.log('error:', data)
+	const onSubmit: SubmitHandler<IFormFiltersMain> = data => console.log('data:', data)
+	const onError: SubmitErrorHandler<IFormFiltersMain> = data => console.log('error:', data)
+
+	console.log('renderForm')
 
 	return (
 		<>
@@ -32,20 +41,19 @@ export const FormFiltersSideMenu = () => {
 				<FieldAccordion nameField="Фильтрация по частоте" id="frequency_field">
 					<Controller
 						name="minFrequency"
-						rules={{ required: 'Поле обязательно для ввода' }}
 						control={control}
+						rules={{ required: 'Поле обязательно для ввода' }}
 						render={({ field }) => (
 							<InputFilterForm
+								{...field}
 								size="small"
 								label="Начало"
-								{...field}
-								// helperText={
-								// 	errors.minFrequency ? errors.minFrequency?.message : 'Начальная частота'
-								// }
+								placeholder="Введите частоту"
+								// onChange={e => field.onChange(Number(e.target.value))}
+								helperText={errors?.minFrequency?.message}
 								error={!!errors.minFrequency}
 								sx={{
 									marginRight: '10px',
-									width: '180px',
 								}}
 							/>
 						)}
@@ -53,15 +61,18 @@ export const FormFiltersSideMenu = () => {
 					<Controller
 						name="maxFrequency"
 						control={control}
+						rules={{ required: 'Поле обязательно для ввода' }}
 						render={({ field }) => (
 							<InputFilterForm
 								{...field}
+								// onChange={e => field.onChange(Number(e.target.value))}
 								size="small"
 								label="Конец"
-								// helperText={errors.maxFrequency ? errors.maxFrequency?.message : 'Конечная частота'}
+								placeholder="Введите частоту"
+								helperText={errors?.maxFrequency?.message}
+								error={!!errors.maxFrequency}
 								sx={{
 									marginRight: '10px',
-									width: '180px',
 								}}
 							/>
 						)}
@@ -69,9 +80,17 @@ export const FormFiltersSideMenu = () => {
 					<Controller
 						name="metricPrefix"
 						control={control}
-						render={({ field }) => <SelectFrequency inputRef={register} {...field} />}
+						render={({ field }) => (
+							<SelectFrequency
+								{...field}
+								sx={{
+									minWidth: '80px',
+								}}
+							/>
+						)}
 					/>
 				</FieldAccordion>
+
 				<FieldAccordion nameField="Фильтрация по длительности импульса" id="pulseTime_field">
 					<Controller
 						name="minT"

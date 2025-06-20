@@ -2,7 +2,8 @@ import Box from '@mui/material/Box'
 import Drawer from '@mui/material/Drawer'
 import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
 import { selectSideMenuOpened, toggleSideMenu } from '../model/sideMenuSlice'
-import { FormFiltersSideMenu } from '../../../features/formFiltersSideMenu'
+import { FormFiltersMain } from '../../../features/formFiltersMain'
+import { FormTest } from '../../../features/formTest'
 
 export const SideMenuFilters = () => {
 	const dispatch = useAppDispatch()
@@ -13,7 +14,8 @@ export const SideMenuFilters = () => {
 
 	const DrawerList = (
 		<Box sx={{ width: 500, height: '100vh', backgroundColor: '#0e3753' }} role="presentation">
-			<FormFiltersSideMenu />
+			<FormFiltersMain />
+			<FormTest />
 		</Box>
 	)
 	return (

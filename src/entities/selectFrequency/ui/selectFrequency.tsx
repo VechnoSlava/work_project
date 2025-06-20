@@ -1,7 +1,13 @@
+import { forwardRef } from 'react'
 import { MenuItem, TextFieldProps } from '@mui/material'
 import { InputFilterForm } from '../../../shared/inputs/inputFilterForm'
 
-const frequencyNames = [
+interface FrequencyOption {
+	value: string
+	label: string
+}
+
+const frequencyNames: FrequencyOption[] = [
 	{
 		value: '1',
 		label: 'Гц',
@@ -20,23 +26,30 @@ const frequencyNames = [
 	},
 ]
 
-export const SelectFrequency = ({ ...props }) => {
+const menuItems = frequencyNames.map((option, index) => (
+	<MenuItem key={index} value={option.value}>
+		{option.label}
+	</MenuItem>
+))
+
+export const SelectFrequency = forwardRef<HTMLDivElement, TextFieldProps>((props, ref) => {
 	return (
 		<InputFilterForm
 			id="outlined-select-frequency"
 			label="Ед. изм."
 			select
 			size="small"
-			defaultValue="МГц"
-			sx={{
-				width: '90px',
-			}}
+			defaultValue="1000000"
+			// sx={{
+			// 	// width: '20%',
+			// 	minWidth: '20%',
+			// }}
+			ref={ref}
+			{...props}
 		>
-			{frequencyNames.map(option => (
-				<MenuItem key={option.value} value={option.value}>
-					{option.label}
-				</MenuItem>
-			))}
+			{menuItems}
 		</InputFilterForm>
 	)
-}
+})
+
+SelectFrequency.displayName = 'SelectFrequency'

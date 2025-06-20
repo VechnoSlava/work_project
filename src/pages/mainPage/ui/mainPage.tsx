@@ -1,16 +1,15 @@
 import styles from './mainPage.module.css'
 import { useAppSelector } from '../../../app/store/hooks'
 import { selectModeSecondWindow } from '../../../widgets/header/model/controlModesSlice'
-import { CurrentTargetsTable } from '../../../widgets/currentTargetsTable'
 import { SplitFrame } from '../../../entities/splitFrame'
 import { MainMap } from '../../../widgets/mainMap'
 import { useState, useEffect } from 'react'
 import { RadarsTable } from '../../../widgets/radarsTable'
 import { SpectrumPanorama } from '../../../widgets/spectrumPanorama'
-import { PulsesTable } from '../../../widgets/pulsesTable'
 import { RadarPulsesChart } from '../../../widgets/radarPulsesBarChart'
 import { PulsesGridTable } from '../../../widgets/pulsesGridTable'
 import { InfoChartRadarPulse } from '../../../widgets/infoChartRadarPulse'
+import { FormFiltersMain } from '../../../features/formFiltersMain'
 
 export const MainPage = () => {
 	console.log('RENDER MAIN_PAGE')
@@ -26,7 +25,9 @@ export const MainPage = () => {
 		<div className={styles.container}>
 			<SplitFrame frameDirection="vertical" key={key}>
 				<SplitFrame frameDirection="horizontal" key={102}>
-					{secondWindowOpened ? null : <MainMap key={1} />}
+					{/* {secondWindowOpened ? null : <MainMap key={1} />} */}
+					<FormFiltersMain />
+
 					<RadarsTable key={2} />
 					<SpectrumPanorama key={3} />
 				</SplitFrame>
