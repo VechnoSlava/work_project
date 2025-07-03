@@ -10,6 +10,7 @@ import { RadarPulsesChart } from '../../../widgets/radarPulsesBarChart'
 import { PulsesGridTable } from '../../../widgets/pulsesGridTable'
 import { InfoChartRadarPulse } from '../../../widgets/infoChartRadarPulse'
 import { FormFiltersMain } from '../../../features/formFiltersMain'
+import { FormFiltersHistory } from '../../../features/formFiltersHistory'
 
 export const MainPage = () => {
 	console.log('RENDER MAIN_PAGE')
@@ -26,7 +27,7 @@ export const MainPage = () => {
 			<SplitFrame frameDirection="vertical" key={key}>
 				<SplitFrame frameDirection="horizontal" key={102}>
 					{/* {secondWindowOpened ? null : <MainMap key={1} />} */}
-					<FormFiltersMain />
+					<FormFiltersHistory />
 
 					<RadarsTable key={2} />
 					<SpectrumPanorama key={3} />
