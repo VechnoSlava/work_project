@@ -6,6 +6,7 @@
 .accordion__details {
 	padding: 5px;
 	display: flex;
-	align-items: start;
-	justify-content: space-between;
+	align-items: center;
+	/* justify-content: space-between; */
+	flex-direction: column;
 }

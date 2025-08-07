@@ -20,6 +20,7 @@
 		"@emotion/react": "^11.14.0",
 		"@emotion/styled": "^11.14.0",
 		"@fontsource/roboto": "^5.0.13",
+		"@hookform/resolvers": "^5.1.1",
 		"@lightningchart/lcjs": "^7.0.2",
 		"@lightningchart/lcjs-themes": "^5.0.1",
 		"@mui/material": "^7.0.1",
@@ -37,7 +38,7 @@
 		"redux-state-sync": "^3.1.4",
 		"split.js": "^1.6.5",
 		"timemachine": "^0.3.2",
-		"zod": "^3.25.67"
+		"zod": "^3.25.74"
 	},
 	"devDependencies": {
 		"@testing-library/dom": "^9.3.4",

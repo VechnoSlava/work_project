@@ -1,8 +1,37 @@
 .formFilters {
 	display: flex;
 	flex-direction: column;
+	box-sizing: border-box;
 	width: 100%;
-	.buttonSubmit {
+	padding: 10px;
+
+	// align-items: center;
+	// justify-content: center;
+	.item {
+		padding: 5px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		// flex-direction: column;
+	}
+	.addFrequencyBand {
 		width: 100%;
 	}
+	.buttonSubmit {
+		// width: 100%;
+		align-items: center;
+	}
+}
+
+.item_li {
+	padding: 5px;
+	display: flex;
+	align-items: start;
+	justify-content: center;
+	// margin: auto 0;
+}
+
+.buttonAddBand {
+	display: block;
+	align-items: center;
 }

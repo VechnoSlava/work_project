@@ -1,26 +1,32 @@
-import { TextField } from '@mui/material'
 import { FC } from 'react'
 import { useFormContext, Controller } from 'react-hook-form'
 import { SelectFrequency } from '../../selectFrequency'
 
-interface IControlledSelect {
+interface ControlledSelectFieldProps {
 	name: string
+	label?: string
+	sx?: React.CSSProperties
 }
 
-export const ControlledSelectField: FC<IControlledSelect> = ({ name }) => {
-	const {
-		control,
-		formState: { errors },
-	} = useFormContext()
+export const ControlledSelectField: FC<ControlledSelectFieldProps> = ({
+	name,
+	label = 'Ед. изм.',
+	sx = {},
+}) => {
+	const { control } = useFormContext()
 	return (
 		<Controller
 			name={name}
 			control={control}
+			defaultValue="1000000"
 			render={({ field }) => (
 				<SelectFrequency
 					{...field}
+					label={label}
 					sx={{
 						minWidth: '80px',
+						marginRight: '5px',
+						...sx,
 					}}
 				/>
 			)}
