@@ -45,6 +45,7 @@ export const ControlledFilterField: FC<ControlledFilterFieldProps> = ({
 		<Controller
 			control={control}
 			name={name}
+			defaultValue=""
 			render={({ field }) => (
 				<InputFilterForm
 					{...field}
@@ -55,6 +56,7 @@ export const ControlledFilterField: FC<ControlledFilterFieldProps> = ({
 					placeholder={placeholder}
 					error={!!fieldError}
 					helperText={fieldError?.message as string}
+					required
 					sx={{
 						marginBottom: '10px',
 						marginRight: '5px',

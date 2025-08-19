@@ -4,12 +4,14 @@ import { SelectFrequency } from '../../selectFrequency'
 
 interface ControlledSelectFieldProps {
 	name: string
+	defaultValue?: string
 	label?: string
 	sx?: React.CSSProperties
 }
 
 export const ControlledSelectField: FC<ControlledSelectFieldProps> = ({
 	name,
+	defaultValue,
 	label = 'Ед. изм.',
 	sx = {},
 }) => {
@@ -18,7 +20,7 @@ export const ControlledSelectField: FC<ControlledSelectFieldProps> = ({
 		<Controller
 			name={name}
 			control={control}
-			defaultValue="1000000"
+			defaultValue={defaultValue}
 			render={({ field }) => (
 				<SelectFrequency
 					{...field}

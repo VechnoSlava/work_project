@@ -1,17 +1,22 @@
 import * as z from 'zod/v4'
 
 // Схема для одного диапазона частот
-const bandSchema = z.object({
-	start: z
-		.string()
-		.min(1, 'Обязательное поле')
-		.regex(/^(?:(?:0|[1-9]\d*)(?:\.\d+)?|0\.\d*[1-9]\d*)$/, 'Введите положительное число'),
-	stop: z
-		.string()
-		.min(1, 'Обязательное поле')
-		.regex(/^(?:(?:0|[1-9]\d*)(?:\.\d+)?|0\.\d*[1-9]\d*)$/, 'Введите положительное число'),
-	metricPrefix: z.string().refine(val => !isNaN(Number(val))),
-})
+const bandSchema = z
+	.object({
+		start: z
+			.string()
+			.min(1, 'Обязательное поле')
+			.regex(/^(?:(?:0|[1-9]\d*)(?:\.\d+)?|0\.\d*[1-9]\d*)$/, 'Введите положительное число'),
+		stop: z
+			.string()
+			.min(1, 'Обязательное поле')
+			.regex(/^(?:(?:0|[1-9]\d*)(?:\.\d+)?|0\.\d*[1-9]\d*)$/, 'Введите положительное число'),
+		metricPrefix: z.string().refine(val => !isNaN(Number(val))),
+	})
+	.refine(data => parseFloat(data.stop) > parseFloat(data.start), {
+		message: 'Конец диапазона должен быть больше начала',
+		path: ['stop'],
+	})
 
 const freqFilterSchema = z.object({
 	key: z.number(),
