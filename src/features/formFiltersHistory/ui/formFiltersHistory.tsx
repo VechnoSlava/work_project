@@ -8,7 +8,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { RiAddLargeFill, RiCloseLargeFill } from 'react-icons/ri'
 import { ButtonAddBand, ButtonDeleteFilter, ButtonSendForm } from '../../../shared/buttons'
 import { AiOutlineFileDone } from 'react-icons/ai'
-import { RHFTextField } from '../../../entities/RHFTextField'
 
 export const FormFiltersHistory = () => {
 	console.log('RenderFormHistory')
@@ -62,34 +61,23 @@ export const FormFiltersHistory = () => {
 				<FieldAccordion nameField="Фильтрация по частоте" id="freqFilter">
 					{fields.map((field, index) => (
 						<div key={field.id} className={styles.item_li}>
-							{/* <ControlledFilterField
+							<ControlledFilterField
 								name={`freqFilter.bands.${index}.start`}
 								label="Начало"
 								placeholder="мин. частота"
 								fullWidth={true}
-							/> */}
-							{/* <ControlledFilterField
-								name={`freqFilter.bands.${index}.stop`}
-								label="Конец"
-								placeholder="макс. частота"
-								fullWidth={true}
-							/> */}
-							<RHFTextField
-								name={`freqFilter.bands.${index}.start`}
-								label="Начало"
-								placeholder="мин. частота"
 							/>
-							<RHFTextField
+							<ControlledFilterField
 								name={`freqFilter.bands.${index}.stop`}
 								label="Конец"
 								placeholder="макс. частота"
+								fullWidth={true}
 							/>
 							<ControlledSelectField
 								name={`freqFilter.bands.${index}.metricPrefix`}
-								// defaultValue="1000000"
 								sx={{ minWidth: '80px' }}
 							/>
-							<ButtonDeleteFilter onClick={() => remove(index)}>
+							<ButtonDeleteFilter onClick={() => remove(index)} type="button">
 								<RiCloseLargeFill />
 							</ButtonDeleteFilter>
 						</div>

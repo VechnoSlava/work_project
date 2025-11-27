@@ -5,6 +5,8 @@ export const ButtonDeleteFilter = styled(IconButton)(({ theme }) => ({
 	border: '1px solid ',
 	borderColor: '#404041',
 	borderRadius: '5px',
+	width: '40px',
+	height: '40px',
 	'&:hover': {
 		color: '#ff0000ff',
 		borderColor: '#8b8f94',

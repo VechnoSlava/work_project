@@ -38,10 +38,8 @@ export const SelectFrequency = forwardRef<HTMLDivElement, TextFieldProps>((props
 			id="outlined-select-frequency"
 			label="Ед. изм."
 			select
-			// ref={ref}
-			inputRef={ref}
+			ref={ref}
 			size="small"
-			// defaultValue="1000000"
 			{...props}
 		>
 			{menuItems}

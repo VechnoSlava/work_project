@@ -27,7 +27,7 @@ export const MainPage = () => {
 			<SplitFrame frameDirection="vertical" key={key}>
 				<SplitFrame frameDirection="horizontal" key={102}>
 					{/* {secondWindowOpened ? null : <MainMap key={1} />} */}
-					<FormFiltersHistory />
+					<FormFiltersMain key={1} />
 
 					<RadarsTable key={2} />
 					<SpectrumPanorama key={3} />

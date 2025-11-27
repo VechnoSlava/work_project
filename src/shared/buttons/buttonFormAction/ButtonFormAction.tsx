@@ -1,6 +1,6 @@
 import { Button, ButtonProps, styled } from '@mui/material'
 
-export const ButtonSend = styled(Button)(({ theme }) => ({
+export const StyledButton = styled(Button)(({ theme }) => ({
 	color: theme.palette.text.secondary,
 	border: `1px solid ${theme.palette.divider}`,
 	borderRadius: '5px',
@@ -11,10 +11,10 @@ export const ButtonSend = styled(Button)(({ theme }) => ({
 	},
 }))
 
-export const ButtonSendForm = ({ children, ...props }: ButtonProps) => {
+export const ButtonFormAction = ({ children, ...props }: ButtonProps) => {
 	return (
-		<ButtonSend type="submit" variant="outlined" {...props}>
+		<StyledButton variant="outlined" {...props}>
 			{children}
-		</ButtonSend>
+		</StyledButton>
 	)
 }
