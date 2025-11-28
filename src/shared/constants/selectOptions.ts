@@ -36,3 +36,18 @@ export const timeDurationOptions: Option[] = [
 		label: 'нс',
 	},
 ]
+
+export const periodPulseOptions: Option[] = [
+	{
+		value: '0.001',
+		label: 'мс',
+	},
+	{
+		value: '0.000001',
+		label: 'мкс',
+	},
+	{
+		value: '0.000000001',
+		label: 'нс',
+	},
+]

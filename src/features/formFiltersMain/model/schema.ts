@@ -34,11 +34,20 @@ const pulseDurationFilterSchema = z.object({
 	units: z.record(z.string(), z.string()),
 	bands: z.array(bandSchema),
 })
+// Схема для диапазона частот
+const pulsePeriodFilterSchema = z.object({
+	key: z.number(),
+	filterLabel: z.string(),
+	templateType: z.string(),
+	units: z.record(z.string(), z.string()),
+	bands: z.array(bandSchema),
+})
 
 // Схема валидации
 export const schemaMainFiltersForm = z.object({
 	freqFilter: freqFilterSchema,
 	pulseDurationFilter: pulseDurationFilterSchema,
+	pulsePeriodFilter: pulsePeriodFilterSchema,
 })
 
 // Приведение типов схемы

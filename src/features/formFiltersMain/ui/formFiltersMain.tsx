@@ -14,11 +14,15 @@ import { ButtonAddBand, ButtonDeleteFilter, ButtonFormAction } from '../../../sh
 import { RiAddLargeFill, RiCloseLargeFill } from 'react-icons/ri'
 import { AiOutlineDelete, AiOutlineFileDone } from 'react-icons/ai'
 import { RHFSelect } from '../../../entities/RHFSelect/ui/RHFSelect'
-import { frequencyOptions, timeDurationOptions } from '../../../shared/constants/selectOptions'
+import {
+	frequencyOptions,
+	periodPulseOptions,
+	timeDurationOptions,
+} from '../../../shared/constants/selectOptions'
 import { Stack } from '@mui/material'
 import { useCallback } from 'react'
 
-const defaultValues = {
+const defaultValues: TypeSchemaMainFiltersForm = {
 	freqFilter: {
 		key: 0,
 		filterLabel: 'Фильтрация по частоте',
@@ -34,6 +38,17 @@ const defaultValues = {
 	pulseDurationFilter: {
 		key: 1,
 		filterLabel: 'Фильтрация по длительности импульса',
+		templateType: 'bands',
+		units: {
+			'0.001': 'мс',
+			'0.000001': 'мкс',
+			'0.000000001': 'нс',
+		},
+		bands: [],
+	},
+	pulsePeriodFilter: {
+		key: 2,
+		filterLabel: 'Фильтрация по периоду следования импульсов',
 		templateType: 'bands',
 		units: {
 			'0.001': 'мс',
@@ -72,21 +87,22 @@ export const FormFiltersMain = () => {
 		name: 'pulseDurationFilter.bands',
 	})
 
+	// Управление диапазонами для фильтра длительности импульса
+	const {
+		fields: pulsePeriodFields,
+		append: appendPeriodPulse,
+		remove: removePeriodPulse,
+	} = useFieldArray({
+		control: methods.control,
+		name: 'pulsePeriodFilter.bands',
+	})
+
 	// const appendBandFrequency = () => {
 	// 	appendFreq({ start: '', stop: '', metricPrefix: '1000000' })
 	// }
 	// const appendBandPulseDuration = () => {
 	// 	appendPulseDuration({ start: '', stop: '', metricPrefix: '0.000001' })
 	// }
-
-	// Оптимизированные версии функций с useCallback
-	const appendBandFrequency = useCallback(() => {
-		appendFreq({ start: '', stop: '', metricPrefix: '1000000' }, { shouldFocus: false })
-	}, [appendFreq])
-
-	const appendBandPulseDuration = useCallback(() => {
-		appendPulseDuration({ start: '', stop: '', metricPrefix: '0.000001' }, { shouldFocus: false })
-	}, [appendPulseDuration])
 
 	// const onSubmit: SubmitHandler<TypeSchemaMainFiltersForm> = data => {
 	// 	const transformedData = {
@@ -108,6 +124,19 @@ export const FormFiltersMain = () => {
 	// 	}
 	// 	console.log('Submitted data:', transformedData)
 	// }
+
+	// Оптимизированные версии функций с useCallback
+	const appendBandFrequency = useCallback(() => {
+		appendFreq({ start: '', stop: '', metricPrefix: '1000000' }, { shouldFocus: false })
+	}, [appendFreq])
+
+	const appendBandPulseDuration = useCallback(() => {
+		appendPulseDuration({ start: '', stop: '', metricPrefix: '0.000001' }, { shouldFocus: false })
+	}, [appendPulseDuration])
+
+	const appendBandPeriodPulse = useCallback(() => {
+		appendPeriodPulse({ start: '', stop: '', metricPrefix: '0.000001' }, { shouldFocus: false })
+	}, [appendPeriodPulse])
 
 	const onSubmit: SubmitHandler<TypeSchemaMainFiltersForm> = useCallback(data => {
 		const transformedData = {
@@ -211,6 +240,45 @@ export const FormFiltersMain = () => {
 						variant="outlined"
 						startIcon={<RiAddLargeFill />}
 						onClick={appendBandPulseDuration}
+						className={styles.buttonAddBand}
+					>
+						Добавить диапазон
+					</ButtonAddBand>
+				</FieldAccordion>
+
+				<FieldAccordion
+					nameField="Фильтрация по периоду следования импульсов"
+					id="pulsePeriod_field"
+				>
+					{pulsePeriodFields.map((field, index) => (
+						<div key={field.id} className={styles.formItem}>
+							<RHFTextField
+								name={`pulsePeriodFilter.bands.${index}.start`}
+								id={`pulsePeriod-start-${index}`}
+								label="Начало"
+								placeholder="мин. длительность"
+							/>
+							<RHFTextField
+								name={`pulsePeriodFilter.bands.${index}.stop`}
+								id={`pulsePeriod-stop-${index}`}
+								label="Конец"
+								placeholder="макс. длительность"
+							/>
+							<RHFSelect
+								name={`pulsePeriodFilter.bands.${index}.metricPrefix`}
+								id={`pulsePeriod-metric-${index}`}
+								label="Ед. изм."
+								options={periodPulseOptions}
+							/>
+							<ButtonDeleteFilter onClick={() => removePeriodPulse(index)} type="button">
+								<RiCloseLargeFill />
+							</ButtonDeleteFilter>
+						</div>
+					))}
+					<ButtonAddBand
+						variant="outlined"
+						startIcon={<RiAddLargeFill />}
+						onClick={appendBandPeriodPulse}
 						className={styles.buttonAddBand}
 					>
 						Добавить диапазон
