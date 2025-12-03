@@ -1,4 +1,5 @@
 import * as z from 'zod/v4'
+import dayjs from 'dayjs'
 
 // Схема для одного диапазона частот
 const bandSchema = z
@@ -43,12 +44,33 @@ const pulsePeriodFilterSchema = z.object({
 	bands: z.array(bandSchema),
 })
 
-const calendarFilterSchema = z.object({
-	key: z.number(),
-	filterLabel: z.string(),
-	templateType: z.string(),
-	bands: z.array(z.date()),
-})
+// Схема для календарного фильтра (ИЗМЕНЕНО)
+const calendarFilterSchema = z
+	.object({
+		key: z.number(),
+		filterLabel: z.string(),
+		templateType: z.string(),
+		// Заменяем массив дат на два отдельных поля для диапазона
+		startDate: z.any().refine(val => val === null || dayjs.isDayjs(val), {
+			message: 'Некорректный формат даты',
+		}),
+		endDate: z.any().refine(val => val === null || dayjs.isDayjs(val), {
+			message: 'Некорректный формат даты',
+		}),
+	})
+	.refine(
+		data => {
+			// Валидация: дата окончания должна быть позже даты начала (если обе выбраны)
+			if (data.startDate && data.endDate) {
+				return data.endDate.isAfter(data.startDate)
+			}
+			return true
+		},
+		{
+			message: 'Дата окончания должна быть позже даты начала',
+			path: ['endDate'],
+		},
+	)
 
 // Схема валидации
 export const schemaMainFiltersForm = z.object({

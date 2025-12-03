@@ -1,4 +1,7 @@
 import styles from './formFiltersMain.module.scss'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import 'dayjs/locale/ru' // или ваш локаль
 import {
 	FormProvider,
 	SubmitErrorHandler,
@@ -60,9 +63,10 @@ const defaultValues: TypeSchemaMainFiltersForm = {
 	},
 	calendarFilter: {
 		key: 3,
-		filterLabel: 'Фильтрация по дате',
+		filterLabel: 'Фильтрация по дате и времени',
 		templateType: 'calendar',
-		bands: [],
+		startDate: null, // Значение Dayjs | null
+		endDate: null, // Значение Dayjs | null
 	},
 }
 
@@ -143,7 +147,6 @@ export const FormFiltersMain = () => {
 			},
 			calendarFilter: {
 				...data.calendarFilter,
-				bands: data.calendarFilter.bands,
 			},
 		}
 		console.log('Submitted data:', transformedData)
@@ -159,132 +162,137 @@ export const FormFiltersMain = () => {
 	}, [methods, onSubmit])
 
 	return (
-		<FormProvider {...methods}>
-			<form className={styles.formFilters} onSubmit={methods.handleSubmit(onSubmit, onError)}>
-				<FieldAccordion nameField="Фильтрация по частоте" id="frequency_field">
-					{freqFields.map((field, index) => (
-						<div key={field.id} className={styles.formItem}>
-							<RHFTextField
-								name={`freqFilter.bands.${index}.start`}
-								id={`freq-start-${index}`}
-								label="Начало"
-								placeholder="мин. частота"
-							/>
-							<RHFTextField
-								name={`freqFilter.bands.${index}.stop`}
-								id={`freq-stop-${index}`}
-								label="Конец"
-								placeholder="макс. частота"
-							/>
-							<RHFSelect
-								name={`freqFilter.bands.${index}.metricPrefix`}
-								id={`freq-metric-${index}`}
-								label="Ед. изм."
-								options={frequencyOptions}
-							/>
-							<ButtonDeleteFilter onClick={() => removeFreq(index)} type="button">
-								<RiCloseLargeFill />
-							</ButtonDeleteFilter>
-						</div>
-					))}
-					<ButtonAddBand
-						variant="outlined"
-						startIcon={<RiAddLargeFill />}
-						onClick={appendBandFrequency}
-						className={styles.buttonAddBand}
+		<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'ru'}>
+			<FormProvider {...methods}>
+				<form className={styles.formFilters} onSubmit={methods.handleSubmit(onSubmit, onError)}>
+					<FieldAccordion nameField="Фильтрация по частоте" id="frequency_field">
+						{freqFields.map((field, index) => (
+							<div key={field.id} className={styles.formItem}>
+								<RHFTextField
+									name={`freqFilter.bands.${index}.start`}
+									id={`freq-start-${index}`}
+									label="Начало"
+									placeholder="мин. частота"
+								/>
+								<RHFTextField
+									name={`freqFilter.bands.${index}.stop`}
+									id={`freq-stop-${index}`}
+									label="Конец"
+									placeholder="макс. частота"
+								/>
+								<RHFSelect
+									name={`freqFilter.bands.${index}.metricPrefix`}
+									id={`freq-metric-${index}`}
+									label="Ед. изм."
+									options={frequencyOptions}
+								/>
+								<ButtonDeleteFilter onClick={() => removeFreq(index)} type="button">
+									<RiCloseLargeFill />
+								</ButtonDeleteFilter>
+							</div>
+						))}
+						<ButtonAddBand
+							variant="outlined"
+							startIcon={<RiAddLargeFill />}
+							onClick={appendBandFrequency}
+							className={styles.buttonAddBand}
+						>
+							Добавить диапазон
+						</ButtonAddBand>
+					</FieldAccordion>
+
+					<FieldAccordion nameField="Фильтрация по длительности импульса" id="pulseDuration_field">
+						{pulseDurationFields.map((field, index) => (
+							<div key={field.id} className={styles.formItem}>
+								<RHFTextField
+									name={`pulseDurationFilter.bands.${index}.start`}
+									id={`pulseDuration-start-${index}`}
+									label="Начало"
+									placeholder="мин. длительность"
+								/>
+								<RHFTextField
+									name={`pulseDurationFilter.bands.${index}.stop`}
+									id={`pulseDuration-stop-${index}`}
+									label="Конец"
+									placeholder="макс. длительность"
+								/>
+								<RHFSelect
+									name={`pulseDurationFilter.bands.${index}.metricPrefix`}
+									id={`pulseDuration-metric-${index}`}
+									label="Ед. изм."
+									options={timeDurationOptions}
+								/>
+								<ButtonDeleteFilter onClick={() => removePulseDuration(index)} type="button">
+									<RiCloseLargeFill />
+								</ButtonDeleteFilter>
+							</div>
+						))}
+						<ButtonAddBand
+							variant="outlined"
+							startIcon={<RiAddLargeFill />}
+							onClick={appendBandPulseDuration}
+							className={styles.buttonAddBand}
+						>
+							Добавить диапазон
+						</ButtonAddBand>
+					</FieldAccordion>
+
+					<FieldAccordion
+						nameField="Фильтрация по периоду следования импульсов"
+						id="pulsePeriod_field"
 					>
-						Добавить диапазон
-					</ButtonAddBand>
-				</FieldAccordion>
+						{pulsePeriodFields.map((field, index) => (
+							<div key={field.id} className={styles.formItem}>
+								<RHFTextField
+									name={`pulsePeriodFilter.bands.${index}.start`}
+									id={`pulsePeriod-start-${index}`}
+									label="Начало"
+									placeholder="мин. длительность"
+								/>
+								<RHFTextField
+									name={`pulsePeriodFilter.bands.${index}.stop`}
+									id={`pulsePeriod-stop-${index}`}
+									label="Конец"
+									placeholder="макс. длительность"
+								/>
+								<RHFSelect
+									name={`pulsePeriodFilter.bands.${index}.metricPrefix`}
+									id={`pulsePeriod-metric-${index}`}
+									label="Ед. изм."
+									options={periodPulseOptions}
+								/>
+								<ButtonDeleteFilter onClick={() => removePeriodPulse(index)} type="button">
+									<RiCloseLargeFill />
+								</ButtonDeleteFilter>
+							</div>
+						))}
+						<ButtonAddBand
+							variant="outlined"
+							startIcon={<RiAddLargeFill />}
+							onClick={appendBandPeriodPulse}
+							className={styles.buttonAddBand}
+						>
+							Добавить диапазон
+						</ButtonAddBand>
+					</FieldAccordion>
 
-				<FieldAccordion nameField="Фильтрация по длительности импульса" id="pulseDuration_field">
-					{pulseDurationFields.map((field, index) => (
-						<div key={field.id} className={styles.formItem}>
-							<RHFTextField
-								name={`pulseDurationFilter.bands.${index}.start`}
-								id={`pulseDuration-start-${index}`}
-								label="Начало"
-								placeholder="мин. длительность"
-							/>
-							<RHFTextField
-								name={`pulseDurationFilter.bands.${index}.stop`}
-								id={`pulseDuration-stop-${index}`}
-								label="Конец"
-								placeholder="макс. длительность"
-							/>
-							<RHFSelect
-								name={`pulseDurationFilter.bands.${index}.metricPrefix`}
-								id={`pulseDuration-metric-${index}`}
-								label="Ед. изм."
-								options={timeDurationOptions}
-							/>
-							<ButtonDeleteFilter onClick={() => removePulseDuration(index)} type="button">
-								<RiCloseLargeFill />
-							</ButtonDeleteFilter>
+					<FieldAccordion nameField="Фильтрация по дате и времени" id="filterDate_field">
+						<div style={{ display: 'flex', gap: '20px', marginBottom: '10px' }}>
+							<RHFDateTimePicker name="calendarFilter.startDate" label="Начало периода" />
+							<RHFDateTimePicker name="calendarFilter.endDate" label="Окончание периода" />
 						</div>
-					))}
-					<ButtonAddBand
-						variant="outlined"
-						startIcon={<RiAddLargeFill />}
-						onClick={appendBandPulseDuration}
-						className={styles.buttonAddBand}
-					>
-						Добавить диапазон
-					</ButtonAddBand>
-				</FieldAccordion>
+					</FieldAccordion>
 
-				<FieldAccordion
-					nameField="Фильтрация по периоду следования импульсов"
-					id="pulsePeriod_field"
-				>
-					{pulsePeriodFields.map((field, index) => (
-						<div key={field.id} className={styles.formItem}>
-							<RHFTextField
-								name={`pulsePeriodFilter.bands.${index}.start`}
-								id={`pulsePeriod-start-${index}`}
-								label="Начало"
-								placeholder="мин. длительность"
-							/>
-							<RHFTextField
-								name={`pulsePeriodFilter.bands.${index}.stop`}
-								id={`pulsePeriod-stop-${index}`}
-								label="Конец"
-								placeholder="макс. длительность"
-							/>
-							<RHFSelect
-								name={`pulsePeriodFilter.bands.${index}.metricPrefix`}
-								id={`pulsePeriod-metric-${index}`}
-								label="Ед. изм."
-								options={periodPulseOptions}
-							/>
-							<ButtonDeleteFilter onClick={() => removePeriodPulse(index)} type="button">
-								<RiCloseLargeFill />
-							</ButtonDeleteFilter>
-						</div>
-					))}
-					<ButtonAddBand
-						variant="outlined"
-						startIcon={<RiAddLargeFill />}
-						onClick={appendBandPeriodPulse}
-						className={styles.buttonAddBand}
-					>
-						Добавить диапазон
-					</ButtonAddBand>
-				</FieldAccordion>
-
-				<FieldAccordion nameField="Фильтрация по дате" id="filterDate_field">
-					<RHFDateTimePicker name={`calendarFilter.bands.${0}`} label="date" />
-				</FieldAccordion>
-
-				<Stack direction={'row'} justifyContent="center" spacing={2}>
-					<ButtonFormAction startIcon={<AiOutlineFileDone />} type="submit">
-						Применить
-					</ButtonFormAction>
-					<ButtonFormAction startIcon={<AiOutlineDelete />} type="button" onClick={resetFilters}>
-						Сброс фильтров
-					</ButtonFormAction>
-				</Stack>
-			</form>
-		</FormProvider>
+					<Stack direction={'row'} justifyContent="center" spacing={2}>
+						<ButtonFormAction startIcon={<AiOutlineFileDone />} type="submit">
+							Применить
+						</ButtonFormAction>
+						<ButtonFormAction startIcon={<AiOutlineDelete />} type="button" onClick={resetFilters}>
+							Сброс фильтров
+						</ButtonFormAction>
+					</Stack>
+				</form>
+			</FormProvider>
+		</LocalizationProvider>
 	)
 }
