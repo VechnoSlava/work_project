@@ -43,11 +43,19 @@ const pulsePeriodFilterSchema = z.object({
 	bands: z.array(bandSchema),
 })
 
+const calendarFilterSchema = z.object({
+	key: z.number(),
+	filterLabel: z.string(),
+	templateType: z.string(),
+	bands: z.array(z.date()),
+})
+
 // Схема валидации
 export const schemaMainFiltersForm = z.object({
 	freqFilter: freqFilterSchema,
 	pulseDurationFilter: pulseDurationFilterSchema,
 	pulsePeriodFilter: pulsePeriodFilterSchema,
+	calendarFilter: calendarFilterSchema,
 })
 
 // Приведение типов схемы

@@ -28,6 +28,7 @@
 		"@mui/x-date-pickers": "^8.19.0",
 		"@reduxjs/toolkit": "^2.0.1",
 		"@types/react-redux": "^7.1.33",
+		"dayjs": "^1.11.19",
 		"patch-package": "^8.0.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",

@@ -21,6 +21,7 @@ import {
 } from '../../../shared/constants/selectOptions'
 import { Stack } from '@mui/material'
 import { useCallback } from 'react'
+import { RHFDateTimePicker } from '../../../entities/RHFDateTimePicker'
 
 const defaultValues: TypeSchemaMainFiltersForm = {
 	freqFilter: {
@@ -55,6 +56,12 @@ const defaultValues: TypeSchemaMainFiltersForm = {
 			'0.000001': 'мкс',
 			'0.000000001': 'нс',
 		},
+		bands: [],
+	},
+	calendarFilter: {
+		key: 3,
+		filterLabel: 'Фильтрация по дате',
+		templateType: 'calendar',
 		bands: [],
 	},
 }
@@ -97,34 +104,6 @@ export const FormFiltersMain = () => {
 		name: 'pulsePeriodFilter.bands',
 	})
 
-	// const appendBandFrequency = () => {
-	// 	appendFreq({ start: '', stop: '', metricPrefix: '1000000' })
-	// }
-	// const appendBandPulseDuration = () => {
-	// 	appendPulseDuration({ start: '', stop: '', metricPrefix: '0.000001' })
-	// }
-
-	// const onSubmit: SubmitHandler<TypeSchemaMainFiltersForm> = data => {
-	// 	const transformedData = {
-	// 		...data,
-	// 		freqFilter: {
-	// 			...data.freqFilter,
-	// 			bands: data.freqFilter.bands.map(band => ({
-	// 				...band,
-	// 				metricPrefix: Number(band.metricPrefix),
-	// 			})),
-	// 		},
-	// 		pulseDurationFilter: {
-	// 			...data.pulseDurationFilter,
-	// 			bands: data.pulseDurationFilter.bands.map(band => ({
-	// 				...band,
-	// 				metricPrefix: Number(band.metricPrefix),
-	// 			})),
-	// 		},
-	// 	}
-	// 	console.log('Submitted data:', transformedData)
-	// }
-
 	// Оптимизированные версии функций с useCallback
 	const appendBandFrequency = useCallback(() => {
 		appendFreq({ start: '', stop: '', metricPrefix: '1000000' }, { shouldFocus: false })
@@ -155,17 +134,25 @@ export const FormFiltersMain = () => {
 					metricPrefix: Number(band.metricPrefix),
 				})),
 			},
+			pulsePeriodFilter: {
+				...data.pulsePeriodFilter,
+				bands: data.pulsePeriodFilter.bands.map(band => ({
+					...band,
+					metricPrefix: Number(band.metricPrefix),
+				})),
+			},
+			calendarFilter: {
+				...data.calendarFilter,
+				bands: data.calendarFilter.bands,
+			},
 		}
 		console.log('Submitted data:', transformedData)
+
 		// Здесь отправка на сервер
 	}, [])
 
 	const onError: SubmitErrorHandler<TypeSchemaMainFiltersForm> = data => console.log('error:', data)
 
-	// const resetForm = () => {
-	// 	methods.reset(defaultValues)
-	// 	onSubmit(defaultValues as TypeSchemaMainFiltersForm)
-	// }
 	const resetFilters = useCallback(() => {
 		methods.reset(defaultValues)
 		onSubmit(defaultValues as TypeSchemaMainFiltersForm)
@@ -284,6 +271,11 @@ export const FormFiltersMain = () => {
 						Добавить диапазон
 					</ButtonAddBand>
 				</FieldAccordion>
+
+				<FieldAccordion nameField="Фильтрация по дате" id="filterDate_field">
+					<RHFDateTimePicker name={`calendarFilter.bands.${0}`} label="date" />
+				</FieldAccordion>
+
 				<Stack direction={'row'} justifyContent="center" spacing={2}>
 					<ButtonFormAction startIcon={<AiOutlineFileDone />} type="submit">
 						Применить
