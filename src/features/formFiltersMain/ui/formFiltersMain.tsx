@@ -1,4 +1,5 @@
 import styles from './formFiltersMain.module.scss'
+import { useCallback } from 'react'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import 'dayjs/locale/ru' // или ваш локаль
@@ -9,9 +10,9 @@ import {
 	useFieldArray,
 	useForm,
 } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { FieldAccordion } from '../../../entities/fieldFilters'
 import { schemaMainFiltersForm, TypeSchemaMainFiltersForm } from '../model/schema'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { RHFTextField } from '../../../entities/RHFTextField'
 import { ButtonAddBand, ButtonDeleteFilter, ButtonFormAction } from '../../../shared/buttons'
 import { RiAddLargeFill, RiCloseLargeFill } from 'react-icons/ri'
@@ -20,11 +21,12 @@ import { RHFSelect } from '../../../entities/RHFSelect/ui/RHFSelect'
 import {
 	frequencyOptions,
 	periodPulseOptions,
+	selectorTypeOptions,
 	timeDurationOptions,
 } from '../../../shared/constants/selectOptions'
-import { Stack } from '@mui/material'
-import { useCallback } from 'react'
+import { Stack, Box } from '@mui/material'
 import { RHFDateTimePicker } from '../../../entities/RHFDateTimePicker'
+import { RHFRadioGroup } from '../../../entities/RHFRadioGroup'
 
 const defaultValues: TypeSchemaMainFiltersForm = {
 	freqFilter: {
@@ -65,8 +67,20 @@ const defaultValues: TypeSchemaMainFiltersForm = {
 		key: 3,
 		filterLabel: 'Фильтрация по дате и времени',
 		templateType: 'calendar',
-		startDate: null, // Значение Dayjs | null
-		endDate: null, // Значение Dayjs | null
+		bands: [null, null],
+	},
+	selectorFilter: {
+		key: 5,
+		filterLabel: 'Фильтрация по типу целей',
+		templateType: 'selector',
+		units: {
+			'0': 'нет',
+			'1': 'радиоцель',
+			'2': 'эталон',
+			'3': 'импульсная РЛС',
+			'4': 'большебазовая РЛС',
+		},
+		value: '0',
 	},
 }
 
@@ -77,7 +91,7 @@ export const FormFiltersMain = () => {
 		mode: 'all',
 		defaultValues: defaultValues,
 	})
-
+	const { control, setValue, getValues } = methods
 	// Управление диапазонами для частотного фильтра
 	const {
 		fields: freqFields,
@@ -148,14 +162,29 @@ export const FormFiltersMain = () => {
 			calendarFilter: {
 				...data.calendarFilter,
 			},
+			selectorFilter: {
+				...data.selectorFilter,
+			},
 		}
 		console.log('Submitted data:', transformedData)
+		console.log(JSON.stringify(transformedData))
 
 		// Здесь отправка на сервер
 	}, [])
 
 	const onError: SubmitErrorHandler<TypeSchemaMainFiltersForm> = data => console.log('error:', data)
 
+	// Функция для сброса конкретной даты
+	const handleClearDate = useCallback(
+		(index: number) => {
+			const currentBands = [...getValues('calendarFilter.bands')]
+			currentBands[index] = null
+			setValue('calendarFilter.bands', currentBands, { shouldValidate: true })
+		},
+		[getValues, setValue],
+	)
+
+	// Функция сброса всех фильтров
 	const resetFilters = useCallback(() => {
 		methods.reset(defaultValues)
 		onSubmit(defaultValues as TypeSchemaMainFiltersForm)
@@ -276,11 +305,29 @@ export const FormFiltersMain = () => {
 						</ButtonAddBand>
 					</FieldAccordion>
 
-					<FieldAccordion nameField="Фильтрация по дате и времени" id="filterDate_field">
-						<div style={{ display: 'flex', gap: '20px', marginBottom: '10px' }}>
-							<RHFDateTimePicker name="calendarFilter.startDate" label="Начало периода" />
-							<RHFDateTimePicker name="calendarFilter.endDate" label="Окончание периода" />
-						</div>
+					<FieldAccordion nameField="Фильтрация по дате" id="filterDate_field">
+						<Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+							<RHFDateTimePicker
+								name="calendarFilter.bands[0]"
+								label="Начало периода"
+								index={0}
+								onClear={handleClearDate}
+							/>
+							<RHFDateTimePicker
+								name="calendarFilter.bands[1]"
+								label="Окончание периода"
+								index={1}
+								onClear={handleClearDate}
+							/>
+						</Box>
+					</FieldAccordion>
+
+					<FieldAccordion nameField="Фильтрация по типу целей" id="targetType_field">
+						<RHFRadioGroup
+							name="selectorFilter.value"
+							label="Тип цели"
+							options={selectorTypeOptions} // Используйте созданную константу
+						/>
 					</FieldAccordion>
 
 					<Stack direction={'row'} justifyContent="center" spacing={2}>

@@ -1,5 +1,5 @@
 import * as z from 'zod/v4'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 
 // Схема для одного диапазона частот
 const bandSchema = z
@@ -23,7 +23,7 @@ const bandSchema = z
 const freqFilterSchema = z.object({
 	key: z.number(),
 	filterLabel: z.string(),
-	templateType: z.string(),
+	templateType: z.literal('bands'),
 	units: z.record(z.string(), z.string()),
 	bands: z.array(bandSchema),
 })
@@ -31,7 +31,7 @@ const freqFilterSchema = z.object({
 const pulseDurationFilterSchema = z.object({
 	key: z.number(),
 	filterLabel: z.string(),
-	templateType: z.string(),
+	templateType: z.literal('bands'),
 	units: z.record(z.string(), z.string()),
 	bands: z.array(bandSchema),
 })
@@ -39,7 +39,7 @@ const pulseDurationFilterSchema = z.object({
 const pulsePeriodFilterSchema = z.object({
 	key: z.number(),
 	filterLabel: z.string(),
-	templateType: z.string(),
+	templateType: z.literal('bands'),
 	units: z.record(z.string(), z.string()),
 	bands: z.array(bandSchema),
 })
@@ -49,28 +49,37 @@ const calendarFilterSchema = z
 	.object({
 		key: z.number(),
 		filterLabel: z.string(),
-		templateType: z.string(),
-		// Заменяем массив дат на два отдельных поля для диапазона
-		startDate: z.any().refine(val => val === null || dayjs.isDayjs(val), {
-			message: 'Некорректный формат даты',
-		}),
-		endDate: z.any().refine(val => val === null || dayjs.isDayjs(val), {
-			message: 'Некорректный формат даты',
-		}),
+		templateType: z.literal('calendar'),
+		// Массив строк в ISO формате
+		bands: z
+			.array(
+				z.any().refine(val => val === null || dayjs.isDayjs(val), {
+					message: 'Некорректный формат даты',
+				}),
+			)
+			.length(2, 'Должно быть 2 значения даты (начало и конец)'), // Фиксируем длину массива
 	})
 	.refine(
 		data => {
 			// Валидация: дата окончания должна быть позже даты начала (если обе выбраны)
-			if (data.startDate && data.endDate) {
-				return data.endDate.isAfter(data.startDate)
+			if (data.bands[0] && data.bands[1]) {
+				return data.bands[1].isAfter(data.bands[0])
 			}
 			return true
 		},
 		{
 			message: 'Дата окончания должна быть позже даты начала',
-			path: ['endDate'],
+			path: ['bands', 1],
 		},
 	)
+
+const selectorFilterSchema = z.object({
+	key: z.number(),
+	filterLabel: z.string(),
+	templateType: z.literal('selector'), // Фиксируем значение
+	units: z.record(z.string(), z.string()),
+	value: z.string().min(1, 'Выберите тип цели'), // Обязательное поле
+})
 
 // Схема валидации
 export const schemaMainFiltersForm = z.object({
@@ -78,6 +87,7 @@ export const schemaMainFiltersForm = z.object({
 	pulseDurationFilter: pulseDurationFilterSchema,
 	pulsePeriodFilter: pulsePeriodFilterSchema,
 	calendarFilter: calendarFilterSchema,
+	selectorFilter: selectorFilterSchema,
 })
 
 // Приведение типов схемы

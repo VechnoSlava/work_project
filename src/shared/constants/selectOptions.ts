@@ -51,3 +51,26 @@ export const periodPulseOptions: Option[] = [
 		label: 'нс',
 	},
 ]
+
+export const selectorTypeOptions: Option[] = [
+	{
+		value: '0',
+		label: 'Нет',
+	},
+	{
+		value: '1',
+		label: 'Радиоцель',
+	},
+	{
+		value: '2',
+		label: 'Эталон',
+	},
+	{
+		value: '3',
+		label: 'Импульсная РЛС',
+	},
+	{
+		value: '4',
+		label: 'Большебазовая РЛС',
+	},
+]

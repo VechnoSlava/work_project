@@ -1,71 +1,73 @@
-// import { Controller, FieldValues, Path, useFormContext } from 'react-hook-form'
-// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-// import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
-// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-// import 'dayjs/locale/en-gb'
-
-// type Props<T extends FieldValues> = {
-// 	name: Path<T>
-// 	label: string
-// }
-
-// export function RHFDateTimePicker<T extends FieldValues>({ name, label, ...props }: Props<T>) {
-// 	const { control } = useFormContext()
-
-// 	return (
-// 		<Controller
-// 			control={control}
-// 			name={name}
-// 			render={({ field, fieldState: { error } }) => (
-// 				<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'en-gb'}>
-// 					<DateTimePicker label={label} {...field} />
-// 				</LocalizationProvider>
-// 			)}
-// 		/>
-// 	)
-// }
 import { Controller, FieldValues, Path, useFormContext } from 'react-hook-form'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { Dayjs } from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
+import { Box, IconButton } from '@mui/material'
+import { MdClear } from 'react-icons/md'
 
 type Props<T extends FieldValues> = {
 	name: Path<T>
 	label: string
+	index: number // Индекс в массиве bands
+	onClear: (index: number) => void // Функция сброса
 }
 
-export function RHFDateTimePicker<T extends FieldValues>({ name, label, ...props }: Props<T>) {
-	const { control } = useFormContext()
+export function RHFDateTimePicker<T extends FieldValues>({
+	name,
+	label,
+	index,
+	onClear,
+	...props
+}: Props<T>) {
+	const { control, getValues, setValue } = useFormContext()
+
+	// Локальная функция сброса
+	const handleClear = () => {
+		setValue(name, null as any, { shouldValidate: true })
+		onClear(index)
+	}
 
 	return (
 		<Controller
 			control={control}
 			name={name}
-			render={({ field: { onBlur, onChange, ref, value }, fieldState: { error } }) => {
+			render={({ field, fieldState: { error } }) => {
+				// Преобразуем строку в Dayjs для отображения
+				const value = field.value ? dayjs(field.value) : null
+
 				return (
-					<DateTimePicker
-						label={label}
-						// 1. Правильная передача значения
-						value={value}
-						// 2. Передача ref для фокуса при ошибках
-						inputRef={ref}
-						// 3. Обработчик изменений
-						onChange={(newValue: Dayjs | null) => {
-							onChange(newValue)
-						}}
-						// 4. Обработчик потери фокуса
-						// onBlur={field.onBlur}
-						// 5. Передача ошибок во внутренний TextField
-						slotProps={{
-							textField: {
-								error: !!error,
-								helperText: error?.message,
-							},
-						}}
-						// 6. Дополнительные пропсы от родителя
-						{...props}
-					/>
+					<Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+						<DateTimePicker
+							label={label}
+							value={value}
+							onChange={(newValue: Dayjs | null) => {
+								field.onChange(newValue)
+							}}
+							onClose={() => {
+								field.onBlur()
+							}}
+							inputRef={field.ref}
+							slotProps={{
+								textField: {
+									size: 'small',
+									error: !!error,
+									helperText: error?.message,
+									sx: {
+										width: '240px',
+										mr: 1,
+									},
+								},
+							}}
+							{...props}
+						/>
+						<IconButton
+							onClick={handleClear}
+							sx={{
+								visibility: field.value ? 'visible' : 'hidden', // Показываем только если есть значение
+							}}
+						>
+							<MdClear />
+						</IconButton>
+					</Box>
 				)
 			}}
 		/>
