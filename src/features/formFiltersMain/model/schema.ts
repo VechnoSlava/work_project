@@ -44,13 +44,12 @@ const pulsePeriodFilterSchema = z.object({
 	bands: z.array(bandSchema),
 })
 
-// Схема для календарного фильтра (ИЗМЕНЕНО)
+// Схема для календарного фильтра
 const calendarFilterSchema = z
 	.object({
 		key: z.number(),
 		filterLabel: z.string(),
 		templateType: z.literal('calendar'),
-		// Массив строк в ISO формате
 		bands: z
 			.array(
 				z.any().refine(val => val === null || dayjs.isDayjs(val), {

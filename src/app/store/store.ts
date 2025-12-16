@@ -12,6 +12,7 @@ import {
 	withReduxStateSync,
 } from 'redux-state-sync'
 import { radarPulsesSlice } from '../../widgets/pulsesGridTable/model/radarPulsesSlice'
+import { mainFiltersSlice } from '../../widgets/sideMenuFilters/model/mainFiltersSlice'
 
 const rootReducer = combineSlices(
 	pagesNavigationSlice,
@@ -20,6 +21,7 @@ const rootReducer = combineSlices(
 	serverConnectionSlice,
 	radarsTableSlice,
 	radarPulsesSlice,
+	mainFiltersSlice,
 )
 export type RootState = ReturnType<typeof rootReducer>
 

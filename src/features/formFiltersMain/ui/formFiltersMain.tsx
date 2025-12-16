@@ -27,6 +27,8 @@ import {
 import { Stack, Box } from '@mui/material'
 import { RHFDateTimePicker } from '../../../entities/RHFDateTimePicker'
 import { RHFRadioGroup } from '../../../entities/RHFRadioGroup'
+import { useAppDispatch } from '../../../app/store/hooks'
+import { updateMainFilters } from '../../../widgets/sideMenuFilters/model/mainFiltersSlice'
 
 const defaultValues: TypeSchemaMainFiltersForm = {
 	freqFilter: {
@@ -86,12 +88,15 @@ const defaultValues: TypeSchemaMainFiltersForm = {
 
 export const FormFiltersMain = () => {
 	console.log('render_MainForm')
+	const dispatch = useAppDispatch()
+
 	const methods = useForm<TypeSchemaMainFiltersForm>({
 		resolver: zodResolver(schemaMainFiltersForm),
 		mode: 'all',
 		defaultValues: defaultValues,
 	})
 	const { control, setValue, getValues } = methods
+
 	// Управление диапазонами для частотного фильтра
 	const {
 		fields: freqFields,
@@ -112,7 +117,7 @@ export const FormFiltersMain = () => {
 		name: 'pulseDurationFilter.bands',
 	})
 
-	// Управление диапазонами для фильтра длительности импульса
+	// Управление диапазонами для фильтра по периоду импульсов
 	const {
 		fields: pulsePeriodFields,
 		append: appendPeriodPulse,
@@ -135,42 +140,47 @@ export const FormFiltersMain = () => {
 		appendPeriodPulse({ start: '', stop: '', metricPrefix: '0.000001' }, { shouldFocus: false })
 	}, [appendPeriodPulse])
 
-	const onSubmit: SubmitHandler<TypeSchemaMainFiltersForm> = useCallback(data => {
-		const transformedData = {
-			...data,
-			freqFilter: {
-				...data.freqFilter,
-				bands: data.freqFilter.bands.map(band => ({
-					...band,
-					metricPrefix: Number(band.metricPrefix),
-				})),
-			},
-			pulseDurationFilter: {
-				...data.pulseDurationFilter,
-				bands: data.pulseDurationFilter.bands.map(band => ({
-					...band,
-					metricPrefix: Number(band.metricPrefix),
-				})),
-			},
-			pulsePeriodFilter: {
-				...data.pulsePeriodFilter,
-				bands: data.pulsePeriodFilter.bands.map(band => ({
-					...band,
-					metricPrefix: Number(band.metricPrefix),
-				})),
-			},
-			calendarFilter: {
-				...data.calendarFilter,
-			},
-			selectorFilter: {
-				...data.selectorFilter,
-			},
-		}
-		console.log('Submitted data:', transformedData)
-		console.log(JSON.stringify(transformedData))
+	const onSubmit: SubmitHandler<TypeSchemaMainFiltersForm> = useCallback(
+		data => {
+			dispatch(updateMainFilters(data))
 
-		// Здесь отправка на сервер
-	}, [])
+			const transformedData = {
+				...data,
+				freqFilter: {
+					...data.freqFilter,
+					bands: data.freqFilter.bands.map(band => ({
+						...band,
+						metricPrefix: Number(band.metricPrefix),
+					})),
+				},
+				pulseDurationFilter: {
+					...data.pulseDurationFilter,
+					bands: data.pulseDurationFilter.bands.map(band => ({
+						...band,
+						metricPrefix: Number(band.metricPrefix),
+					})),
+				},
+				pulsePeriodFilter: {
+					...data.pulsePeriodFilter,
+					bands: data.pulsePeriodFilter.bands.map(band => ({
+						...band,
+						metricPrefix: Number(band.metricPrefix),
+					})),
+				},
+				calendarFilter: {
+					...data.calendarFilter,
+				},
+				selectorFilter: {
+					...data.selectorFilter,
+				},
+			}
+
+			console.log('Submitted data:', transformedData)
+
+			// Здесь отправка на сервер
+		},
+		[dispatch],
+	)
 
 	const onError: SubmitErrorHandler<TypeSchemaMainFiltersForm> = data => console.log('error:', data)
 
@@ -326,7 +336,7 @@ export const FormFiltersMain = () => {
 						<RHFRadioGroup
 							name="selectorFilter.value"
 							label="Тип цели"
-							options={selectorTypeOptions} // Используйте созданную константу
+							options={selectorTypeOptions}
 						/>
 					</FieldAccordion>
 
