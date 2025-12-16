@@ -1,5 +1,5 @@
 import styles from './formFiltersMain.module.scss'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import 'dayjs/locale/ru' // или ваш локаль
@@ -27,8 +27,11 @@ import {
 import { Stack, Box } from '@mui/material'
 import { RHFDateTimePicker } from '../../../entities/RHFDateTimePicker'
 import { RHFRadioGroup } from '../../../entities/RHFRadioGroup'
-import { useAppDispatch } from '../../../app/store/hooks'
-import { updateMainFilters } from '../../../widgets/sideMenuFilters/model/mainFiltersSlice'
+import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
+import {
+	selectMainFilters,
+	updateMainFilters,
+} from '../../../widgets/sideMenuFilters/model/mainFiltersSlice'
 
 const defaultValues: TypeSchemaMainFiltersForm = {
 	freqFilter: {
@@ -89,6 +92,7 @@ const defaultValues: TypeSchemaMainFiltersForm = {
 export const FormFiltersMain = () => {
 	console.log('render_MainForm')
 	const dispatch = useAppDispatch()
+	const savedFilters = useAppSelector(selectMainFilters)
 
 	const methods = useForm<TypeSchemaMainFiltersForm>({
 		resolver: zodResolver(schemaMainFiltersForm),
@@ -96,6 +100,10 @@ export const FormFiltersMain = () => {
 		defaultValues: defaultValues,
 	})
 	const { control, setValue, getValues } = methods
+	// Инициализация формы из Redux при загрузке компонента
+	useEffect(() => {
+		methods.reset(savedFilters)
+	}, [methods, savedFilters])
 
 	// Управление диапазонами для частотного фильтра
 	const {
@@ -166,12 +174,6 @@ export const FormFiltersMain = () => {
 						...band,
 						metricPrefix: Number(band.metricPrefix),
 					})),
-				},
-				calendarFilter: {
-					...data.calendarFilter,
-				},
-				selectorFilter: {
-					...data.selectorFilter,
 				},
 			}
 

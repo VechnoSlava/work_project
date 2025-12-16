@@ -18,7 +18,7 @@ export function RHFDateTimePicker<T extends FieldValues>({
 	onClear,
 	...props
 }: Props<T>) {
-	const { control, getValues, setValue } = useFormContext()
+	const { control, setValue } = useFormContext()
 
 	// Локальная функция сброса
 	const handleClear = () => {
@@ -40,7 +40,8 @@ export function RHFDateTimePicker<T extends FieldValues>({
 							label={label}
 							value={value}
 							onChange={(newValue: Dayjs | null) => {
-								field.onChange(newValue)
+								const isoValue = newValue ? newValue.toISOString() : null
+								field.onChange(isoValue)
 							}}
 							onClose={() => {
 								field.onBlur()
@@ -55,6 +56,7 @@ export function RHFDateTimePicker<T extends FieldValues>({
 										width: '240px',
 										mr: 1,
 									},
+									onBlur: field.onBlur,
 								},
 							}}
 							{...props}

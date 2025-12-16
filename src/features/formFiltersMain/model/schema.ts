@@ -52,17 +52,20 @@ const calendarFilterSchema = z
 		templateType: z.literal('calendar'),
 		bands: z
 			.array(
-				z.any().refine(val => val === null || dayjs.isDayjs(val), {
-					message: 'Некорректный формат даты',
-				}),
+				z
+					.string()
+					.nullable()
+					.refine(val => val === null || dayjs(val).isValid(), {
+						message: 'Некорректный формат даты',
+					}),
 			)
-			.length(2, 'Должно быть 2 значения даты (начало и конец)'), // Фиксируем длину массива
+			.length(2, 'Должно быть 2 значения даты (начало и конец)'),
 	})
 	.refine(
 		data => {
 			// Валидация: дата окончания должна быть позже даты начала (если обе выбраны)
 			if (data.bands[0] && data.bands[1]) {
-				return data.bands[1].isAfter(data.bands[0])
+				return dayjs(data.bands[1]).isAfter(dayjs(data.bands[0]))
 			}
 			return true
 		},
