@@ -6,6 +6,8 @@ import { FormFiltersMain } from '../../../features/formFiltersMain'
 import { FormFiltersHistory } from '../../../features/formFiltersHistory'
 
 export const SideMenuFilters = () => {
+	console.log('render Side menu')
+
 	const dispatch = useAppDispatch()
 	const sideMenuOpened = useAppSelector(selectSideMenuOpened)
 	const handlerToggleSideMenu = () => {
@@ -15,7 +17,6 @@ export const SideMenuFilters = () => {
 	const DrawerList = (
 		<Box sx={{ width: 500, height: '100vh', backgroundColor: '#0e3753' }} role="presentation">
 			<FormFiltersMain />
-			{/* <FormTest /> */}
 			{/* <FormFiltersHistory /> */}
 		</Box>
 	)
