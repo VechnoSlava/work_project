@@ -9,8 +9,6 @@ import { SpectrumPanorama } from '../../../widgets/spectrumPanorama'
 import { RadarPulsesChart } from '../../../widgets/radarPulsesBarChart'
 import { PulsesGridTable } from '../../../widgets/pulsesGridTable'
 import { InfoChartRadarPulse } from '../../../widgets/infoChartRadarPulse'
-import { FormFiltersMain } from '../../../features/formFiltersMain'
-import { FormFiltersHistory } from '../../../features/formFiltersHistory'
 
 export const MainPage = () => {
 	console.log('RENDER MAIN_PAGE')
