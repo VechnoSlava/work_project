@@ -14,26 +14,21 @@ export const MainPage = () => {
 	console.log('RENDER MAIN_PAGE')
 
 	const secondWindowOpened = useAppSelector(selectModeSecondWindow)
-	const [key, setKey] = useState(100)
-
-	useEffect(() => {
-		secondWindowOpened ? setKey(101) : setKey(100)
-	}, [secondWindowOpened])
 
 	return (
 		<div className={styles.container}>
-			<SplitFrame frameDirection="vertical" key={key}>
-				<SplitFrame frameDirection="horizontal" key={102}>
-					{secondWindowOpened ? null : <MainMap key={1} />}
-					<RadarsTable key={2} />
-					<SpectrumPanorama key={3} />
+			<SplitFrame frameDirection="vertical" key={secondWindowOpened ? 1 : 0}>
+				<SplitFrame frameDirection="horizontal">
+					{secondWindowOpened ? null : <MainMap />}
+					<RadarsTable />
+					<SpectrumPanorama />
 				</SplitFrame>
-				<SplitFrame frameDirection="horizontal" key={103}>
-					<SplitFrame frameDirection="vertical" key={104}>
-						<RadarPulsesChart key={5} />
-						<PulsesGridTable key={6} />
+				<SplitFrame frameDirection="horizontal">
+					<SplitFrame frameDirection="vertical">
+						<RadarPulsesChart />
+						<PulsesGridTable />
 					</SplitFrame>
-					<InfoChartRadarPulse key={9} />
+					<InfoChartRadarPulse />
 				</SplitFrame>
 			</SplitFrame>
 		</div>

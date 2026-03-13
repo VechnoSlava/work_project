@@ -14,26 +14,19 @@ import { platanTheme } from '../../../shared/libs/lightingChart/theme'
 import { setIntervalAxisX } from '../model/utils'
 import { store } from '../../../app/store/store'
 import { addSelectedPulse, IRadarsState } from '../../pulsesGridTable'
-import { useAppDispatch } from '../../../app/store/hooks'
 
 const mainStrokeStyle = (colors: string[], numSer: number) => {
+	const color = colors[numSer] ?? '#C0D6DF'
 	return new SolidLine({
 		thickness: 5,
-		fillStyle: new SolidFill({ color: ColorHEX(`${colors[numSer]}`) }),
+		fillStyle: new SolidFill({ color: ColorHEX(color) }),
 	})
 }
-
 const selectedStrokeStyle = () =>
 	new SolidLine({
 		thickness: 10,
 		fillStyle: new SolidFill({ color: ColorHEX('#f1f3f0') }),
 	})
-
-// const resizingAxisY = (stateYMax: number | undefined) => {
-// 	stateYMax ?? 0
-
-// 	stateYMax * 0.2
-// }
 
 export class RadarPulsesBarChart {
 	chartName: string
@@ -188,9 +181,6 @@ export class RadarPulsesBarChart {
 				radar: selectedRadars[numSer].uid,
 			}),
 		)
-
-		// console.log('Selected pulse', numSer, numPul, colorsSeries[numSer])
-		// console.log('Selected pulse INFO', selectedRadars[numSer].uid)
 	}
 
 	clickPulseFromTable(numSer: number, numPul: number | null, colorsSeries: string[]) {
@@ -250,6 +240,10 @@ export class RadarPulsesBarChart {
 			// Add data chart
 			const tadChart = store.getState().serverConnection.tads.tadChart
 			const colorsSeries = store.getState().radarsTable.selectedRadars.map(radar => radar.color)
+			if (tadChart.length > 0 && colorsSeries.length === 0) {
+				console.log('updateSegmentSeries: цвета радаров ещё не загружены, пропускаем')
+				return
+			}
 			// console.log(colorsSeries)
 
 			for (let numSer = 0; numSer < tadChart.length; numSer++) {

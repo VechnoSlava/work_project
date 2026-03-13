@@ -4,10 +4,12 @@ import styles from './radarPulsesChart.module.css'
 import { selectTadsChart, selectTadsTable } from '../../../shared/webSocket/serverConnectionSlice'
 import { useAppSelector } from '../../../app/store/hooks'
 import { selectSelectedPulse } from '../../pulsesGridTable/model/radarPulsesSlice'
+import { selectSelectedRadars } from '../../radarsTable'
 
 export function RadarPulsesChart() {
 	const dataTadsChart = useAppSelector(selectTadsChart)
 	const dataSelectedPulse = useAppSelector(selectSelectedPulse)
+	const selectedRadars = useAppSelector(selectSelectedRadars)
 
 	useEffect(() => {
 		const container = document.getElementById('radarPulsesBarChart') as HTMLDivElement | null
@@ -23,7 +25,7 @@ export function RadarPulsesChart() {
 
 	useEffect(() => {
 		radarPulsesBarChart.updateSegmentSeries()
-	}, [dataTadsChart])
+	}, [dataTadsChart, selectedRadars])
 
 	useEffect(() => {
 		if (dataSelectedPulse) radarPulsesBarChart.selectPulseFromTable(dataSelectedPulse)
