@@ -174,13 +174,21 @@ export class RadarPulsesBarChart {
 			console.error('Радар не найден для серии:', numSer)
 			return
 		}
+		const dim = segment.getDimensions()
+		this.axisX?.setInterval({
+			start: dim.startX - dim.startX * 0.00008,
+			end: dim.startX + dim.startX * 0.00008,
+			animate: 500,
+		})
 
 		store.dispatch(
 			addSelectedPulse({
 				id: numPul,
 				radar: selectedRadars[numSer].uid,
+				source: 'chart',
 			}),
 		)
+		// console.log('Selected pulse from chart:', numSer, numPul, colorsSeries[numSer])
 	}
 
 	clickPulseFromTable(numSer: number, numPul: number | null, colorsSeries: string[]) {

@@ -2,15 +2,15 @@ import { PayloadAction } from '@reduxjs/toolkit'
 import { createAppSlice } from '../../../app/store/createAppSlice'
 import { ISelectedTadId } from '../../../shared/webSocket/IWebSocket'
 
+type SelectedPulseState = ISelectedTadId & {
+	source: 'chart' | 'table' | null
+}
 export interface IRadarsState {
 	hoveredPulse: {
 		id: number | null
 		radar: string
 	}
-	selectedPulse: {
-		id: number | null
-		radar: string
-	}
+	selectedPulse: SelectedPulseState
 }
 const initialState: IRadarsState = {
 	hoveredPulse: {
@@ -20,6 +20,7 @@ const initialState: IRadarsState = {
 	selectedPulse: {
 		id: null,
 		radar: '',
+		source: null,
 	},
 }
 
@@ -27,7 +28,7 @@ export const radarPulsesSlice = createAppSlice({
 	name: 'radarPulses',
 	initialState,
 	reducers: create => ({
-		addSelectedPulse: create.reducer((state, action: PayloadAction<ISelectedTadId>) => {
+		addSelectedPulse: create.reducer((state, action: PayloadAction<SelectedPulseState>) => {
 			state.selectedPulse = action.payload
 		}),
 	}),

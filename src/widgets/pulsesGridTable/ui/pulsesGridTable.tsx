@@ -91,33 +91,35 @@ export const PulsesGridTable = () => {
 	const selectedPulses = useAppSelector(selectSelectedPulse)
 
 	useEffect(() => {
-		const { id, radar } = selectedPulses
+		const { id, radar, source } = selectedPulses
+
 		if (id !== null && radar) {
 			const selectedKey = `${radar}-${id}`
-			setSelectedRowId(selectedKey)
+			setSelectedRowId(selectedKey) // всегда
+
 			setTimeout(() => {
 				const element = document.querySelector(`[data-key="${selectedKey}"]`)
-				element?.scrollIntoView({
-					behavior: 'smooth',
-					block: 'center',
-				})
-			}, 100)
-			// console.log(selectedKey)
-			const message: WebSocketMessage = {
-				id: 103,
-				data: [{ id, radar }],
+				element?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+			}, 100) // всегда
+
+			// sendMessage только при клике с графика, иначе цикл
+			if (source === 'chart') {
+				const message: WebSocketMessage = { id: 103, data: [{ id, radar }] }
+				// console.log(message)
+				// console.log('Запрос импульса из графика')
+				dispatch(sendMessage(message))
 			}
-			dispatch(sendMessage(message))
 		} else {
 			setSelectedRowId(null)
-			// console.log('RETURN EFFECT')
-			return
 		}
 	}, [selectedPulses])
 
 	const handleRowClick = (row: ITadRadarList) => {
-		const selectedPulse = { id: row.id, radar: row.radar }
-		dispatch(addSelectedPulse(selectedPulse))
+		const message: WebSocketMessage = { id: 103, data: [{ id: row.id, radar: row.radar }] }
+		// console.log(message)
+		// console.log('Запрос импульса из таблицы')
+		dispatch(addSelectedPulse({ id: row.id, radar: row.radar, source: 'table' }))
+		dispatch(sendMessage(message))
 	}
 
 	const dataImpulses = useMemo(() => dataTadsTable.flatMap(table => table.data), [dataTadsTable])
