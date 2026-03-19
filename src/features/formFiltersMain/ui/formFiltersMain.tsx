@@ -28,13 +28,11 @@ import { Stack, Box } from '@mui/material'
 import { RHFDateTimePicker } from '../../../entities/RHFDateTimePicker'
 import { RHFRadioGroup } from '../../../entities/RHFRadioGroup'
 import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
-import {
-	selectMainFilters,
-	updateMainFilters,
-} from '../../../widgets/sideMenuFilters/model/mainFiltersSlice'
+import { selectMainFilters, updateMainFilters } from '../model/mainFiltersSlice'
 import { shallowEqual } from 'react-redux'
 import { toggleSideMenu } from '../../../widgets/sideMenuFilters/model/sideMenuSlice'
 import { mainFilterDefaultValues } from '../../../shared/constants/filterDefaults'
+import { GeoFilterSection } from './geoFilterSection'
 
 export const FormFiltersMain = () => {
 	console.log('render_MainForm')
@@ -283,6 +281,10 @@ export const FormFiltersMain = () => {
 							label="Тип цели"
 							options={selectorTypeOptions}
 						/>
+					</FieldAccordion>
+
+					<FieldAccordion nameField="Фильтрация по области" id="geoFilter_field">
+						<GeoFilterSection />
 					</FieldAccordion>
 
 					<Stack direction={'row'} justifyContent="center" spacing={2}>

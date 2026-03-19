@@ -12,7 +12,7 @@ import {
 	withReduxStateSync,
 } from 'redux-state-sync'
 import { radarPulsesSlice } from '../../widgets/pulsesGridTable/model/radarPulsesSlice'
-import { mainFiltersSlice } from '../../widgets/sideMenuFilters/model/mainFiltersSlice'
+import { mainFiltersSlice } from '../../features/formFiltersMain/model/mainFiltersSlice'
 
 const rootReducer = combineSlices(
 	pagesNavigationSlice,

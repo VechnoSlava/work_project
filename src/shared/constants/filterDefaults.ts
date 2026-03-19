@@ -41,6 +41,12 @@ export const mainFilterDefaultValues: TypeSchemaMainFiltersForm = {
 		templateType: 'calendar',
 		bands: [null, null],
 	},
+	geoFilter: {
+		key: 4,
+		filterLabel: 'Фильтрация по географической области',
+		templateType: 'geoFilter',
+		bands: [],
+	},
 	selectorFilter: {
 		key: 5,
 		filterLabel: 'Фильтрация по типу целей',

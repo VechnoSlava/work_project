@@ -83,12 +83,33 @@ const selectorFilterSchema = z.object({
 	value: z.string().min(1, 'Выберите тип цели'), // Обязательное поле
 })
 
+// Схема для фильтра полигона
+// Точка полигона
+const latLngPointSchema = z.object({
+	lat: z.number(),
+	lng: z.number(),
+})
+
+// Одна область
+const geoAreaSchema = z.object({
+	name: z.string(),
+	latLng: z.array(z.array(latLngPointSchema)),
+})
+
+const geoFilterSchema = z.object({
+	key: z.number(),
+	filterLabel: z.string(),
+	templateType: z.literal('geoFilter'),
+	bands: z.array(geoAreaSchema),
+})
+
 // Схема валидации
 export const schemaMainFiltersForm = z.object({
 	freqFilter: freqFilterSchema,
 	pulseDurationFilter: pulseDurationFilterSchema,
 	pulsePeriodFilter: pulsePeriodFilterSchema,
 	calendarFilter: calendarFilterSchema,
+	geoFilter: geoFilterSchema,
 	selectorFilter: selectorFilterSchema,
 })
 
