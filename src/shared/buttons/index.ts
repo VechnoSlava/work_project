@@ -1,6 +1,7 @@
 export { ButtonMenuHead } from './buttonMenuHead/buttonMenuHead'
 export { CustomSwitch } from './customSwitch/customSwitch'
 export { ButtonDeleteFilter } from './buttonDeleteFilter/buttonDeleteFilter'
+export { ButtonEditFilter } from './buttonEditFilter/buttonEditFilter'
 export { ButtonAddBand } from './buttonAddBand/buttonAddBand'
 export { ButtonSendForm } from './buttonSendForm/ButtonSendForm'
 export { ButtonFormAction } from './buttonFormAction/ButtonFormAction'

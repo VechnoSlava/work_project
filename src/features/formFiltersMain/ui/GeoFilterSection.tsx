@@ -2,32 +2,17 @@ import { useEffect } from 'react'
 import { useFormContext, useFieldArray } from 'react-hook-form'
 import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
 import { TypeSchemaMainFiltersForm } from '../model/schema'
-import { ButtonDeleteFilter, ButtonAddBand } from '../../../shared/buttons'
-import { RiCloseLargeFill, RiEditLine } from 'react-icons/ri'
-import { RiAddLargeFill } from 'react-icons/ri'
-import { IconButton, styled } from '@mui/material'
+import { ButtonDeleteFilter, ButtonEditFilter, ButtonAddBand } from '../../../shared/buttons'
+import { RiCloseLargeFill, RiEditLine, RiAddLargeFill } from 'react-icons/ri'
+import { removeGeoArea, selectGeoAreas } from '../model/mainFiltersSlice'
 import {
-	removeGeoArea,
-	selectGeoAreas,
+	startDrawing,
+	startEditing,
+	cancelDrawing,
 	selectGeoDrawingMode,
 	selectGeoEditingIndex,
-	setGeoDrawingMode,
-	setGeoEditingIndex,
-} from '../model/mainFiltersSlice'
-
-const ButtonEditFilter = styled(IconButton)(() => ({
-	color: '#4fc3f7',
-	border: '1px solid',
-	borderColor: '#404041',
-	borderRadius: '5px',
-	width: '40px',
-	height: '40px',
-	'&:hover': {
-		color: '#81d4fa',
-		borderColor: '#8b8f94',
-		backgroundColor: '#6d6d6d17',
-	},
-}))
+} from '../../../widgets/mainMap/model/geoDrawingSlice'
+import styles from './formFiltersMain.module.scss'
 
 export const GeoFilterSection = () => {
 	const { control } = useFormContext<TypeSchemaMainFiltersForm>()
@@ -42,48 +27,36 @@ export const GeoFilterSection = () => {
 		replace(geoAreas)
 	}, [geoAreas])
 
-	const handleStartDrawing = () => {
-		dispatch(setGeoDrawingMode('drawing'))
-	}
-
-	const handleStartEditing = (index: number) => {
-		dispatch(setGeoEditingIndex(index))
-	}
-
-	const handleCancelDrawing = () => {
-		dispatch(setGeoDrawingMode('idle'))
-	}
+	const isIdle = drawingMode === 'idle'
 
 	return (
-		<div style={{ padding: '8px 0' }}>
+		<>
 			{/* Список сохранённых областей */}
 			{geoAreas.map((area, index) => (
 				<div
 					key={index}
+					className={styles.formItem}
 					style={{
-						display: 'flex',
 						alignItems: 'center',
-						gap: 8,
-						padding: '4px 16px',
-						borderBottom: '1px solid rgba(255,255,255,0.06)',
-						opacity: editingIndex !== null && editingIndex !== index ? 0.4 : 1,
+						opacity: !isIdle && editingIndex !== index ? 0.4 : 1,
 					}}
 				>
-					<span style={{ fontSize: 14, flex: 1 }}>{area.name}</span>
-					<span style={{ color: '#8f8f8f', fontSize: 12 }}>{area.latLng[0].length} точек</span>
+					<span style={{ flex: 1, fontSize: 16, marginLeft: 10 }}>{area.name}</span>
+					<span style={{ color: '#8f8f8f', fontSize: 12, marginRight: 8 }}>
+						{area.latLng[0].length} точек
+					</span>
 					<ButtonEditFilter
-						onClick={() => handleStartEditing(index)}
+						onClick={() => dispatch(startEditing(index))}
 						type="button"
-						disabled={drawingMode !== 'idle'}
-						size="small"
+						disabled={!isIdle}
 					>
 						<RiEditLine />
 					</ButtonEditFilter>
 					<ButtonDeleteFilter
 						onClick={() => dispatch(removeGeoArea(index))}
 						type="button"
-						disabled={drawingMode !== 'idle'}
-						size="small"
+						disabled={!isIdle}
+						sx={{ ml: '6px' }}
 					>
 						<RiCloseLargeFill />
 					</ButtonDeleteFilter>
@@ -91,50 +64,62 @@ export const GeoFilterSection = () => {
 			))}
 
 			{/* Кнопка Добавить — только в режиме idle */}
-			{drawingMode === 'idle' && (
-				<div style={{ padding: '8px 16px' }}>
-					<ButtonAddBand
-						variant="outlined"
-						startIcon={<RiAddLargeFill />}
-						onClick={handleStartDrawing}
-						type="button"
-						fullWidth
-					>
-						Добавить область
-					</ButtonAddBand>
-				</div>
+			{isIdle && (
+				<ButtonAddBand
+					variant="outlined"
+					startIcon={<RiAddLargeFill />}
+					onClick={() => dispatch(startDrawing())}
+					type="button"
+					className={styles.buttonAddBand}
+				>
+					Добавить область
+				</ButtonAddBand>
 			)}
 
 			{/* Подсказка в режиме рисования */}
 			{drawingMode === 'drawing' && (
-				<div style={{ padding: '8px 16px' }}>
-					<p style={{ color: '#4fc3f7', fontSize: 12, margin: '0 0 8px' }}>
+				<>
+					<p
+						style={{
+							color: '#4fc3f7',
+							fontSize: 14,
+							margin: '0 0 8px',
+							padding: '0 4px',
+							textAlign: 'center',
+						}}
+					>
 						Кликайте по карте для добавления точек.
 						<br />
 						Двойной клик — завершить область.
 					</p>
 					<ButtonAddBand
 						variant="outlined"
-						onClick={handleCancelDrawing}
+						onClick={() => dispatch(cancelDrawing())}
 						type="button"
-						fullWidth
+						className={styles.buttonAddBand}
 						sx={{ color: '#ac0404', borderColor: '#404041' }}
 					>
 						Отмена
 					</ButtonAddBand>
-				</div>
+				</>
 			)}
 
 			{/* Подсказка в режиме редактирования */}
 			{drawingMode === 'editing' && (
-				<div style={{ padding: '8px 16px' }}>
-					<p style={{ color: '#ffb74d', fontSize: 12, margin: '0 0 8px' }}>
-						Перетащите точки для изменения области.
-						<br />
-						Подтвердите или отмените изменения на карте.
-					</p>
-				</div>
+				<p
+					style={{
+						color: '#ffb74d',
+						fontSize: 14,
+						margin: '0',
+						padding: '0 4px',
+						textAlign: 'center',
+					}}
+				>
+					Перетащите точки на карте для изменения области.
+					<br />
+					Подтвердите или отмените изменения на карте.
+				</p>
 			)}
-		</div>
+		</>
 	)
 }

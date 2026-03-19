@@ -16,12 +16,14 @@ import { LatLng } from 'leaflet'
 import {
 	addGeoArea,
 	selectGeoAreas,
-	selectGeoDrawingMode,
-	selectGeoEditingIndex,
-	setGeoDrawingMode,
-	setGeoEditingIndex,
 	updateGeoArea,
 } from '../../../features/formFiltersMain/model/mainFiltersSlice'
+import {
+	selectGeoDrawingMode,
+	selectGeoEditingIndex,
+	finishDrawing,
+	cancelDrawing,
+} from '../../../widgets/mainMap/model/geoDrawingSlice'
 
 const MapResizeFix = () => {
 	const map = useMap()
@@ -277,6 +279,7 @@ export const MainMap = () => {
 
 	const handlePolygonComplete = (points: LatLng[], name: string) => {
 		dispatch(addGeoArea({ name, latLng: [points.map(p => ({ lat: p.lat, lng: p.lng }))] }))
+		dispatch(finishDrawing())
 	}
 
 	const handleEditSave = (points: { lat: number; lng: number }[]) => {
@@ -287,6 +290,7 @@ export const MainMap = () => {
 				area: { name: geoAreas[editingIndex].name, latLng: [points] },
 			}),
 		)
+		dispatch(finishDrawing())
 	}
 
 	return (
@@ -317,7 +321,7 @@ export const MainMap = () => {
 				{drawingMode === 'drawing' && (
 					<PolygonDrawer
 						onComplete={handlePolygonComplete}
-						onCancel={() => dispatch(setGeoDrawingMode('idle'))}
+						onCancel={() => dispatch(finishDrawing())}
 					/>
 				)}
 
@@ -325,7 +329,7 @@ export const MainMap = () => {
 					<PolygonEditor
 						area={geoAreas[editingIndex]}
 						onSave={handleEditSave}
-						onCancel={() => dispatch(setGeoEditingIndex(null))}
+						onCancel={() => dispatch(cancelDrawing())}
 					/>
 				)}
 			</MapContainer>
