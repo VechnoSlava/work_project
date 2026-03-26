@@ -32,6 +32,88 @@ const MapResizeFix = () => {
 	}, [map])
 	return null
 }
+// ─── CoordinatesPanel ────────────────────────────────────────────────────────
+
+type CoordFormat = 'decimal' | 'dms'
+
+const toDMS = (deg: number): string => {
+	const d = Math.floor(Math.abs(deg))
+	const mFloat = (Math.abs(deg) - d) * 60
+	const m = Math.floor(mFloat)
+	const s = ((mFloat - m) * 60).toFixed(1)
+	const sign = deg < 0 ? '-' : ''
+	return `${sign}${d}° ${m}′ ${s}″`
+}
+
+const CoordinatesPanel = () => {
+	const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null)
+	const [format, setFormat] = useState<CoordFormat>('decimal')
+
+	useMapEvents({
+		mousemove(e) {
+			setCoords({ lat: e.latlng.lat, lng: e.latlng.lng })
+		},
+		mouseout() {
+			setCoords(null)
+		},
+	})
+
+	const formatCoord = (val: number, isLat: boolean): string => {
+		if (format === 'decimal') {
+			return `${val.toFixed(6)}°`
+		}
+		return toDMS(val)
+	}
+
+	const latLabel = coords ? `Ш: ${formatCoord(coords.lat, true)}` : 'Ш: —'
+	const lngLabel = coords ? `Д: ${formatCoord(coords.lng, false)}` : 'Д: —'
+
+	return (
+		<div
+			style={{
+				position: 'absolute',
+				bottom: 10,
+				left: 10,
+				zIndex: 1000,
+				display: 'flex',
+				alignItems: 'center',
+				gap: 8,
+				background: 'rgba(9, 30, 47, 0.85)',
+				border: '1px solid rgba(255,255,255,0.12)',
+				borderRadius: 4,
+				padding: '4px 10px',
+				pointerEvents: 'all',
+				userSelect: 'none',
+			}}
+		>
+			<span style={{ fontSize: 12, color: '#c8d6df', fontFamily: 'monospace', minWidth: 120 }}>
+				{latLabel}
+			</span>
+			<span style={{ fontSize: 12, color: '#8f8f8f' }}>|</span>
+			<span style={{ fontSize: 12, color: '#c8d6df', fontFamily: 'monospace', minWidth: 120 }}>
+				{lngLabel}
+			</span>
+			<button
+				onClick={() => setFormat(f => (f === 'decimal' ? 'dms' : 'decimal'))}
+				title={format === 'decimal' ? 'Переключить в ГМС' : 'Переключить в десятичный'}
+				style={{
+					width: '40px',
+					marginLeft: 4,
+					background: 'rgba(255,255,255,0.08)',
+					border: '1px solid rgba(255,255,255,0.15)',
+					borderRadius: 3,
+					color: '#4fc3f7',
+					fontSize: 12,
+					padding: '2px 7px',
+					cursor: 'pointer',
+					whiteSpace: 'nowrap',
+				}}
+			>
+				{format === 'decimal' ? 'DMS' : 'DD'}
+			</button>
+		</div>
+	)
+}
 
 interface PolygonDrawerProps {
 	onComplete: (points: LatLng[], name: string) => void
@@ -332,6 +414,7 @@ export const MainMap = () => {
 						onCancel={() => dispatch(cancelDrawing())}
 					/>
 				)}
+				<CoordinatesPanel />
 			</MapContainer>
 		</div>
 	)
