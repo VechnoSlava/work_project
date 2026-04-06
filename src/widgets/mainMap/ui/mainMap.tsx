@@ -63,6 +63,35 @@ const bearing = (a: LatLng, b: LatLng): number => {
 	const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLng)
 	return ((Math.atan2(y, x) * 180) / Math.PI + 360) % 360
 }
+// Средняя точка сегмента (простая, для коротких отрезков достаточно)
+const midpoint = (a: LatLng, b: LatLng): LatLng =>
+	new L.LatLng((a.lat + b.lat) / 2, (a.lng + b.lng) / 2)
+
+// SVG-стрелка по центру сегмента, повёрнутая по азимуту
+const makeArrowIcon = (angleDeg: number): DivIcon => {
+	const html = `
+		<div style="
+			width:20px;
+			height:20px;
+			transform:rotate(${angleDeg}deg);
+			display:flex;
+			align-items:center;
+			justify-content:center;
+			pointer-events:none;
+		">
+			<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<line x1="7" y1="13" x2="7" y2="1" stroke="#4fc3f7" stroke-width="2" stroke-linecap="round"/>
+				<polyline points="3,5 7,1 11,5" stroke="#4fc3f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+			</svg>
+		</div>
+	`
+	return L.divIcon({
+		className: '',
+		iconSize: [20, 20],
+		iconAnchor: [10, 10],
+		html,
+	})
+}
 
 // Умное форматирование расстояния: до 1 км — метры, свыше — выбранная единица
 const fmtDist = (meters: number, unit: DistUnit): string => {
@@ -107,13 +136,13 @@ const BTN_LAST: React.CSSProperties = { ...BTN_STYLE, borderBottom: 'none' }
 
 // ─── MapResizeFix ─────────────────────────────────────────────────────────────
 
-// const MapResizeFix = () => {
-// 	const map = useMap()
-// 	useEffect(() => {
-// 		setTimeout(() => map.invalidateSize(), 0)
-// 	}, [map])
-// 	return null
-// }
+const MapResizeFix = () => {
+	const map = useMap()
+	useEffect(() => {
+		setTimeout(() => map.invalidateSize(), 0)
+	}, [map])
+	return null
+}
 
 // ─── ZoomControl ─────────────────────────────────────────────────────────────
 
@@ -261,6 +290,25 @@ const RulerTrackLayer = ({ track, unit, preview, onPointMove }: RulerTrackLayerP
 					pathOptions={{ color: '#4fc3f7', weight: 1.5, dashArray: '4 4', opacity: 0.5 }}
 				/>
 			)}
+
+			{/* Стрелки по центру сегментов — только для завершённого трека */}
+			{track.finished &&
+				track.points.slice(1).map((p, i) => {
+					const prev = track.points[i]
+					const mid = midpoint(prev.latlng, p.latlng)
+					// Угол от севера → угол CSS transform: север=0°, восток=90°
+					// CSS rotate(0deg) = стрелка смотрит вверх (на север), совпадает с bearing
+					const angle = p.angleToPrev ?? 0
+					return (
+						<Marker
+							key={`arrow-${track.id}-${i}`}
+							position={mid}
+							icon={makeArrowIcon(angle)}
+							zIndexOffset={150}
+							interactive={false}
+						/>
+					)
+				})}
 
 			{/* Точки и подписи */}
 			{track.points.map((p, i) => (
@@ -804,14 +852,6 @@ export const MainMap = () => {
 	const geoAreas = useAppSelector(selectGeoAreas)
 	const drawingMode = useAppSelector(selectGeoDrawingMode)
 	const editingIndex = useAppSelector(selectGeoEditingIndex)
-
-	const MapResizeFix = () => {
-		const map = useMap()
-		useEffect(() => {
-			setTimeout(() => map.invalidateSize(), 0)
-		}, [map])
-		return null
-	}
 
 	const handlePolygonComplete = (points: LatLng[], name: string) => {
 		dispatch(addGeoArea({ name, latLng: [points.map(p => ({ lat: p.lat, lng: p.lng }))] }))
