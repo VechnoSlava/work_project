@@ -12,7 +12,9 @@ import {
 } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L, { LatLng, DivIcon } from 'leaflet'
-import { useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
+import { injectArrowMarker } from '../../../shared/icons/arrowMarkerSvg'
+import { SvgIcon, SvgSprite } from '../../../shared/icons/icons'
 import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
 import {
 	addGeoArea,
@@ -63,36 +65,6 @@ const bearing = (a: LatLng, b: LatLng): number => {
 	const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLng)
 	return ((Math.atan2(y, x) * 180) / Math.PI + 360) % 360
 }
-// Средняя точка сегмента (простая, для коротких отрезков достаточно)
-const midpoint = (a: LatLng, b: LatLng): LatLng =>
-	new L.LatLng((a.lat + b.lat) / 2, (a.lng + b.lng) / 2)
-
-// SVG-стрелка по центру сегмента, повёрнутая по азимуту
-const makeArrowIcon = (angleDeg: number): DivIcon => {
-	const html = `
-		<div style="
-			width:20px;
-			height:20px;
-			transform:rotate(${angleDeg}deg);
-			display:flex;
-			align-items:center;
-			justify-content:center;
-			pointer-events:none;
-		">
-			<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<line x1="7" y1="13" x2="7" y2="1" stroke="#4fc3f7" stroke-width="2" stroke-linecap="round"/>
-				<polyline points="3,5 7,1 11,5" stroke="#4fc3f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-			</svg>
-		</div>
-	`
-	return L.divIcon({
-		className: '',
-		iconSize: [20, 20],
-		iconAnchor: [10, 10],
-		html,
-	})
-}
-
 // Умное форматирование расстояния: до 1 км — метры, свыше — выбранная единица
 const fmtDist = (meters: number, unit: DistUnit): string => {
 	if (unit === 'km') {
@@ -100,14 +72,10 @@ const fmtDist = (meters: number, unit: DistUnit): string => {
 		return `${(meters / 1000).toFixed(3)} км`
 	}
 	if (unit === 'nm') {
-		const nm = meters / 1852
-		if (nm < 0.1) return `${Math.round(meters)} м`
-		return `${nm.toFixed(3)} нм`
+		return `${(meters / 1852).toFixed(4)} нм`
 	}
 	// mi
-	const mi = meters / 1609.344
-	if (mi < 0.1) return `${Math.round(meters)} м`
-	return `${mi.toFixed(3)} ми`
+	return `${(meters / 1609.344).toFixed(4)} ми`
 }
 
 const PANEL_STYLE: React.CSSProperties = {
@@ -237,7 +205,6 @@ const RulerTrackLayer = ({ track, unit, preview, onPointMove }: RulerTrackLayerP
 				: `<div style="color:#a0c8d8">⊾ ${p.angleToPrev.toFixed(1)}°</div>`
 		const totalLine = `<div style="color:#ffb74d;font-weight:600;margin-top:2px">Σ ${fmtDist(p.totalDist, unit)}</div>`
 
-		// Строим HTML без white-space:nowrap, с фиксированной шириной чтобы текст не выходил за рамку
 		const html = `
 <div style="
 	background:rgba(9,30,47,0.93);
@@ -269,20 +236,53 @@ const RulerTrackLayer = ({ track, unit, preview, onPointMove }: RulerTrackLayerP
 	const positions = track.points.map(p => p.latlng)
 	const last = track.points[track.points.length - 1]
 
+	// Инжектируем SVG-маркер стрелки и вешаем marker-end на сегменты после рендера
+	useEffect(() => {
+		if (!track.finished || positions.length < 2) return
+
+		// Leaflet рисует SVG асинхронно — даём один тик на завершение
+		const timer = setTimeout(() => {
+			// Берём любой SVG-слой карты через контейнер
+			const mapContainer = map.getContainer()
+			const svgRoot = mapContainer.querySelector(
+				'.leaflet-overlay-pane svg',
+			) as SVGSVGElement | null
+			if (!svgRoot) return
+
+			const markerId = `arm-${track.id}`
+			injectArrowMarker(svgRoot, markerId)
+
+			// Находим все path-элементы сегментов по классу и вешаем marker-end
+			// Leaflet добавляет класс leaflet-interactive на интерактивные, но нам нужны все polyline
+			// Проходим по всем path в overlay SVG и фильтруем наши по data-атрибуту
+			svgRoot.querySelectorAll(`[data-track="${track.id}"]`).forEach(el => {
+				el.setAttribute('marker-end', `url(#${markerId})`)
+			})
+		}, 0)
+
+		return () => clearTimeout(timer)
+	}, [track.finished, track.id, positions.length])
+
 	return (
 		<>
-			{/* Линия трека */}
-			{positions.length >= 2 && (
-				<Polyline
-					positions={positions}
-					pathOptions={{
-						color: '#4fc3f7',
-						weight: 2,
-						dashArray: track.finished ? undefined : '6 3',
-					}}
-				/>
-			)}
-
+			{/* Сегменты трека — каждый со своей стрелкой на конце */}
+			{positions.length >= 2 &&
+				positions.slice(1).map((pos, i) => (
+					<Polyline
+						key={`seg-${track.id}-${i}`}
+						positions={[positions[i], pos]}
+						pathOptions={{
+							color: '#4fc3f7',
+							weight: 2,
+							dashArray: track.finished ? undefined : '6 3',
+						}}
+						ref={(r: any) => {
+							if (!r) return
+							const el = r.getElement?.()
+							if (el) el.setAttribute('data-track', String(track.id))
+						}}
+					/>
+				))}
 			{/* Предпросмотр к курсору — только для активного незавершённого трека */}
 			{!track.finished && last && preview && (
 				<Polyline
@@ -290,29 +290,9 @@ const RulerTrackLayer = ({ track, unit, preview, onPointMove }: RulerTrackLayerP
 					pathOptions={{ color: '#4fc3f7', weight: 1.5, dashArray: '4 4', opacity: 0.5 }}
 				/>
 			)}
-
-			{/* Стрелки по центру сегментов — только для завершённого трека */}
-			{track.finished &&
-				track.points.slice(1).map((p, i) => {
-					const prev = track.points[i]
-					const mid = midpoint(prev.latlng, p.latlng)
-					// Угол от севера → угол CSS transform: север=0°, восток=90°
-					// CSS rotate(0deg) = стрелка смотрит вверх (на север), совпадает с bearing
-					const angle = p.angleToPrev ?? 0
-					return (
-						<Marker
-							key={`arrow-${track.id}-${i}`}
-							position={mid}
-							icon={makeArrowIcon(angle)}
-							zIndexOffset={150}
-							interactive={false}
-						/>
-					)
-				})}
-
 			{/* Точки и подписи */}
 			{track.points.map((p, i) => (
-				<>
+				<Fragment key={`pt-${track.id}-${i}`}>
 					<CircleMarker
 						key={`dot-${track.id}-${i}`}
 						center={p.latlng}
@@ -346,7 +326,7 @@ const RulerTrackLayer = ({ track, unit, preview, onPointMove }: RulerTrackLayerP
 						zIndexOffset={200}
 						interactive={false}
 					/>
-				</>
+				</Fragment>
 			))}
 		</>
 	)
@@ -489,9 +469,7 @@ const RulerControl = () => {
 						if (!active) e.currentTarget.style.background = 'transparent'
 					}}
 				>
-					<svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor">
-						<path d="M1 3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H1zm0 1h14v8H1V4zm1 1v6h2V9h1v1h1V9h1v2h1V9h1v1h1V5H2zm1 1h1v3H3V6zm3 0h1v2H6V6zm3 0h1v3H9V6zm3 0h1v2h-1V6z" />
-					</svg>
+					<SvgIcon id="icon-ruler" width={15} height={15} />
 				</button>
 				<button
 					style={BTN_STYLE}
@@ -500,12 +478,10 @@ const RulerControl = () => {
 					onMouseEnter={hover(true)}
 					onMouseLeave={hover(false)}
 				>
-					<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-						<path d="M19 4H15.5L14.5 3H9.5L8.5 4H5V6H19M6 19a2 2 0 0 0 2 2H16a2 2 0 0 0 2-2V7H6V19Z" />
-					</svg>
+					<SvgIcon id="icon-trash" width={16} height={16} />
 				</button>
 				<button
-					style={{ ...BTN_LAST, fontSize: 10, fontFamily: 'monospace', color: '#4fc3f7' }}
+					style={{ ...BTN_LAST, fontSize: 14, fontFamily: 'monospace', color: '#4fc3f7' }}
 					title="Переключить единицы измерения"
 					onClick={() => setUnit(u => units[(units.indexOf(u) + 1) % units.length])}
 					onMouseEnter={hover(true)}
@@ -880,6 +856,7 @@ export const MainMap = () => {
 				doubleClickZoom={false}
 			>
 				<MapResizeFix />
+				<SvgSprite />
 				<TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
 				<ZoomControl />
