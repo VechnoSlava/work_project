@@ -11,27 +11,27 @@ import {
 	useForm,
 } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FieldAccordion } from '../../../entities/fieldFilters'
+import { FieldAccordion } from '@/entities/fieldFilters'
 import { schemaMainFiltersForm, TypeSchemaMainFiltersForm } from '../model/schema'
-import { RHFTextField } from '../../../entities/RHFTextField'
-import { ButtonAddBand, ButtonDeleteFilter, ButtonFormAction } from '../../../shared/buttons'
+import { RHFTextField } from '@/entities/RHFTextField'
+import { ButtonAddBand, ButtonDeleteFilter, ButtonFormAction } from '@/shared/buttons'
 import { RiAddLargeFill, RiCloseLargeFill } from 'react-icons/ri'
 import { AiOutlineDelete, AiOutlineFileDone } from 'react-icons/ai'
-import { RHFSelect } from '../../../entities/RHFSelect/ui/RHFSelect'
+import { RHFSelect } from '@/entities/RHFSelect/ui/RHFSelect'
 import {
 	frequencyOptions,
 	periodPulseOptions,
 	selectorTypeOptions,
 	timeDurationOptions,
-} from '../../../shared/constants/selectOptions'
+} from '@/shared/constants/selectOptions'
 import { Stack, Box } from '@mui/material'
-import { RHFDateTimePicker } from '../../../entities/RHFDateTimePicker'
-import { RHFRadioGroup } from '../../../entities/RHFRadioGroup'
-import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
+import { RHFDateTimePicker } from '@/entities/RHFDateTimePicker'
+import { RHFRadioGroup } from '@/entities/RHFRadioGroup'
+import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
 import { selectMainFilters, updateMainFilters } from '../model/mainFiltersSlice'
 import { shallowEqual } from 'react-redux'
-import { toggleSideMenu } from '../../../widgets/sideMenuFilters/model/sideMenuSlice'
-import { mainFilterDefaultValues } from '../../../shared/constants/filterDefaults'
+import { toggleSideMenu } from '@/widgets/sideMenuFilters/model/sideMenuSlice'
+import { mainFilterDefaultValues } from '@/shared/constants/filterDefaults'
 import { GeoFilterSection } from './geoFilterSection'
 
 export const FormFiltersMain = () => {

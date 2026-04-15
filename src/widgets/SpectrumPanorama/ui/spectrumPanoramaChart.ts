@@ -17,8 +17,8 @@ import {
 	TickStyle,
 	ZoomBandChart,
 } from '@lightningchart/lcjs'
-import { lc } from '../../../shared/libs/lightingChart/lcjs'
-import { platanTheme } from '../../../shared/libs/lightingChart/theme'
+import { lc } from '@/shared/libs/lightingChart/lcjs'
+import { platanTheme } from '@/shared/libs/lightingChart/theme'
 import {
 	cursorGridStrokeStyle,
 	setIntervalSpectrumAxisXY,

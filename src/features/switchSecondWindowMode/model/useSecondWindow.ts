@@ -2,9 +2,9 @@ import { useCallback, useEffect, useRef } from 'react'
 import {
 	selectModeSecondWindow,
 	toggleSecondaryWindow,
-} from '../../../widgets/header/model/controlModesSlice'
-import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
-import { selectSlavePage } from '../../pagesNavigation/model/pagesNavigationSlice'
+} from '@/widgets/header/model/controlModesSlice'
+import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
+import { selectSlavePage } from '@/features/pagesNavigation/model/pagesNavigationSlice'
 
 export const useSecondWindow = () => {
 	const dispatch = useAppDispatch()

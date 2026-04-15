@@ -1,4 +1,4 @@
-import { TypeSchemaMainFiltersForm } from '../../features/formFiltersMain/model/schema'
+import { TypeSchemaMainFiltersForm } from '@/features/formFiltersMain/model/schema'
 
 export const mainFilterDefaultValues: TypeSchemaMainFiltersForm = {
 	freqFilter: {

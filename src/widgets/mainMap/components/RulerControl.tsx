@@ -4,8 +4,8 @@ import { LatLng } from 'leaflet'
 import { DistUnit, RulerPoint, RulerTrack } from '../model/rulerTypes'
 import { bearing, haversine } from '../lib/geoUtils'
 import { makeRulerIcon, recalcTrackPoints } from '../lib/rulerUtils'
-import { injectArrowMarker } from '../../../shared/icons/arrowMarkerSvg'
-import { SvgIcon } from '../../../shared/icons/icons'
+import { injectArrowMarker } from '@/shared/icons/arrowMarkerSvg'
+import { SvgIcon } from '@/shared/icons/icons'
 import { PANEL_STYLE, BTN_STYLE, BTN_LAST, onHover } from '../lib/mapStyles'
 
 // ─── RulerEventHandler ────────────────────────────────────────────────────────

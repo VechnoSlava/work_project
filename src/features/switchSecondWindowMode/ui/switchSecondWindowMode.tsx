@@ -1,4 +1,4 @@
-import { ToggleSwitch } from '../../../entities/toggleSwitch'
+import { ToggleSwitch } from '@/entities/toggleSwitch'
 import { useSecondWindow } from '../model/useSecondWindow'
 
 export const SwitchSecondWindowMode = () => {

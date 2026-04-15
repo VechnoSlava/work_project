@@ -1,12 +1,12 @@
 import styles from './header.module.css'
-import { IconLogo } from '../../../shared/icons'
-import { PagesNavigationMenu, PagesNavigationTabs } from '../../../features/pagesNavigation'
-import { ButtonConnectToServer } from '../../../features/buttonConnectToServer'
-import { ButtonSideMenuFilters } from '../../../features/buttonSideMenuFilters'
-import { SwitchSecondWindowMode } from '../../../features/switchSecondWindowMode'
-import { SwitchIdentificationMode } from '../../../features/switchIdentificationMode'
-import { SwitchReferenceMode } from '../../../features/switchReferenceMode'
-import { ButtonTestMessage } from '../../../features/buttonTestMessage'
+import { IconLogo } from '@/shared/icons'
+import { PagesNavigationMenu, PagesNavigationTabs } from '@/features/pagesNavigation'
+import { ButtonConnectToServer } from '@/features/buttonConnectToServer'
+import { ButtonSideMenuFilters } from '@/features/buttonSideMenuFilters'
+import { SwitchSecondWindowMode } from '@/features/switchSecondWindowMode'
+import { SwitchIdentificationMode } from '@/features/switchIdentificationMode'
+import { SwitchReferenceMode } from '@/features/switchReferenceMode'
+import { ButtonTestMessage } from '@/features/buttonTestMessage'
 
 export const Header = () => {
 	return (

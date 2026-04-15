@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import { radarPulsesBarChart } from './radarPulsesBarChart'
 import styles from './radarPulsesChart.module.css'
-import { selectTadsChart, selectTadsTable } from '../../../shared/webSocket/serverConnectionSlice'
-import { useAppSelector } from '../../../app/store/hooks'
-import { selectSelectedPulse } from '../../pulsesGridTable/model/radarPulsesSlice'
-import { selectSelectedRadars } from '../../radarsTable'
+import { selectTadsChart, selectTadsTable } from '@/shared/webSocket/serverConnectionSlice'
+import { useAppSelector } from '@/app/store/hooks'
+import { selectSelectedPulse } from '@/widgets/pulsesGridTable/model/radarPulsesSlice'
+import { selectSelectedRadars } from '@/widgets/radarsTable'
 
 export function RadarPulsesChart() {
 	const dataTadsChart = useAppSelector(selectTadsChart)

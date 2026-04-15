@@ -3,7 +3,7 @@ import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { store } from '../store/store'
 import { ThemeProvider } from '@mui/material'
-import { darkTheme } from '../../shared/theme/themeMui'
+import { darkTheme } from '@/shared/theme/themeMui'
 
 /** Провайдеры в которые будет обернуто наше приложение */
 interface IProviders {

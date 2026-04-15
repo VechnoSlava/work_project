@@ -3,19 +3,19 @@ import { MapContainer, TileLayer, Polygon, Popup, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useEffect } from 'react'
 import { LatLng } from 'leaflet'
-import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
+import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
 import {
 	addGeoArea,
 	selectGeoAreas,
 	updateGeoArea,
-} from '../../../features/formFiltersMain/model/mainFiltersSlice'
+} from '@/features/formFiltersMain/model/mainFiltersSlice'
 import {
 	cancelDrawing,
 	finishDrawing,
 	selectGeoDrawingMode,
 	selectGeoEditingIndex,
 } from '../model/geoDrawingSlice'
-import { SvgSprite } from '../../../shared/icons/icons'
+import { SvgSprite } from '@/shared/icons/icons'
 import { ZoomControl } from '../components/ZoomControl'
 import { CoordinatesPanel } from '../components/CoordinatesPanel'
 import { RulerControl } from '../components/RulerControl'

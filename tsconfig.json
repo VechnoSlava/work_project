@@ -15,7 +15,10 @@
 		"noEmit": true,
 		"isolatedModules": true,
 		"jsx": "react-jsx",
-
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["src/*"]
+		},
 		/* Linting */
 		"strict": true,
 		"types": ["vitest/globals"]

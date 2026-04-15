@@ -1,11 +1,11 @@
 import styles from './historyPage.module.css'
-import { MainMap } from '../../../widgets/mainMap'
-import { SplitFrame } from '../../../entities/splitFrame'
-import { useAppSelector } from '../../../app/store/hooks'
-import { selectModeSecondWindow } from '../../../widgets/header/model/controlModesSlice'
+import { MainMap } from '@/widgets/mainMap'
+import { SplitFrame } from '@/entities/splitFrame'
+import { useAppSelector } from '@/app/store/hooks'
+import { selectModeSecondWindow } from '@/widgets/header/model/controlModesSlice'
 import { useEffect, useState } from 'react'
-import { RadarsTable } from '../../../widgets/radarsTable'
-import { CurrentTargetsTable } from '../../../widgets/currentTargetsTable'
+import { RadarsTable } from '@/widgets/radarsTable'
+import { CurrentTargetsTable } from '@/widgets/currentTargetsTable'
 
 export const HistoryPage = () => {
 	console.log('RENDER HISTORY_PAGE')

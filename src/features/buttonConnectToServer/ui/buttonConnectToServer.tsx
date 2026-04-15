@@ -1,14 +1,14 @@
 import styles from './buttonConnectToServer.module.css'
 import { BiWifi, BiWifiOff } from 'react-icons/bi'
 import { CircularProgress } from '@mui/material'
-import { ButtonMenuHead } from '../../../shared/buttons'
-import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
+import { ButtonMenuHead } from '@/shared/buttons'
+import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
 import {
 	selectIsConnection,
 	selectStateConnection,
 	disconnectToServer,
 	connectToServerRequest,
-} from '../../../shared/webSocket/serverConnectionSlice'
+} from '@/shared/webSocket/serverConnectionSlice'
 
 export const ButtonConnectToServer = () => {
 	const dispatch = useAppDispatch()

@@ -1,12 +1,12 @@
 import styles from './formFiltersHistory.module.scss'
 import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
-import { FieldAccordion } from '../../../entities/fieldFilters'
-import { ControlledFilterField } from '../../../entities/controlledFilterField'
-import { ControlledSelectField } from '../../../entities/controlledSelectField'
+import { FieldAccordion } from '@/entities/fieldFilters'
+import { ControlledFilterField } from '@/entities/controlledFilterField'
+import { ControlledSelectField } from '@/entities/controlledSelectField'
 import { schemaFiltersHistory, TypeSchemaFiltersHistory } from '../model/schemaFiltersHistory'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { RiAddLargeFill, RiCloseLargeFill } from 'react-icons/ri'
-import { ButtonAddBand, ButtonDeleteFilter, ButtonSendForm } from '../../../shared/buttons'
+import { ButtonAddBand, ButtonDeleteFilter, ButtonSendForm } from '@/shared/buttons'
 import { AiOutlineFileDone } from 'react-icons/ai'
 
 export const FormFiltersHistory = () => {

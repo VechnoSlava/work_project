@@ -11,15 +11,15 @@ import {
 } from '@mui/material'
 import { visuallyHidden } from '@mui/utils'
 import styles from './pulsesGridTable.module.css'
-import { formatNumber } from '../../../shared/utils/utils'
-import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
-import { selectTadsTable, sendMessage } from '../../../shared/webSocket/serverConnectionSlice'
-import { ITadRadarList, WebSocketMessage } from '../../../shared/webSocket/IWebSocket'
+import { formatNumber } from '@/shared/utils/utils'
+import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
+import { selectTadsTable, sendMessage } from '@/shared/webSocket/serverConnectionSlice'
+import { ITadRadarList, WebSocketMessage } from '@/shared/webSocket/IWebSocket'
 import {
 	StyledTableCell,
 	StyledTableHeaderCell,
 	StyledTableRow,
-} from '../../../shared/tables/customPulsesGridTable'
+} from '@/shared/tables/customPulsesGridTable'
 import { getComparator, Order } from '../model/utils'
 import { addSelectedPulse, selectSelectedPulse } from '../index'
 

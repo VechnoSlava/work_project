@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import styles from './infoChartRadarPulse.module.css'
 import { infoPulseChart } from './infoPulseChart'
-import { useAppSelector } from '../../../app/store/hooks'
-import { selectSelectedRadars } from '../../radarsTable'
+import { useAppSelector } from '@/app/store/hooks'
+import { selectSelectedRadars } from '@/widgets/radarsTable'
 
 export function InfoChartRadarPulse() {
 	const changeSelectedRadar = useAppSelector(selectSelectedRadars)

@@ -1,9 +1,9 @@
 import styles from './mainLayout.module.css'
 
 import { Outlet } from 'react-router-dom'
-import { Header } from '../../widgets/header'
-import { Footer } from '../../widgets/footer'
-import { SideMenuFilters } from '../../widgets/sideMenuFilters'
+import { Header } from '@/widgets/header'
+import { Footer } from '@/widgets/footer'
+import { SideMenuFilters } from '@/widgets/sideMenuFilters'
 
 export const MainLayout = () => {
 	return (

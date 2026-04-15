@@ -1,6 +1,6 @@
 // import type { PayloadAction } from "@reduxjs/toolkit"
 import { PayloadAction } from '@reduxjs/toolkit'
-import { createAppSlice } from '../../../app/store/createAppSlice'
+import { createAppSlice } from '@/app/store/createAppSlice'
 
 export interface IRadarsState {
 	currentsTargetsRadars: number[]

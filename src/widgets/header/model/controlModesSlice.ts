@@ -1,4 +1,4 @@
-import { createAppSlice } from '../../../app/store/createAppSlice'
+import { createAppSlice } from '@/app/store/createAppSlice'
 
 export interface IModesWorkState {
 	isSecondaryWindowMode: boolean

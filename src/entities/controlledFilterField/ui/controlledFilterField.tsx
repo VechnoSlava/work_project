@@ -1,7 +1,7 @@
 import { TextFieldProps } from '@mui/material'
 import { FC } from 'react'
 import { useFormContext, Controller } from 'react-hook-form'
-import { InputFilterForm } from '../../../shared/inputs/inputFilterForm'
+import { InputFilterForm } from '@/shared/inputs/inputFilterForm'
 
 interface ControlledFilterFieldProps {
 	name: string

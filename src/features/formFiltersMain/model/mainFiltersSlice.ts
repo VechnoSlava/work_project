@@ -1,7 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit'
-import { createAppSlice } from '../../../app/store/createAppSlice'
+import { createAppSlice } from '@/app/store/createAppSlice'
 import { TypeSchemaMainFiltersForm } from './schema'
-import { mainFilterDefaultValues } from '../../../shared/constants/filterDefaults'
+import { mainFilterDefaultValues } from '@/shared/constants/filterDefaults'
 
 export type GeoArea = { name: string; latLng: { lat: number; lng: number }[][] }
 

@@ -2,9 +2,9 @@ import { List, ListItemButton, ListItemText, Menu, MenuItem } from '@mui/materia
 import styles from './pagesNavigationMenu.module.css'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../../../../app/store/hooks'
-import { selectPage, setPage } from '../../model/pagesNavigationSlice'
-import { ROUTES_PATH, type RoutePath } from '../../../../shared/constants/routes'
+import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
+import { selectPage, setPage } from '@/features/pagesNavigation/model/pagesNavigationSlice'
+import { ROUTES_PATH, type RoutePath } from '@/shared/constants/routes'
 
 const OPTIONS = [
 	{ label: 'Текущая обстановка', path: ROUTES_PATH.MAIN },

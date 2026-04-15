@@ -1,6 +1,6 @@
 import { forwardRef } from 'react'
 import { MenuItem, TextFieldProps } from '@mui/material'
-import { InputFilterForm } from '../../../shared/inputs/inputFilterForm'
+import { InputFilterForm } from '@/shared/inputs/inputFilterForm'
 
 interface FrequencyOption {
 	value: string

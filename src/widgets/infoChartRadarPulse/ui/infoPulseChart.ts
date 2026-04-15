@@ -11,8 +11,8 @@ import {
 	SolidLine,
 	TickStyle,
 } from '@lightningchart/lcjs'
-import { lc } from '../../../shared/libs/lightingChart/lcjs'
-import { platanTheme } from '../../../shared/libs/lightingChart/theme'
+import { lc } from '@/shared/libs/lightingChart/lcjs'
+import { platanTheme } from '@/shared/libs/lightingChart/theme'
 import {
 	cursorGridStrokeStyle,
 	cursorTextColor,
@@ -22,7 +22,7 @@ import {
 	timeTickFormatter,
 	userInteractions,
 } from '../model/settingsInfoPulseChart'
-import { IWebSocket } from '../../../shared/webSocket/IWebSocket'
+import { IWebSocket } from '@/shared/webSocket/IWebSocket'
 
 export class InfoPulseChart {
 	chartName: string

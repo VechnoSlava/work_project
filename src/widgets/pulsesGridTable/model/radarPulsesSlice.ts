@@ -1,6 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit'
-import { createAppSlice } from '../../../app/store/createAppSlice'
-import { ISelectedTadId } from '../../../shared/webSocket/IWebSocket'
+import { createAppSlice } from '@/app/store/createAppSlice'
+import { ISelectedTadId } from '@/shared/webSocket/IWebSocket'
 
 type SelectedPulseState = ISelectedTadId & {
 	source: 'chart' | 'table' | null

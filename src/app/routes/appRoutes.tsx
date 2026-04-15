@@ -1,10 +1,10 @@
 import { Routes, Route } from 'react-router-dom'
 import { MainLayout } from '../layouts'
-import { MainPage } from '../../pages/mainPage'
-import { HistoryPage } from '../../pages/historyPage'
-import { ROUTES_PATH } from '../../shared/constants/routes'
-import { SlaveHistoryPage } from '../../pages/slaveHistoryPage'
-import { SlaveMainPage } from '../../pages/slaveMainPage'
+import { MainPage } from '@/pages/mainPage'
+import { HistoryPage } from '@/pages/historyPage'
+import { ROUTES_PATH } from '@/shared/constants/routes'
+import { SlaveHistoryPage } from '@/pages/slaveHistoryPage'
+import { SlaveMainPage } from '@/pages/slaveMainPage'
 
 export const AppRoutes: React.FC = () => {
 	return (

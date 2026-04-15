@@ -1,7 +1,7 @@
 import { Controller, FieldValues, Path, useFormContext } from 'react-hook-form'
-import { InputFilterForm } from '../../../shared/inputs/inputFilterForm'
+import { InputFilterForm } from '@/shared/inputs/inputFilterForm'
 import { MenuItem, TextFieldProps } from '@mui/material'
-import { Option } from '../../../shared/constants/selectOptions'
+import { Option } from '@/shared/constants/selectOptions'
 
 type Props<T extends FieldValues> = {
 	name: Path<T>

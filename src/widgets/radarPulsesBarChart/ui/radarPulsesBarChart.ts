@@ -9,11 +9,11 @@ import {
 	SolidFill,
 	SolidLine,
 } from '@lightningchart/lcjs'
-import { lc } from '../../../shared/libs/lightingChart/lcjs'
-import { platanTheme } from '../../../shared/libs/lightingChart/theme'
+import { lc } from '@/shared/libs/lightingChart/lcjs'
+import { platanTheme } from '@/shared/libs/lightingChart/theme'
 import { setIntervalAxisX } from '../model/utils'
-import { store } from '../../../app/store/store'
-import { addSelectedPulse, IRadarsState } from '../../pulsesGridTable'
+import { store } from '@/app/store/store'
+import { addSelectedPulse, IRadarsState } from '@/widgets/pulsesGridTable'
 
 const mainStrokeStyle = (colors: string[], numSer: number) => {
 	const color = colors[numSer] ?? '#C0D6DF'

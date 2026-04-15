@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
-import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
-import { ToggleSwitch } from '../../../entities/toggleSwitch'
-import { RoutePath, ROUTES_PATH } from '../../../shared/constants/routes'
+import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
+import { ToggleSwitch } from '@/entities/toggleSwitch'
+import { RoutePath, ROUTES_PATH } from '@/shared/constants/routes'
 import {
 	selectModeReference,
 	toggleReferenceMode,
-} from '../../../widgets/header/model/controlModesSlice'
-import { selectPage } from '../../pagesNavigation/model/pagesNavigationSlice'
+} from '@/widgets/header/model/controlModesSlice'
+import { selectPage } from '@/features/pagesNavigation/model/pagesNavigationSlice'
 
 export const SwitchReferenceMode = () => {
 	const dispatch = useAppDispatch()

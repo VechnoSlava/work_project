@@ -1,6 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit'
-import { createAppSlice } from '../../../app/store/createAppSlice'
-import { ISelectedRadars } from '../../../shared/webSocket/IWebSocket'
+import { createAppSlice } from '@/app/store/createAppSlice'
+import { ISelectedRadars } from '@/shared/webSocket/IWebSocket'
 
 export interface IRadarsState {
 	selectedRadars: ISelectedRadars[]

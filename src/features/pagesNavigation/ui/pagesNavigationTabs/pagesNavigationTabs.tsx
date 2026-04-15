@@ -1,8 +1,8 @@
 import { Tabs, Tab } from '@mui/material'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../../../../app/store/hooks'
-import { type RoutePath, ROUTES_PATH } from '../../../../shared/constants/routes'
-import { selectPage, setPage } from '../../model/pagesNavigationSlice'
+import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
+import { type RoutePath, ROUTES_PATH } from '@/shared/constants/routes'
+import { selectPage, setPage } from '@/features/pagesNavigation/model/pagesNavigationSlice'
 import styles from './pagesNavigationTabs.module.css'
 import { useEffect } from 'react'
 

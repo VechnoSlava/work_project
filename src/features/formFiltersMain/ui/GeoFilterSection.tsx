@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { useFormContext, useFieldArray } from 'react-hook-form'
-import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
+import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
 import { TypeSchemaMainFiltersForm } from '../model/schema'
-import { ButtonDeleteFilter, ButtonEditFilter, ButtonAddBand } from '../../../shared/buttons'
+import { ButtonDeleteFilter, ButtonEditFilter, ButtonAddBand } from '@/shared/buttons'
 import { RiCloseLargeFill, RiEditLine, RiAddLargeFill } from 'react-icons/ri'
 import { removeGeoArea, selectGeoAreas } from '../model/mainFiltersSlice'
 import {
@@ -11,7 +11,7 @@ import {
 	cancelDrawing,
 	selectGeoDrawingMode,
 	selectGeoEditingIndex,
-} from '../../../widgets/mainMap/model/geoDrawingSlice'
+} from '@/widgets/mainMap/model/geoDrawingSlice'
 import styles from './formFiltersMain.module.scss'
 
 export const GeoFilterSection = () => {

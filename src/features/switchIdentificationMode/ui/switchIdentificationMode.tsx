@@ -1,9 +1,9 @@
-import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
-import { ToggleSwitch } from '../../../entities/toggleSwitch'
+import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
+import { ToggleSwitch } from '@/entities/toggleSwitch'
 import {
 	selectModeIdentification,
 	toggleIdentificationMode,
-} from '../../../widgets/header/model/controlModesSlice'
+} from '@/widgets/header/model/controlModesSlice'
 
 export const SwitchIdentificationMode = () => {
 	const dispatch = useAppDispatch()

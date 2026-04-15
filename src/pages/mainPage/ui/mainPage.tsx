@@ -1,14 +1,14 @@
 import styles from './mainPage.module.css'
-import { useAppSelector } from '../../../app/store/hooks'
-import { selectModeSecondWindow } from '../../../widgets/header/model/controlModesSlice'
-import { SplitFrame } from '../../../entities/splitFrame'
-import { MainMap } from '../../../widgets/mainMap'
+import { useAppSelector } from '@/app/store/hooks'
+import { selectModeSecondWindow } from '@/widgets/header/model/controlModesSlice'
+import { SplitFrame } from '@/entities/splitFrame'
+import { MainMap } from '@/widgets/mainMap'
 import { useState, useEffect } from 'react'
-import { RadarsTable } from '../../../widgets/radarsTable'
-import { SpectrumPanorama } from '../../../widgets/spectrumPanorama'
-import { RadarPulsesChart } from '../../../widgets/radarPulsesBarChart'
-import { PulsesGridTable } from '../../../widgets/pulsesGridTable'
-import { InfoChartRadarPulse } from '../../../widgets/infoChartRadarPulse'
+import { RadarsTable } from '@/widgets/radarsTable'
+import { SpectrumPanorama } from '@/widgets/spectrumPanorama'
+import { RadarPulsesChart } from '@/widgets/radarPulsesBarChart'
+import { PulsesGridTable } from '@/widgets/pulsesGridTable'
+import { InfoChartRadarPulse } from '@/widgets/infoChartRadarPulse'
 
 export const MainPage = () => {
 	console.log('RENDER MAIN_PAGE')

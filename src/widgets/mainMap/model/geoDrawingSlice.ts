@@ -1,5 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit'
-import { createAppSlice } from '../../../app/store/createAppSlice'
+import { createAppSlice } from '@/app/store/createAppSlice'
 
 export interface IGeoDrawingState {
 	mode: 'idle' | 'drawing' | 'editing'

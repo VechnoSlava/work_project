@@ -9,10 +9,10 @@ import {
 	updateTads,
 } from './serverConnectionSlice'
 import config from '../../../config.json'
-import { AppDispatch, RootState } from '../../app/store/store'
+import { AppDispatch, RootState } from '@/app/store/store'
 import { IWebSocket } from './IWebSocket'
-import { spectrumPanoramaChart } from '../../widgets/spectrumPanorama'
-import { infoPulseChart } from '../../widgets/infoChartRadarPulse'
+import { spectrumPanoramaChart } from '@/widgets/spectrumPanorama'
+import { infoPulseChart } from '@/widgets/infoChartRadarPulse'
 
 const socket_URL = config.serverUrl
 

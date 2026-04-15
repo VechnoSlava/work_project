@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { useFormContext, Controller } from 'react-hook-form'
-import { SelectFrequency } from '../../selectFrequency'
+import { SelectFrequency } from '@/entities/selectFrequency'
 
 interface ControlledSelectFieldProps {
 	name: string
