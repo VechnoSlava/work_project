@@ -32,7 +32,7 @@ import { selectMainFilters, updateMainFilters } from '../model/mainFiltersSlice'
 import { shallowEqual } from 'react-redux'
 import { toggleSideMenu } from '@/widgets/sideMenuFilters/model/sideMenuSlice'
 import { mainFilterDefaultValues } from '@/shared/constants/filterDefaults'
-import { GeoFilterSection } from './geoFilterSection'
+import { GeoFilterSection } from './GeoFilterSection'
 
 export const FormFiltersMain = () => {
 	console.log('render_MainForm')

@@ -5,7 +5,7 @@ import { sideMenuSlice } from '@/widgets/sideMenuFilters/model/sideMenuSlice'
 import { pagesNavigationSlice } from '@/features/pagesNavigation/model/pagesNavigationSlice'
 import { serverConnectionSlice } from '@/shared/webSocket/serverConnectionSlice'
 import { radarsTableSlice } from '@/widgets/radarsTable'
-import { webSocketMiddleware } from '@/shared/webSocket/webSocket'
+import { webSocketMiddleware } from '@/shared/webSocket/websocket'
 import {
 	createStateSyncMiddleware,
 	initStateWithPrevTab,

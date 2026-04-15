@@ -1,6 +1,6 @@
 import { type PayloadAction } from '@reduxjs/toolkit/react'
 import { createAppSlice } from '@/app/store/createAppSlice'
-import { IRadarsList, IWebSocket, WebSocketMessage } from './IWebSocket'
+import { IWebSocket, WebSocketMessage } from './IWebSocket'
 import { generateDistinctColor } from '../utils/utils'
 
 export interface IConnectionState {

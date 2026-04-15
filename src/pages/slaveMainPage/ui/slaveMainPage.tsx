@@ -1,6 +1,4 @@
 import styles from './slaveMainPage.module.css'
-
-import { useEffect, useState } from 'react'
 import { useAppSelector } from '@/app/store/hooks'
 import { SplitFrame } from '@/entities/splitFrame'
 import { selectModeIdentification } from '@/widgets/header/model/controlModesSlice'

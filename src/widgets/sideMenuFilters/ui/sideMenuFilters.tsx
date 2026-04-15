@@ -3,7 +3,6 @@ import Drawer from '@mui/material/Drawer'
 import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
 import { selectSideMenuOpened, toggleSideMenu } from '../model/sideMenuSlice'
 import { FormFiltersMain } from '@/features/formFiltersMain'
-import { FormFiltersHistory } from '@/features/formFiltersHistory'
 
 export const SideMenuFilters = () => {
 	console.log('render_sideMenuFilters')

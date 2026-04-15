@@ -9,7 +9,7 @@ export const SwitchSecondWindowMode = () => {
 			nameSwitch="2-х оконный режим"
 			checked={isSecondaryWindowOpen}
 			onChange={toggle}
-			inputProps={{ 'aria-label': '2-х оконный режим' }}
+			slotProps={{ input: { 'aria-label': '2-х оконный режим' } }}
 		/>
 	)
 }

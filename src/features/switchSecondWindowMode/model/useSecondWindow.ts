@@ -11,8 +11,10 @@ export const useSecondWindow = () => {
 	const isSecondaryWindowOpen = useAppSelector(selectModeSecondWindow)
 	const currentSlavePage = useAppSelector(selectSlavePage)
 	const newWindowRef = useRef<Window | null>(null)
+	const isClosingProgrammatically = useRef(false) // <-- новый флаг
 
 	const handleUnload = useCallback(() => {
+		if (isClosingProgrammatically.current) return // <-- игнорируем программное закрытие
 		dispatch(toggleSecondaryWindow())
 	}, [dispatch])
 
@@ -37,6 +39,7 @@ export const useSecondWindow = () => {
 		}
 
 		if (isSecondaryWindowOpen) {
+			isClosingProgrammatically.current = false // <-- сбрасываем при открытии
 			if (!newWindowRef.current || newWindowRef.current.closed) {
 				newWindowRef.current = window.open(
 					currentSlavePage,
@@ -48,6 +51,7 @@ export const useSecondWindow = () => {
 			}
 			if (newWindowRef.current) waitAndAttach(newWindowRef.current)
 		} else if (newWindowRef.current) {
+			isClosingProgrammatically.current = true // <-- ставим флаг перед close()
 			newWindowRef.current.close()
 			newWindowRef.current = null
 		}
