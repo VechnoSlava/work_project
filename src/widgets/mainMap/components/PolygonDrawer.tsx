@@ -24,21 +24,44 @@ export const PolygonDrawer = ({ onComplete, onCancel }: PolygonDrawerProps) => {
 		}
 	}, [popupPos])
 
-	useMapEvents({
+	/** Порог расстояния до первой точки для замыкания полигона (в пикселях) */
+	const CLOSE_THRESHOLD_PX = 10
+
+	const map = useMapEvents({
 		click(e) {
 			if (pendingPoints) return
+
+			// Если >= 3 точки и клик рядом с первой — замыкаем полигон
+			if (points.length >= 3) {
+				const firstPx = map.latLngToContainerPoint(points[0])
+				const clickPx = map.latLngToContainerPoint(e.latlng)
+				const dist = firstPx.distanceTo(clickPx)
+				if (dist < CLOSE_THRESHOLD_PX) {
+					finishPolygon(points)
+					return
+				}
+			}
+
 			setPoints(prev => [...prev, e.latlng])
 		},
 		dblclick(e) {
 			e.originalEvent.preventDefault()
 			if (pendingPoints) return
 			if (points.length >= 3) {
-				setPendingPoints(points.slice(0, -1))
-				setPopupPos(e.latlng)
-				setPoints([])
+				finishPolygon(points.slice(0, -1))
 			}
 		},
 	})
+
+	/** Переводит полигон в состояние ожидания ввода имени */
+	const finishPolygon = (pts: LatLng[]) => {
+		setPendingPoints(pts)
+		// Позиция popup — центр полигона
+		const lat = pts.reduce((s, p) => s + p.lat, 0) / pts.length
+		const lng = pts.reduce((s, p) => s + p.lng, 0) / pts.length
+		setPopupPos(new LatLng(lat, lng))
+		setPoints([])
+	}
 
 	const handleSave = () => {
 		if (!pendingPoints || !nameInput.trim()) return
@@ -67,8 +90,13 @@ export const PolygonDrawer = ({ onComplete, onCancel }: PolygonDrawerProps) => {
 				<CircleMarker
 					key={i}
 					center={[p.lat, p.lng]}
-					radius={5}
-					pathOptions={{ color: '#4fc3f7', fillColor: '#fff', fillOpacity: 1, weight: 2 }}
+					radius={i === 0 && points.length >= 3 ? 7 : 5}
+					pathOptions={{
+						color: i === 0 && points.length >= 3 ? '#fff' : '#4fc3f7',
+						fillColor: i === 0 && points.length >= 3 ? '#4fc3f7' : '#fff',
+						fillOpacity: 1,
+						weight: 2,
+					}}
 				/>
 			))}
 			{pendingPoints && pendingPoints.length >= 3 && (
@@ -88,8 +116,14 @@ export const PolygonDrawer = ({ onComplete, onCancel }: PolygonDrawerProps) => {
 				</>
 			)}
 			{popupPos && (
-				<Marker ref={markerRef} position={popupPos} opacity={0}>
-					<Popup autoClose={false} closeOnClick={false} closeButton={false} minWidth={220}>
+				<Marker ref={markerRef} position={popupPos} opacity={0} pane="drawingPopupPane">
+					<Popup
+						autoClose={false}
+						closeOnClick={false}
+						closeButton={false}
+						minWidth={220}
+						pane="drawingPopupPane"
+					>
 						<div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
 							<span style={{ fontWeight: 500, fontSize: 13, color: '#111' }}>Название области</span>
 							<input

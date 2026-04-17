@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useMapEvents } from 'react-leaflet'
 import { CoordFormat } from '../model/rulerTypes'
 import { fmtCoord } from '../lib/geoUtils'
-import { PANEL_STYLE } from '../lib/mapStyles'
+import { PANEL_STYLE, stopMapPropagation } from '../lib/mapStyles'
 
 export const CoordinatesPanel = () => {
 	const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null)
@@ -19,6 +19,7 @@ export const CoordinatesPanel = () => {
 
 	return (
 		<div
+			ref={stopMapPropagation}
 			style={{
 				...PANEL_STYLE,
 				position: 'absolute',

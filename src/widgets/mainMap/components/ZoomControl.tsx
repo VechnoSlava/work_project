@@ -1,10 +1,11 @@
 import { useMap } from 'react-leaflet'
-import { PANEL_STYLE, BTN_STYLE, BTN_LAST, onHover } from '../lib/mapStyles'
+import { PANEL_STYLE, BTN_STYLE, BTN_LAST, onHover, stopMapPropagation } from '../lib/mapStyles'
 
 export const ZoomControl = () => {
 	const map = useMap()
 	return (
 		<div
+			ref={stopMapPropagation}
 			style={{
 				...PANEL_STYLE,
 				position: 'absolute',

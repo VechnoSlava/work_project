@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { CircleMarker, Marker, Polyline, useMap, useMapEvents } from 'react-leaflet'
 import { LatLng } from 'leaflet'
 import { DistUnit, RulerPoint, RulerTrack } from '../model/rulerTypes'
@@ -6,7 +6,7 @@ import { bearing, haversine } from '../lib/geoUtils'
 import { makeRulerIcon, recalcTrackPoints } from '../lib/rulerUtils'
 import { injectArrowMarker } from '@/shared/icons/arrowMarkerSvg'
 import { SvgIcon } from '@/shared/icons/icons'
-import { PANEL_STYLE, BTN_STYLE, BTN_LAST, onHover } from '../lib/mapStyles'
+import { PANEL_STYLE, BTN_STYLE, BTN_LAST, onHover, stopMapPropagation } from '../lib/mapStyles'
 
 // ─── RulerEventHandler ────────────────────────────────────────────────────────
 
@@ -60,9 +60,11 @@ const RulerTrackLayer = ({ track, unit, preview, onPointMove }: RulerTrackLayerP
 		if (!track.finished || positions.length < 2) return
 
 		const timer = setTimeout(() => {
-			const svgRoot = map
-				.getContainer()
-				.querySelector('.leaflet-overlay-pane svg') as SVGSVGElement | null
+			const container = map.getContainer()
+
+			// Ищем SVG, содержащий наши polyline-элементы с data-track
+			const svgList = Array.from(container.querySelectorAll('svg'))
+			const svgRoot = svgList.find(svg => svg.querySelector(`[data-track="${track.id}"]`)) ?? null
 			if (!svgRoot) return
 
 			const markerId = `arm-${track.id}`
@@ -74,7 +76,7 @@ const RulerTrackLayer = ({ track, unit, preview, onPointMove }: RulerTrackLayerP
 		}, 0)
 
 		return () => clearTimeout(timer)
-	}, [track.finished, track.id, positions.length])
+	}, [track.finished, track.id, positions.length, positions])
 
 	return (
 		<>
@@ -84,6 +86,7 @@ const RulerTrackLayer = ({ track, unit, preview, onPointMove }: RulerTrackLayerP
 					<Polyline
 						key={`seg-${track.id}-${i}`}
 						positions={[positions[i], pos]}
+						pane="rulerPane"
 						pathOptions={{
 							color: '#4fc3f7',
 							weight: 2,
@@ -101,6 +104,7 @@ const RulerTrackLayer = ({ track, unit, preview, onPointMove }: RulerTrackLayerP
 			{!track.finished && last && preview && (
 				<Polyline
 					positions={[last.latlng, preview]}
+					pane="rulerPane"
 					pathOptions={{ color: '#4fc3f7', weight: 1.5, dashArray: '4 4', opacity: 0.5 }}
 				/>
 			)}
@@ -111,6 +115,7 @@ const RulerTrackLayer = ({ track, unit, preview, onPointMove }: RulerTrackLayerP
 					<CircleMarker
 						center={p.latlng}
 						radius={track.finished ? 5 : 4}
+						pane="rulerPane"
 						pathOptions={{ color: '#4fc3f7', fillColor: '#fff', fillOpacity: 1, weight: 2 }}
 						eventHandlers={{
 							mousedown(e) {
@@ -131,6 +136,7 @@ const RulerTrackLayer = ({ track, unit, preview, onPointMove }: RulerTrackLayerP
 					<Marker
 						position={p.latlng}
 						icon={makeRulerIcon(p, i === 0, unit)}
+						pane="rulerPane"
 						zIndexOffset={200}
 						interactive={false}
 					/>
@@ -142,16 +148,53 @@ const RulerTrackLayer = ({ track, unit, preview, onPointMove }: RulerTrackLayerP
 
 // ─── RulerControl ─────────────────────────────────────────────────────────────
 
-export const RulerControl = () => {
+export const RulerControl = ({
+	onActiveChange,
+}: {
+	onActiveChange?: (active: boolean) => void
+}) => {
 	const [active, setActive] = useState(false)
 	const [unit, setUnit] = useState<DistUnit>('km')
 	const [tracks, setTracks] = useState<RulerTrack[]>([])
 	const [preview, setPreview] = useState<LatLng | null>(null)
 	const nextId = useRef(0)
 
+	// Уведомляем родителя синхронно до отрисовки (useLayoutEffect),
+	// чтобы полигоны успели стать неинтерактивными до первого клика по карте
+	useLayoutEffect(() => {
+		onActiveChange?.(active)
+	}, [active, onActiveChange])
+
 	const units: DistUnit[] = ['km', 'nm', 'mi']
 	const unitLabel: Record<DistUnit, string> = { km: 'км', nm: 'нм', mi: 'ми' }
 	const activeTrack = tracks.find(t => !t.finished) ?? null
+
+	/** Отмена текущего незавершённого трека */
+	const cancelCurrentTrack = () => {
+		setTracks(prev => prev.filter(t => t.finished))
+		setActive(false)
+		setPreview(null)
+	}
+
+	/** Toggle линейки: при выключении — убираем незавершённый трек */
+	const handleToggle = () => {
+		if (active) {
+			cancelCurrentTrack()
+		} else {
+			setActive(true)
+		}
+	}
+
+	/** Обработка Esc — отмена текущего построения */
+	useEffect(() => {
+		const onKeyDown = (e: KeyboardEvent) => {
+			if (e.key === 'Escape' && active) {
+				cancelCurrentTrack()
+			}
+		}
+		document.addEventListener('keydown', onKeyDown)
+		return () => document.removeEventListener('keydown', onKeyDown)
+	}, [active])
 
 	const handleMapClick = (latlng: LatLng) => {
 		setTracks(prev => {
@@ -206,6 +249,7 @@ export const RulerControl = () => {
 	return (
 		<>
 			<div
+				ref={stopMapPropagation}
 				style={{
 					...PANEL_STYLE,
 					position: 'absolute',
@@ -223,7 +267,7 @@ export const RulerControl = () => {
 						background: active ? 'rgba(79,195,247,0.12)' : 'transparent',
 					}}
 					title="Линейка — кликайте по карте; повторный клик по крайней точке завершает сегмент"
-					onClick={() => setActive(a => !a)}
+					onClick={handleToggle}
 					onMouseEnter={e => {
 						if (!active) e.currentTarget.style.background = 'rgba(255,255,255,0.08)'
 					}}

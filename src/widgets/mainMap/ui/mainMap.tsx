@@ -1,7 +1,7 @@
 import styles from './mainMap.module.css'
-import { MapContainer, TileLayer, Polygon, Popup, useMap } from 'react-leaflet'
+import { MapContainer, TileLayer, Polygon, Popup, Pane, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { LatLng } from 'leaflet'
 import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
 import {
@@ -22,10 +22,16 @@ import { RulerControl } from '../components/RulerControl'
 import { PolygonDrawer } from '../components/PolygonDrawer'
 import { PolygonEditor } from '../components/PolygonEditor'
 
-const MapResizeFix = () => {
+/** Слушает resize контейнера карты (splitFrame) и вызывает invalidateSize */
+const MapResizeObserver = () => {
 	const map = useMap()
 	useEffect(() => {
-		setTimeout(() => map.invalidateSize(), 0)
+		const container = map.getContainer()
+		const ro = new ResizeObserver(() => {
+			map.invalidateSize()
+		})
+		ro.observe(container)
+		return () => ro.disconnect()
 	}, [map])
 	return null
 }
@@ -35,6 +41,11 @@ export const MainMap = () => {
 	const geoAreas = useAppSelector(selectGeoAreas)
 	const drawingMode = useAppSelector(selectGeoDrawingMode)
 	const editingIndex = useAppSelector(selectGeoEditingIndex)
+	const [rulerActive, setRulerActive] = useState(false)
+
+	const handleRulerActiveChange = useCallback((active: boolean) => {
+		setRulerActive(active)
+	}, [])
 
 	const handlePolygonComplete = (points: LatLng[], name: string) => {
 		dispatch(addGeoArea({ name, latLng: [points.map(p => ({ lat: p.lat, lng: p.lng }))] }))
@@ -52,6 +63,13 @@ export const MainMap = () => {
 		dispatch(finishDrawing())
 	}
 
+	/**
+	 * Полигоны становятся неинтерактивными когда линейка активна
+	 * или идёт рисование/редактирование нового полигона.
+	 * Это отключает Leaflet hit-testing — клики проходят насквозь к карте.
+	 */
+	const polygonsInteractive = !rulerActive && drawingMode === 'idle'
+
 	return (
 		<div className={styles.map__container}>
 			<MapContainer
@@ -62,41 +80,55 @@ export const MainMap = () => {
 				style={{ height: '100%', width: '100%', boxSizing: 'border-box' }}
 				doubleClickZoom={false}
 			>
-				<MapResizeFix />
+				<MapResizeObserver />
 				<SvgSprite />
 				<TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
 				<ZoomControl />
-				<RulerControl />
 				<CoordinatesPanel />
 
-				{geoAreas.map((area, i) => {
-					if (drawingMode === 'editing' && i === editingIndex) return null
-					return (
-						<Polygon
-							key={i}
-							positions={area.latLng[0].map(p => [p.lat, p.lng])}
-							pathOptions={{ color: '#4fc3f7', fillOpacity: 0.15 }}
-						>
-							<Popup>{area.name}</Popup>
-						</Polygon>
-					)
-				})}
+				{/* Полигоны — нижний слой */}
+				<Pane name="polygonsPane" style={{ zIndex: 450 }}>
+					{geoAreas.map((area, i) => {
+						if (drawingMode === 'editing' && i === editingIndex) return null
+						return (
+							<Polygon
+								key={`${i}-${polygonsInteractive}`}
+								positions={area.latLng[0].map(p => [p.lat, p.lng])}
+								pathOptions={{
+									color: '#4fc3f7',
+									fillOpacity: 0.15,
+									interactive: polygonsInteractive,
+								}}
+							>
+								{polygonsInteractive && <Popup>{area.name}</Popup>}
+							</Polygon>
+						)
+					})}
 
-				{drawingMode === 'drawing' && (
-					<PolygonDrawer
-						onComplete={handlePolygonComplete}
-						onCancel={() => dispatch(finishDrawing())}
-					/>
-				)}
+					{drawingMode === 'drawing' && (
+						<PolygonDrawer
+							onComplete={handlePolygonComplete}
+							onCancel={() => dispatch(finishDrawing())}
+						/>
+					)}
 
-				{drawingMode === 'editing' && editingIndex !== null && geoAreas[editingIndex] && (
-					<PolygonEditor
-						area={geoAreas[editingIndex]}
-						onSave={handleEditSave}
-						onCancel={() => dispatch(cancelDrawing())}
-					/>
-				)}
+					{drawingMode === 'editing' && editingIndex !== null && geoAreas[editingIndex] && (
+						<PolygonEditor
+							area={geoAreas[editingIndex]}
+							onSave={handleEditSave}
+							onCancel={() => dispatch(cancelDrawing())}
+						/>
+					)}
+				</Pane>
+
+				{/* Pane для картографических элементов линейки (всегда поверх полигонов) */}
+				<Pane name="rulerPane" style={{ zIndex: 500 }} />
+
+				{/* Pane для popup ввода названия полигона (поверх всех слоёв) */}
+				<Pane name="drawingPopupPane" style={{ zIndex: 700 }} />
+
+				<RulerControl onActiveChange={handleRulerActiveChange} />
 			</MapContainer>
 		</div>
 	)
