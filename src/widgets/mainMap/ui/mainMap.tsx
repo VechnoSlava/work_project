@@ -101,7 +101,7 @@ export const MainMap = () => {
 									interactive: polygonsInteractive,
 								}}
 							>
-								{polygonsInteractive && <Popup>{area.name}</Popup>}
+								{polygonsInteractive && <Popup pane="popupPane">{area.name}</Popup>}
 							</Polygon>
 						)
 					})}

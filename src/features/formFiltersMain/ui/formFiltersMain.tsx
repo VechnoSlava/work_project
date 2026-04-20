@@ -1,5 +1,5 @@
 import styles from './formFiltersMain.module.scss'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import 'dayjs/locale/ru' // или ваш локаль
@@ -17,6 +17,7 @@ import { RHFTextField } from '@/entities/RHFTextField'
 import { ButtonAddBand, ButtonDeleteFilter, ButtonFormAction } from '@/shared/buttons'
 import { RiAddLargeFill, RiCloseLargeFill } from 'react-icons/ri'
 import { AiOutlineDelete, AiOutlineFileDone } from 'react-icons/ai'
+import { MdOutlineCancel } from 'react-icons/md'
 import { RHFSelect } from '@/entities/RHFSelect/ui/RHFSelect'
 import {
 	frequencyOptions,
@@ -30,7 +31,11 @@ import { RHFRadioGroup } from '@/entities/RHFRadioGroup'
 import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
 import { selectMainFilters, updateMainFilters } from '../model/mainFiltersSlice'
 import { shallowEqual } from 'react-redux'
-import { toggleSideMenu } from '@/widgets/sideMenuFilters/model/sideMenuSlice'
+import {
+	closeSideMenu,
+	selectSideMenuOpened,
+	toggleSideMenu,
+} from '@/widgets/sideMenuFilters/model/sideMenuSlice'
 import { mainFilterDefaultValues } from '@/shared/constants/filterDefaults'
 import { GeoFilterSection } from './GeoFilterSection'
 
@@ -38,6 +43,10 @@ export const FormFiltersMain = () => {
 	console.log('render_MainForm')
 	const dispatch = useAppDispatch()
 	const savedFilters = useAppSelector(selectMainFilters, shallowEqual)
+	const sideMenuOpened = useAppSelector(selectSideMenuOpened)
+
+	/** Флаг: были ли фильтры применены (submit) в этой сессии открытия меню */
+	const wasSubmittedRef = useRef(false)
 
 	const methods = useForm<TypeSchemaMainFiltersForm>({
 		resolver: zodResolver(schemaMainFiltersForm),
@@ -45,6 +54,23 @@ export const FormFiltersMain = () => {
 		defaultValues: savedFilters,
 	})
 	const { control, setValue, getValues, reset } = methods
+
+	/**
+	 * При открытии меню — сбрасываем форму к актуальному состоянию из Redux.
+	 * При закрытии — если не было submit, тоже сбрасываем форму к Redux.
+	 */
+	useEffect(() => {
+		if (sideMenuOpened) {
+			// Меню открылось — синхронизируем форму с Redux
+			reset(savedFilters)
+			wasSubmittedRef.current = false
+		} else {
+			// Меню закрылось — если не было submit, откатываем форму
+			if (!wasSubmittedRef.current) {
+				reset(savedFilters)
+			}
+		}
+	}, [sideMenuOpened])
 
 	// Управление диапазонами для частотного фильтра
 	const {
@@ -91,6 +117,7 @@ export const FormFiltersMain = () => {
 
 	const onSubmit: SubmitHandler<TypeSchemaMainFiltersForm> = useCallback(
 		data => {
+			wasSubmittedRef.current = true
 			dispatch(updateMainFilters(data))
 
 			const transformedData = {
@@ -119,7 +146,7 @@ export const FormFiltersMain = () => {
 			}
 
 			console.log('Submitted data:', transformedData)
-			dispatch(toggleSideMenu())
+			dispatch(closeSideMenu())
 			// Здесь отправка на сервер
 		},
 		[dispatch],
@@ -140,8 +167,15 @@ export const FormFiltersMain = () => {
 	// Функция сброса всех фильтров
 	const resetFilters = useCallback(() => {
 		reset(mainFilterDefaultValues)
+		wasSubmittedRef.current = true
 		onSubmit(mainFilterDefaultValues)
 	}, [reset, onSubmit])
+
+	/** Отмена — откатываем форму к состоянию из Redux и закрываем меню */
+	const handleCancel = useCallback(() => {
+		reset(savedFilters)
+		dispatch(closeSideMenu())
+	}, [reset, savedFilters, dispatch])
 
 	return (
 		<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'ru'}>
@@ -290,6 +324,9 @@ export const FormFiltersMain = () => {
 					<Stack direction={'row'} justifyContent="center" spacing={2}>
 						<ButtonFormAction startIcon={<AiOutlineFileDone />} type="submit">
 							Применить
+						</ButtonFormAction>
+						<ButtonFormAction startIcon={<MdOutlineCancel />} type="button" onClick={handleCancel}>
+							Отмена
 						</ButtonFormAction>
 						<ButtonFormAction startIcon={<AiOutlineDelete />} type="button" onClick={resetFilters}>
 							Сброс фильтров
