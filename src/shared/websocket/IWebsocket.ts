@@ -75,6 +75,65 @@ export interface IChartInfoPulse {
 	x: number
 	y: number
 }
+
+//------------Фильтры------------------------------------------------
+/** Диапазон с числовым metricPrefix (серверный формат) */
+export interface IServerBand {
+	start: string
+	stop: string
+	metricPrefix: number
+}
+
+/** Фильтр с диапазонами (серверный формат) */
+export interface IServerBandsFilter {
+	key: number
+	filterLabel: string
+	templateType: 'bands'
+	units: Record<string, string>
+	bands: IServerBand[]
+}
+
+/** Календарный фильтр (серверный формат) */
+export interface IServerCalendarFilter {
+	key: number
+	filterLabel: string
+	templateType: 'calendar'
+	bands: (string | null)[]
+}
+
+/** Фильтр по типу целей (серверный формат) */
+export interface IServerSelectorFilter {
+	key: number
+	filterLabel: string
+	templateType: 'selector'
+	units: Record<string, string>
+	value: number
+}
+
+/** Гео-область (серверный формат) */
+export interface IServerGeoArea {
+	name: string
+	latLng: { lat: number; lng: number }[][]
+}
+
+/** Фильтр по географической области (серверный формат) */
+export interface IServerGeoFilter {
+	key: number
+	filterLabel: string
+	templateType: 'geoFilter'
+	bands: IServerGeoArea[]
+}
+
+/** Полная структура данных фильтров для сервера */
+export interface IServerFiltersData {
+	freqFilter: IServerBandsFilter
+	pulseDurationFilter: IServerBandsFilter
+	pulsePeriodFilter: IServerBandsFilter
+	calendarFilter: IServerCalendarFilter
+	selectorFilter: IServerSelectorFilter
+	geoFilter: IServerGeoFilter
+}
+
 //--------------Входящие сообщения----------------------------------------
 export interface IWebSocket {
 	/**Спектральная панорама */
@@ -115,14 +174,21 @@ export interface WebSocketMessageBase {
 	id: number
 }
 
+// Message id=101 (Filters MainForm)
+export interface IFiltersMainMessage extends WebSocketMessageBase {
+	data: IServerFiltersData
+}
+
+// Message id=102 (Selected radars in RadarTable)
 export interface ISelectedRadarsList extends WebSocketMessageBase {
 	data: {
 		uid: ISelectedRadars['uid']
 	}[]
 }
 
+// Message id=103 (Selected Impulse in the PulsesGridTable)
 export interface ISelectedPulse extends WebSocketMessageBase {
 	data: ISelectedTadId[]
 }
 
-export type WebSocketMessage = ISelectedRadarsList | ISelectedPulse
+export type WebSocketMessage = ISelectedRadarsList | ISelectedPulse | IFiltersMainMessage

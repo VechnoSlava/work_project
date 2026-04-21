@@ -30,6 +30,10 @@ export const mainFiltersSlice = createAppSlice({
 				state.geoFilter.bands[action.payload.index] = action.payload.area
 			},
 		),
+		/** Восстанавливает массив гео-областей из снэпшота (при отмене фильтров) */
+		restoreGeoAreas: create.reducer((state, action: PayloadAction<GeoArea[]>) => {
+			state.geoFilter.bands = action.payload
+		}),
 		clearMainFilters: create.reducer(() => initialState),
 	}),
 	selectors: {
@@ -43,7 +47,13 @@ export const mainFiltersSlice = createAppSlice({
 	},
 })
 
-export const { updateMainFilters, clearMainFilters, addGeoArea, removeGeoArea, updateGeoArea } =
-	mainFiltersSlice.actions
+export const {
+	updateMainFilters,
+	clearMainFilters,
+	addGeoArea,
+	removeGeoArea,
+	updateGeoArea,
+	restoreGeoAreas,
+} = mainFiltersSlice.actions
 
 export const { selectMainFilters, selectGeoAreas } = mainFiltersSlice.selectors

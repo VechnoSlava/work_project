@@ -29,15 +29,54 @@ import { Stack, Box } from '@mui/material'
 import { RHFDateTimePicker } from '@/entities/RHFDateTimePicker'
 import { RHFRadioGroup } from '@/entities/RHFRadioGroup'
 import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
-import { selectMainFilters, updateMainFilters } from '../model/mainFiltersSlice'
+import { selectMainFilters, updateMainFilters, restoreGeoAreas } from '../model/mainFiltersSlice'
 import { shallowEqual } from 'react-redux'
-import {
-	closeSideMenu,
-	selectSideMenuOpened,
-	toggleSideMenu,
-} from '@/widgets/sideMenuFilters/model/sideMenuSlice'
+import { closeSideMenu, selectSideMenuOpened } from '@/widgets/sideMenuFilters/model/sideMenuSlice'
 import { mainFilterDefaultValues } from '@/shared/constants/filterDefaults'
 import { GeoFilterSection } from './GeoFilterSection'
+import type { GeoArea } from '../model/mainFiltersSlice'
+import { sendMessage } from '@/shared/webSocket/serverConnectionSlice'
+import type { IServerFiltersData, WebSocketMessage } from '@/shared/webSocket/IWebSocket'
+
+/**
+ * Трансформирует данные формы (строковые metricPrefix/value)
+ * в серверный формат (числовые metricPrefix/value, без geoFilter).
+ */
+const transformFiltersForServer = (data: TypeSchemaMainFiltersForm): IServerFiltersData => ({
+	freqFilter: {
+		...data.freqFilter,
+		bands: data.freqFilter.bands.map(band => ({
+			...band,
+			metricPrefix: Number(band.metricPrefix),
+		})),
+	},
+	pulseDurationFilter: {
+		...data.pulseDurationFilter,
+		bands: data.pulseDurationFilter.bands.map(band => ({
+			...band,
+			metricPrefix: Number(band.metricPrefix),
+		})),
+	},
+	pulsePeriodFilter: {
+		...data.pulsePeriodFilter,
+		bands: data.pulsePeriodFilter.bands.map(band => ({
+			...band,
+			metricPrefix: Number(band.metricPrefix),
+		})),
+	},
+	calendarFilter: data.calendarFilter,
+	selectorFilter: {
+		...data.selectorFilter,
+		value: Number(data.selectorFilter.value),
+	},
+	geoFilter: {
+		...data.geoFilter,
+		bands: data.geoFilter.bands.map(area => ({
+			name: area.name,
+			latLng: area.latLng,
+		})),
+	},
+})
 
 export const FormFiltersMain = () => {
 	console.log('render_MainForm')
@@ -48,6 +87,9 @@ export const FormFiltersMain = () => {
 	/** Флаг: были ли фильтры применены (submit) в этой сессии открытия меню */
 	const wasSubmittedRef = useRef(false)
 
+	/** Снэпшот гео-областей на момент открытия меню */
+	const geoSnapshotRef = useRef<GeoArea[]>([])
+
 	const methods = useForm<TypeSchemaMainFiltersForm>({
 		resolver: zodResolver(schemaMainFiltersForm),
 		mode: 'all',
@@ -56,18 +98,23 @@ export const FormFiltersMain = () => {
 	const { control, setValue, getValues, reset } = methods
 
 	/**
-	 * При открытии меню — сбрасываем форму к актуальному состоянию из Redux.
-	 * При закрытии — если не было submit, тоже сбрасываем форму к Redux.
+	 * При открытии меню — сбрасываем форму к актуальному состоянию из Redux
+	 * и сохраняем снэпшот гео-областей.
+	 * При закрытии — если не было submit, откатываем форму и гео-области к снэпшоту.
 	 */
 	useEffect(() => {
 		if (sideMenuOpened) {
-			// Меню открылось — синхронизируем форму с Redux
+			// Меню открылось — синхронизируем форму с Redux и запоминаем гео-снэпшот
 			reset(savedFilters)
+			geoSnapshotRef.current = JSON.parse(JSON.stringify(savedFilters.geoFilter.bands))
 			wasSubmittedRef.current = false
 		} else {
-			// Меню закрылось — если не было submit, откатываем форму
+			// Меню закрылось — если не было submit, откатываем всё
 			if (!wasSubmittedRef.current) {
 				reset(savedFilters)
+				// Восстанавливаем гео-области в Redux из снэпшота,
+				// т.к. они могли быть изменены напрямую (добавление/удаление)
+				dispatch(restoreGeoAreas(geoSnapshotRef.current))
 			}
 		}
 	}, [sideMenuOpened])
@@ -120,34 +167,12 @@ export const FormFiltersMain = () => {
 			wasSubmittedRef.current = true
 			dispatch(updateMainFilters(data))
 
-			const transformedData = {
-				...data,
-				freqFilter: {
-					...data.freqFilter,
-					bands: data.freqFilter.bands.map(band => ({
-						...band,
-						metricPrefix: Number(band.metricPrefix),
-					})),
-				},
-				pulseDurationFilter: {
-					...data.pulseDurationFilter,
-					bands: data.pulseDurationFilter.bands.map(band => ({
-						...band,
-						metricPrefix: Number(band.metricPrefix),
-					})),
-				},
-				pulsePeriodFilter: {
-					...data.pulsePeriodFilter,
-					bands: data.pulsePeriodFilter.bands.map(band => ({
-						...band,
-						metricPrefix: Number(band.metricPrefix),
-					})),
-				},
-			}
+			const serverData = transformFiltersForServer(data)
+			const message: WebSocketMessage = { id: 101, data: serverData }
 
-			console.log('Submitted data:', transformedData)
+			dispatch(sendMessage(message))
+			console.log('Filters sent:', message)
 			dispatch(closeSideMenu())
-			// Здесь отправка на сервер
 		},
 		[dispatch],
 	)
@@ -171,9 +196,10 @@ export const FormFiltersMain = () => {
 		onSubmit(mainFilterDefaultValues)
 	}, [reset, onSubmit])
 
-	/** Отмена — откатываем форму к состоянию из Redux и закрываем меню */
+	/** Отмена — откатываем форму и гео-области к снэпшоту и закрываем меню */
 	const handleCancel = useCallback(() => {
 		reset(savedFilters)
+		dispatch(restoreGeoAreas(geoSnapshotRef.current))
 		dispatch(closeSideMenu())
 	}, [reset, savedFilters, dispatch])
 
