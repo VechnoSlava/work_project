@@ -33,9 +33,16 @@ export const makeStore = (preloadedState?: Partial<RootState>) => {
 	 */
 	const syncMiddleware = createStateSyncMiddleware({
 		channel: 'broadcastChanelRedux',
-		// Опционально: можно добавить blacklist или whitelist для экшенов, которые не должны синхронизироваться
-		// blacklist: ['__rtkq/unfocused', '__rtkq/focused'],
-		// whitelist: ['SYNCED_ACTION_TYPE'],
+		blacklist: [
+			'serverConnection/connectToServerRequest',
+			'serverConnection/connectToServerSuccess',
+			'serverConnection/connectToServerFailure',
+			'serverConnection/disconnectToServer',
+			// Боковое меню фильтров — локальный UI, есть только в главном окне
+			'sideMenuFilters/openSideMenu',
+			'sideMenuFilters/closeSideMenu',
+			'sideMenuFilters/toggleSideMenu',
+		],
 	}) as Middleware<{}, RootState, Dispatch<PayloadAction>>
 
 	const store = configureStore({
