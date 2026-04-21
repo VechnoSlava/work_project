@@ -18,7 +18,7 @@ export const SwitchIdentificationMode = () => {
 			nameSwitch="Режим идентификации"
 			checked={isIdentificationMode}
 			onChange={handleIdentificationMode}
-			inputProps={{ 'aria-label': 'Режим идентификации' }}
+			slotProps={{ input: { 'aria-label': 'Режим идентификации' } }}
 		/>
 	)
 }

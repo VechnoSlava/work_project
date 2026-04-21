@@ -20,10 +20,11 @@ export const SlaveMainPage = () => {
 				</div>
 			</header>
 			<div className={styles.body}>
-				<SplitFrame frameDirection="horizontal" key={identificationMode ? 1 : 0}>
+				<MainMap />
+				{/* <SplitFrame frameDirection="horizontal" key={identificationMode ? 1 : 0}>
 					<MainMap />
 					{identificationMode ? null : <RadarsTable />}
-				</SplitFrame>
+				</SplitFrame> */}
 			</div>
 		</div>
 	)

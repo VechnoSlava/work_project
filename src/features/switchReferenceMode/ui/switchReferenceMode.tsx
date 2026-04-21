@@ -2,10 +2,7 @@ import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
 import { ToggleSwitch } from '@/entities/toggleSwitch'
 import { RoutePath, ROUTES_PATH } from '@/shared/constants/routes'
-import {
-	selectModeReference,
-	toggleReferenceMode,
-} from '@/widgets/header/model/controlModesSlice'
+import { selectModeReference, toggleReferenceMode } from '@/widgets/header/model/controlModesSlice'
 import { selectPage } from '@/features/pagesNavigation/model/pagesNavigationSlice'
 
 export const SwitchReferenceMode = () => {
@@ -33,7 +30,7 @@ export const SwitchReferenceMode = () => {
 			checked={isReferenceMode}
 			onChange={handleReferenceMode}
 			disabled={handleDisabledReferenceMode(currentMainPage)}
-			inputProps={{ 'aria-label': 'Режим эталонов' }}
+			slotProps={{ input: { 'aria-label': 'Режим эталонов' } }}
 		/>
 	)
 }
