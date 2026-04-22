@@ -11,7 +11,7 @@ export const SideMenuSettings = () => {
 
 	return (
 		<Drawer
-			anchor="right"
+			anchor="left"
 			open={sideMenuSettingsOpened}
 			onClose={() => dispatch(closeSideMenuSettings())}
 			variant="persistent"

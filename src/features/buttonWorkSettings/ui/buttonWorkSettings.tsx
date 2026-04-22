@@ -2,12 +2,14 @@ import styles from './buttonWorkSettings.module.css'
 import { IoIosSettings } from 'react-icons/io'
 import { useAppDispatch, useAppSelector } from '../../../app/store/hooks'
 import { ButtonMenuHead } from '../../../shared/buttons'
+import { selectSideMenuSettingsOpened, toggleSideMenuSettings } from '@/widgets/sideMenuSettings'
 
 export const ButtonWorkSettings = () => {
 	const dispatch = useAppDispatch()
+	const sideMenuSettingsOpened = useAppSelector(selectSideMenuSettingsOpened)
 
 	const handleOpenSettings = () => {
-		dispatch(() => {})
+		dispatch(toggleSideMenuSettings())
 	}
 
 	return (
@@ -15,7 +17,7 @@ export const ButtonWorkSettings = () => {
 			<div className={styles.buttonContainer}>
 				<ButtonMenuHead
 					value="check"
-					selected={true}
+					selected={sideMenuSettingsOpened}
 					title="Параметры работы"
 					onClick={handleOpenSettings}
 				>

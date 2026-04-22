@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom'
 import { Header } from '@/widgets/header'
 import { Footer } from '@/widgets/footer'
 import { SideMenuFilters } from '@/widgets/sideMenuFilters'
+import { SideMenuSettings } from '@/widgets/sideMenuSettings'
 
 export const MainLayout = () => {
 	return (
@@ -14,6 +15,7 @@ export const MainLayout = () => {
 			</main>
 			<Footer />
 			<SideMenuFilters />
+			<SideMenuSettings />
 		</div>
 	)
 }
