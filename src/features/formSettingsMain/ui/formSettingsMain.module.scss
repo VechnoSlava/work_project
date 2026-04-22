@@ -1,0 +1,17 @@
+.formFilters {
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+	width: 100%;
+	padding: 10px;
+
+	.formItem {
+		display: flex;
+		flex-direction: row;
+		margin-bottom: 10px;
+		width: 100%;
+	}
+	.buttonAddBand {
+		width: 100%;
+	}
+}

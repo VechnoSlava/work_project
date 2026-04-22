@@ -1,1 +1,2 @@
-export { SideMenuFilters } from "./ui/sideMenuFilters"
+export { SideMenuFilters } from './ui/sideMenuFilters'
+export { sideMenuSlice } from './model/sideMenuSlice'

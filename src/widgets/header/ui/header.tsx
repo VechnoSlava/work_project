@@ -7,6 +7,7 @@ import { SwitchSecondWindowMode } from '@/features/switchSecondWindowMode'
 import { SwitchIdentificationMode } from '@/features/switchIdentificationMode'
 import { SwitchReferenceMode } from '@/features/switchReferenceMode'
 import { ButtonTestMessage } from '@/features/buttonTestMessage'
+import { ButtonWorkSettings } from '@/features/buttonWorkSettings'
 
 export const Header = () => {
 	return (
@@ -31,6 +32,7 @@ export const Header = () => {
 				<div className={styles.header__buttons}>
 					<ButtonConnectToServer />
 					<ButtonSideMenuFilters />
+					<ButtonWorkSettings />
 					<ButtonTestMessage />
 				</div>
 			</div>
