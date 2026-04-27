@@ -5,7 +5,6 @@ import { useAppSelector } from '@/app/store/hooks'
 import { selectModeSecondWindow } from '@/widgets/header/model/controlModesSlice'
 import { useEffect, useState } from 'react'
 import { RadarsTable } from '@/widgets/radarsTable'
-import { CurrentTargetsTable } from '@/widgets/currentTargetsTable'
 
 export const HistoryPage = () => {
 	console.log('RENDER HISTORY_PAGE')
@@ -30,7 +29,7 @@ export const HistoryPage = () => {
 						<div key={4} />
 						<RadarsTable key={5} />
 					</SplitFrame>
-					{secondWindowOpened ? null : <CurrentTargetsTable key={6} />}
+					{secondWindowOpened ? null : <RadarsTable key={6} />}
 				</SplitFrame>
 			</SplitFrame>
 		</div>
