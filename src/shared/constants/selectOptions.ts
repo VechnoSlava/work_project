@@ -74,3 +74,10 @@ export const selectorTypeOptions: Option[] = [
 		label: 'Большебазовая РЛС',
 	},
 ]
+
+export const attenuatorOptions: Option[] = [
+	{ value: '0', label: '0 дБ' },
+	{ value: '10', label: '10 дБ' },
+	{ value: '20', label: '20 дБ' },
+	{ value: '30', label: '30 дБ' },
+]

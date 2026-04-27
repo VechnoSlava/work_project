@@ -10,7 +10,11 @@ export const formSettingsSlice = createAppSlice({
 	initialState,
 	reducers: create => ({
 		updateMainSettings: create.reducer(
-			(state, action: PayloadAction<TypeSchemaMainSettingsForm>) => {},
+			(state, action: PayloadAction<TypeSchemaMainSettingsForm>) => {
+				state.bandsFilter = action.payload.bandsFilter
+				state.vsk = action.payload.vsk
+				state.importer = action.payload.importer
+			},
 		),
 		clearMainSettings: create.reducer(() => initialState),
 	}),

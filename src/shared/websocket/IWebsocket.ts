@@ -191,4 +191,46 @@ export interface ISelectedPulse extends WebSocketMessageBase {
 	data: ISelectedTadId[]
 }
 
-export type WebSocketMessage = ISelectedRadarsList | ISelectedPulse | IFiltersMainMessage
+// Message id=100 (Settings MainForm)
+export interface IServerSettingsBand {
+	id: number
+	band: string
+	checked: boolean
+	time: number
+	attenuator: number
+}
+
+export interface IServerSettingsBandsFilter {
+	key: number
+	filterLabel: string
+	templateType: 'table'
+	units: Record<string, string>
+	bands: IServerSettingsBand[]
+}
+
+export interface IServerSettingsVskItem {
+	freq: number
+	checked: boolean
+}
+
+export interface IServerSettingsVsk {
+	key: number
+	filterLabel: string
+	templateType: 'generator'
+	bands: IServerSettingsVskItem[]
+}
+
+export interface IServerSettingsData {
+	bandsFilter: IServerSettingsBandsFilter
+	vsk: IServerSettingsVsk
+}
+
+export interface ISettingsMainMessage extends WebSocketMessageBase {
+	data: IServerSettingsData
+}
+
+export type WebSocketMessage =
+	| ISelectedRadarsList
+	| ISelectedPulse
+	| IFiltersMainMessage
+	| ISettingsMainMessage

@@ -1,21 +1,31 @@
 import styles from './formSettingsMain.module.scss'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import 'dayjs/locale/ru' // или ваш локаль
-import { FormProvider, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import {
+	Controller,
+	FormProvider,
+	SubmitErrorHandler,
+	SubmitHandler,
+	useFormContext,
+	useForm,
+} from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FieldAccordion } from '@/entities/fieldFilters'
 import { schemaMainSettingsForm, TypeSchemaMainSettingsForm } from '../model/schema'
-import { AiOutlineFileDone } from 'react-icons/ai'
+import { RHFTextField } from '@/entities/RHFTextField'
+import { RHFSelect } from '@/entities/RHFSelect/ui/RHFSelect'
+import { attenuatorOptions } from '@/shared/constants/selectOptions'
+import { AiOutlineFileDone, AiOutlineImport } from 'react-icons/ai'
 import { MdOutlineCancel } from 'react-icons/md'
-import { Stack, Box } from '@mui/material'
+import { Checkbox, Stack } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
 import { shallowEqual } from 'react-redux'
-import { useCallback, useEffect, useRef } from 'react'
 import { closeSideMenuSettings, selectSideMenuSettingsOpened } from '@/widgets/sideMenuSettings'
 import { selectMainSettings, updateMainSettings } from '../model/formSettingsSlice'
 import { mainSettingsDefaultValues } from '@/shared/constants/settingsDefaults'
 import { ButtonFormAction } from '@/shared/buttons'
+import { CustomSwitch } from '@/shared/buttons'
+import { sendMessage } from '@/shared/webSocket/serverConnectionSlice'
+import type { WebSocketMessage } from '@/shared/webSocket/IWebSocket'
 
 export const FormSettingsMain = () => {
 	console.log('render_SettingsForm')
@@ -23,23 +33,25 @@ export const FormSettingsMain = () => {
 	const savedSettings = useAppSelector(selectMainSettings, shallowEqual)
 	const sideMenuSettingsOpened = useAppSelector(selectSideMenuSettingsOpened)
 
-	/** Флаг: были ли фильтры применены (submit) в этой сессии открытия меню */
 	const wasSubmittedRef = useRef(false)
+
+	/** Имя выбранного файла для импорта (не является частью формы RHF) */
+	const [importFile, setImportFile] = useState<File | null>(null)
+	const fileInputRef = useRef<HTMLInputElement>(null)
 
 	const methods = useForm<TypeSchemaMainSettingsForm>({
 		resolver: zodResolver(schemaMainSettingsForm),
 		mode: 'all',
 		defaultValues: savedSettings,
 	})
-	const { setValue, getValues, reset } = methods
+	const { control, reset } = methods
 
 	useEffect(() => {
 		if (sideMenuSettingsOpened) {
-			// Меню открылось — синхронизируем форму с Redux и запоминаем гео-снэпшот
 			reset(savedSettings)
+			setImportFile(null)
 			wasSubmittedRef.current = false
 		} else {
-			// Меню закрылось — если не было submit, откатываем всё
 			if (!wasSubmittedRef.current) {
 				reset(savedSettings)
 			}
@@ -49,12 +61,13 @@ export const FormSettingsMain = () => {
 	const onSubmit: SubmitHandler<TypeSchemaMainSettingsForm> = useCallback(
 		data => {
 			wasSubmittedRef.current = true
-			// dispatch(updateMainSettings(data))
-			// const serverDataSettings = transformSettingsForServer(data)
-			// const message: WebSocketMessage = { id: 100, data: serverDataSettings }
-			// dispatch(sendMessage(message))
-			// console.log('Filters sent:', message)
-			console.log('Filters sent: TEST HERE!')
+			dispatch(updateMainSettings(data))
+
+			const serverData = transformSettingsForServer(data)
+			const message: WebSocketMessage = { id: 100, data: serverData }
+
+			dispatch(sendMessage(message))
+			console.log('Settings sent:', message)
 			dispatch(closeSideMenuSettings())
 		},
 		[dispatch],
@@ -63,94 +76,172 @@ export const FormSettingsMain = () => {
 	const onError: SubmitErrorHandler<TypeSchemaMainSettingsForm> = data =>
 		console.log('error:', data)
 
-	// Функция сброса всех фильтров
-	const resetFilters = useCallback(() => {
-		reset(mainSettingsDefaultValues)
-		wasSubmittedRef.current = true
-		onSubmit(mainSettingsDefaultValues)
-	}, [reset, onSubmit])
-
-	/** Отмена — откатываем форму и закрываем меню */
 	const handleCancel = useCallback(() => {
 		reset(savedSettings)
 		dispatch(closeSideMenuSettings())
 	}, [reset, savedSettings, dispatch])
 
+	/** Выбор файла */
+	const handleFileSelect = () => {
+		fileInputRef.current?.click()
+	}
+
+	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0] ?? null
+		setImportFile(file)
+		// Сбрасываем input, чтобы можно было выбрать тот же файл повторно
+		e.target.value = ''
+	}
+
+	/** Импорт файла — отправка на сервер (пока заглушка) */
+	const handleImport = () => {
+		if (!importFile) return
+		// TODO: отправка файла на сервер через WebSocket или REST
+		console.log('Importing file:', importFile.name)
+	}
+
 	return (
-		<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'ru'}>
-			<FormProvider {...methods}>
-				<form className={styles.formFilters} onSubmit={methods.handleSubmit(onSubmit, onError)}>
-					<FieldAccordion nameField="Выбор полос приема" id="Change_bands">
-						<div>
-							<p> 'Чек-бокс' 1-2 ГГц, время 'инпут номер' сек, ослабление 'селект 0-10-20-30' дБ</p>
-							<p>
-								{' '}
-								'Чек-бокс' 2-2.5 ГГц, время 'инпут номер' сек, ослабление 'селект 0-10-20-30' дБ
-							</p>
-							<p>
-								{' '}
-								'Чек-бокс' 2.5-3 ГГц, время 'инпут номер' сек, ослабление 'селект 0-10-20-30' дБ
-							</p>
-							<p>
-								{' '}
-								'Чек-бокс' 3-3.5 ГГц, время 'инпут номер' сек, ослабление 'селект 0-10-20-30' дБ
-							</p>
-							<p>
-								{' '}
-								'Чек-бокс' 3.5-4 ГГц, время 'инпут номер' сек, ослабление 'селект 0-10-20-30' дБ
-							</p>
-							<p> 'Чек-бокс' 4-5 ГГц, время 'инпут номер' сек, ослабление 'селект 0-10-20-30' дБ</p>
-							<p> 'Чек-бокс' 5-6 ГГц, время 'инпут номер' сек, ослабление 'селект 0-10-20-30' дБ</p>
-							<p> 'Чек-бокс' 6-7 ГГц, время 'инпут номер' сек, ослабление 'селект 0-10-20-30' дБ</p>
-							<p> 'Чек-бокс' 7-8 ГГц, время 'инпут номер' сек, ослабление 'селект 0-10-20-30' дБ</p>
-							<p> 'Чек-бокс' 8-9 ГГц, время 'инпут номер' сек, ослабление 'селект 0-10-20-30' дБ</p>
-							<p>
-								{' '}
-								'Чек-бокс' 9-10 ГГц, время 'инпут номер' сек, ослабление 'селект 0-10-20-30' дБ
-							</p>
-							<p>
-								{' '}
-								'Чек-бокс' 10-11 ГГц, время 'инпут номер' сек, ослабление 'селект 0-10-20-30' дБ
-							</p>
-							<p>
-								{' '}
-								'Чек-бокс' 11-12 ГГц, время 'инпут номер' сек, ослабление 'селект 0-10-20-30' дБ
-							</p>
-						</div>
-					</FieldAccordion>
+		<FormProvider {...methods}>
+			<form className={styles.formSettings} onSubmit={methods.handleSubmit(onSubmit, onError)}>
+				{/* ─── Аккордеон 1: Полосы приёма ─── */}
+				<FieldAccordion nameField="Выбор полос приема" id="change_bands">
+					<BandsTable />
+				</FieldAccordion>
 
-					<FieldAccordion nameField="Включение тестового сигнала" id="Signal_test">
-						<div>
-							{' '}
-							<p>'тогглер включения/отключения' 'инпут номер' ГГц</p>
-						</div>
-						<div>
-							{' '}
-							<p>
-								* Тестовый (непрерывный гармонический) сигнал используется для экспресс проверки
-								работоспособности фидерных трактов изделия. При этом изделие переходит из режима
-								записи импульсов в режим непрерывной регистрации.
-							</p>
-						</div>
-					</FieldAccordion>
+				{/* ─── Аккордеон 2: Тестовый сигнал ─── */}
+				<FieldAccordion nameField="Включение тестового сигнала" id="signal_test">
+					<div className={styles.vskRow}>
+						<Controller
+							name="vsk.bands.0.checked"
+							control={control}
+							render={({ field }) => (
+								<CustomSwitch
+									checked={field.value}
+									onChange={e => field.onChange(e.target.checked)}
+								/>
+							)}
+						/>
+						<RHFTextField<TypeSchemaMainSettingsForm>
+							name="vsk.bands.0.freq"
+							label="Частота"
+							id="vsk-freq"
+							sx={{ maxWidth: '20px', marginRight: '5px' }}
+						/>
+						<span className={styles.bandUnit}>ГГц</span>
+					</div>
+					<div className={styles.vskNote}>
+						* Тестовый (непрерывный гармонический) сигнал используется для экспресс проверки
+						работоспособности фидерных трактов изделия. При этом изделие переходит из режима записи
+						импульсов в режим непрерывной регистрации.
+					</div>
+				</FieldAccordion>
 
-					<FieldAccordion nameField="Импорт сигнатур" id="Signature_import">
-						<div>
-							<p>'поле нименования файла' Выбрать</p>
-						</div>
-						<div>кнопка импортировать</div>
-					</FieldAccordion>
-
-					<Stack direction={'row'} justifyContent="center" spacing={2}>
-						<ButtonFormAction startIcon={<AiOutlineFileDone />} type="submit">
-							Применить параметры
+				{/* ─── Аккордеон 3: Импорт сигнатур ─── */}
+				<FieldAccordion nameField="Импорт сигнатур" id="signature_import">
+					<div className={styles.importerRow}>
+						<div className={styles.fileName}>{importFile ? importFile.name : 'Файл не выбран'}</div>
+						<ButtonFormAction type="button" onClick={handleFileSelect}>
+							Выбрать
 						</ButtonFormAction>
-						<ButtonFormAction startIcon={<MdOutlineCancel />} type="button" onClick={handleCancel}>
-							Отмена изменений
+						<input
+							ref={fileInputRef}
+							type="file"
+							style={{ display: 'none' }}
+							onChange={handleFileChange}
+						/>
+					</div>
+					<div className={styles.importActions}>
+						<ButtonFormAction
+							startIcon={<AiOutlineImport />}
+							type="button"
+							onClick={handleImport}
+							disabled={!importFile}
+						>
+							Импортировать
 						</ButtonFormAction>
-					</Stack>
-				</form>
-			</FormProvider>
-		</LocalizationProvider>
+					</div>
+				</FieldAccordion>
+
+				{/* ─── Кнопки ─── */}
+				<Stack direction={'row'} justifyContent="center" spacing={2}>
+					<ButtonFormAction startIcon={<AiOutlineFileDone />} type="submit">
+						Применить параметры
+					</ButtonFormAction>
+					<ButtonFormAction startIcon={<MdOutlineCancel />} type="button" onClick={handleCancel}>
+						Отмена изменений
+					</ButtonFormAction>
+				</Stack>
+			</form>
+		</FormProvider>
 	)
 }
+
+/**
+ * Таблица полос приёма — вынесена в отдельный компонент
+ * для чистоты и переиспользования useFormContext.
+ */
+const BandsTable = () => {
+	const { control, watch } = useFormContext<TypeSchemaMainSettingsForm>()
+	const bands = watch('bandsFilter.bands')
+
+	return (
+		<div>
+			{bands.map((band, index) => (
+				<div key={band.id} className={styles.bandRow}>
+					<Controller
+						name={`bandsFilter.bands.${index}.checked`}
+						control={control}
+						render={({ field }) => (
+							<Checkbox
+								checked={field.value}
+								onChange={e => field.onChange(e.target.checked)}
+								// size="small"
+								sx={{
+									padding: '2px',
+									color: '#5a7a8f',
+									'&.Mui-checked': { color: '#4fc3f7' },
+								}}
+							/>
+						)}
+					/>
+					<span className={styles.bandLabel}>{band.band} ГГц</span>
+					<RHFTextField<TypeSchemaMainSettingsForm>
+						name={`bandsFilter.bands.${index}.time`}
+						label="Время, сек"
+						id={`band-time-${index}`}
+						sx={{ width: 40, marginRight: '5px' }}
+					/>
+					<RHFSelect<TypeSchemaMainSettingsForm>
+						name={`bandsFilter.bands.${index}.attenuator`}
+						options={attenuatorOptions}
+						label="Ослабление"
+						id={`band-att-${index}`}
+						sx={{ minWidth: 120 }}
+					/>
+				</div>
+			))}
+		</div>
+	)
+}
+
+/**
+ * Трансформирует данные формы в серверный формат.
+ * attenuator и time приводятся к числам, importer не отправляется.
+ */
+const transformSettingsForServer = (data: TypeSchemaMainSettingsForm) => ({
+	bandsFilter: {
+		...data.bandsFilter,
+		bands: data.bandsFilter.bands.map(band => ({
+			...band,
+			time: Number(band.time),
+			attenuator: Number(band.attenuator),
+		})),
+	},
+	vsk: {
+		...data.vsk,
+		bands: data.vsk.bands.map(item => ({
+			...item,
+			freq: Number(item.freq),
+		})),
+	},
+})

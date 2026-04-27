@@ -46,6 +46,10 @@ export const makeStore = (preloadedState?: Partial<RootState>) => {
 			'sideMenuFilters/openSideMenu',
 			'sideMenuFilters/closeSideMenu',
 			'sideMenuFilters/toggleSideMenu',
+			// Боковое меню настроек — аналогично
+			'sideMenuSettings/openSideMenuSettings',
+			'sideMenuSettings/closeSideMenuSettings',
+			'sideMenuSettings/toggleSideMenuSettings',
 		],
 	}) as Middleware<{}, RootState, Dispatch<PayloadAction>>
 
