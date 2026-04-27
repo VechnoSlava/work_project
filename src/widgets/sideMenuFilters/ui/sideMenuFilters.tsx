@@ -16,8 +16,11 @@ export const SideMenuFilters = () => {
 			open={sideMenuOpened}
 			onClose={() => dispatch(toggleSideMenu())}
 			variant="persistent"
+			slotProps={{
+				paper: { sx: { backgroundColor: '#0e3753' } },
+			}}
 		>
-			<Box sx={{ width: 500, height: '100vh', backgroundColor: '#0e3753' }} role="presentation">
+			<Box sx={{ width: 500, minHeight: '100vh' }} role="presentation">
 				<FormFiltersMain />
 			</Box>
 		</Drawer>

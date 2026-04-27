@@ -7,11 +7,9 @@
 }
 
 .bandRow {
-	// width: 100%;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	justify-content: space-between;
 	gap: 6px;
 	padding: 3px 0;
 	border-bottom: 1px solid rgba(255, 255, 255, 0.06);
@@ -29,8 +27,8 @@
 }
 
 .bandUnit {
-	font-size: 14px;
-	color: #aebecc;
+	font-size: 12px;
+	color: #8a9baa;
 	white-space: nowrap;
 }
 
@@ -38,49 +36,13 @@
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	// width: 80%;
-	// justify-content: space-between;
-	gap: 20px;
+	gap: 12px;
 	padding: 4px 0;
 }
 
 .vskNote {
 	margin-top: 8px;
-
-	padding-left: 20px;
 	font-size: 12px;
 	color: #8a9baa;
 	line-height: 1.5;
-}
-
-.importerRow {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	gap: 8px;
-	padding: 4px 0;
-}
-
-.fileName {
-	flex: 1;
-	font-size: 13px;
-	color: #c8d6df;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	padding: 6px 8px;
-	border: 1px solid rgba(255, 255, 255, 0.12);
-	border-radius: 4px;
-	background: rgba(255, 255, 255, 0.04);
-	min-height: 32px;
-	display: flex;
-	align-items: center;
-}
-
-.importActions {
-	display: flex;
-	flex-direction: row;
-	gap: 8px;
-	margin-top: 8px;
-	justify-content: flex-end;
 }

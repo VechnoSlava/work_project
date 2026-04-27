@@ -1,5 +1,5 @@
 import styles from './formSettingsMain.module.scss'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import {
 	Controller,
 	FormProvider,
@@ -14,7 +14,7 @@ import { schemaMainSettingsForm, TypeSchemaMainSettingsForm } from '../model/sch
 import { RHFTextField } from '@/entities/RHFTextField'
 import { RHFSelect } from '@/entities/RHFSelect/ui/RHFSelect'
 import { attenuatorOptions } from '@/shared/constants/selectOptions'
-import { AiOutlineFileDone, AiOutlineImport } from 'react-icons/ai'
+import { AiOutlineFileDone } from 'react-icons/ai'
 import { MdOutlineCancel } from 'react-icons/md'
 import { Checkbox, Stack } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
@@ -35,10 +35,6 @@ export const FormSettingsMain = () => {
 
 	const wasSubmittedRef = useRef(false)
 
-	/** Имя выбранного файла для импорта (не является частью формы RHF) */
-	const [importFile, setImportFile] = useState<File | null>(null)
-	const fileInputRef = useRef<HTMLInputElement>(null)
-
 	const methods = useForm<TypeSchemaMainSettingsForm>({
 		resolver: zodResolver(schemaMainSettingsForm),
 		mode: 'all',
@@ -49,7 +45,6 @@ export const FormSettingsMain = () => {
 	useEffect(() => {
 		if (sideMenuSettingsOpened) {
 			reset(savedSettings)
-			setImportFile(null)
 			wasSubmittedRef.current = false
 		} else {
 			if (!wasSubmittedRef.current) {
@@ -81,25 +76,6 @@ export const FormSettingsMain = () => {
 		dispatch(closeSideMenuSettings())
 	}, [reset, savedSettings, dispatch])
 
-	/** Выбор файла */
-	const handleFileSelect = () => {
-		fileInputRef.current?.click()
-	}
-
-	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const file = e.target.files?.[0] ?? null
-		setImportFile(file)
-		// Сбрасываем input, чтобы можно было выбрать тот же файл повторно
-		e.target.value = ''
-	}
-
-	/** Импорт файла — отправка на сервер (пока заглушка) */
-	const handleImport = () => {
-		if (!importFile) return
-		// TODO: отправка файла на сервер через WebSocket или REST
-		console.log('Importing file:', importFile.name)
-	}
-
 	return (
 		<FormProvider {...methods}>
 			<form className={styles.formSettings} onSubmit={methods.handleSubmit(onSubmit, onError)}>
@@ -125,7 +101,7 @@ export const FormSettingsMain = () => {
 							name="vsk.bands.0.freq"
 							label="Частота"
 							id="vsk-freq"
-							sx={{ maxWidth: '20px', marginRight: '5px' }}
+							sx={{ maxWidth: 120, marginRight: '5px' }}
 						/>
 						<span className={styles.bandUnit}>ГГц</span>
 					</div>
@@ -133,32 +109,6 @@ export const FormSettingsMain = () => {
 						* Тестовый (непрерывный гармонический) сигнал используется для экспресс проверки
 						работоспособности фидерных трактов изделия. При этом изделие переходит из режима записи
 						импульсов в режим непрерывной регистрации.
-					</div>
-				</FieldAccordion>
-
-				{/* ─── Аккордеон 3: Импорт сигнатур ─── */}
-				<FieldAccordion nameField="Импорт сигнатур" id="signature_import">
-					<div className={styles.importerRow}>
-						<div className={styles.fileName}>{importFile ? importFile.name : 'Файл не выбран'}</div>
-						<ButtonFormAction type="button" onClick={handleFileSelect}>
-							Выбрать
-						</ButtonFormAction>
-						<input
-							ref={fileInputRef}
-							type="file"
-							style={{ display: 'none' }}
-							onChange={handleFileChange}
-						/>
-					</div>
-					<div className={styles.importActions}>
-						<ButtonFormAction
-							startIcon={<AiOutlineImport />}
-							type="button"
-							onClick={handleImport}
-							disabled={!importFile}
-						>
-							Импортировать
-						</ButtonFormAction>
 					</div>
 				</FieldAccordion>
 
@@ -195,7 +145,7 @@ const BandsTable = () => {
 							<Checkbox
 								checked={field.value}
 								onChange={e => field.onChange(e.target.checked)}
-								// size="small"
+								size="small"
 								sx={{
 									padding: '2px',
 									color: '#5a7a8f',
@@ -209,14 +159,14 @@ const BandsTable = () => {
 						name={`bandsFilter.bands.${index}.time`}
 						label="Время, сек"
 						id={`band-time-${index}`}
-						sx={{ width: 40, marginRight: '5px' }}
+						sx={{ maxWidth: 100, marginRight: '5px' }}
 					/>
 					<RHFSelect<TypeSchemaMainSettingsForm>
 						name={`bandsFilter.bands.${index}.attenuator`}
 						options={attenuatorOptions}
-						label="Ослабление"
+						label="Ослаб."
 						id={`band-att-${index}`}
-						sx={{ minWidth: 120 }}
+						sx={{ minWidth: 90 }}
 					/>
 				</div>
 			))}

@@ -1,11 +1,17 @@
 import * as z from 'zod/v4'
 
+/** Валидация: строка с положительным числом (целым или дробным через точку) */
+const positiveNumericString = z
+	.string()
+	.regex(/^\d+(\.\d+)?$/, 'Введите положительное число')
+	.refine(val => parseFloat(val) > 0, 'Значение должно быть больше 0')
+
 // Полоса приёма
 const bandItemSchema = z.object({
 	id: z.number(),
 	band: z.string(), // наименование диапазона, только для отображения
 	checked: z.boolean(),
-	time: z.string(), // время задержки (сек)
+	time: positiveNumericString,
 	attenuator: z.string(), // ослабление: "0" | "10" | "20" | "30"
 })
 
@@ -20,7 +26,7 @@ const bandsFilterSchema = z.object({
 
 // Секция «Включение тестового сигнала»
 const vskItemSchema = z.object({
-	freq: z.string(),
+	freq: positiveNumericString,
 	checked: z.boolean(),
 })
 
@@ -31,18 +37,10 @@ const vskSchema = z.object({
 	bands: z.array(vskItemSchema),
 })
 
-// Секция «Импорт сигнатур» — в форме хранится только имя файла
-const importerSchema = z.object({
-	key: z.number(),
-	filterLabel: z.string(),
-	templateType: z.literal('importer'),
-})
-
 // Полная схема формы настроек
 export const schemaMainSettingsForm = z.object({
 	bandsFilter: bandsFilterSchema,
 	vsk: vskSchema,
-	importer: importerSchema,
 })
 
 export type TypeSchemaMainSettingsForm = z.infer<typeof schemaMainSettingsForm>
