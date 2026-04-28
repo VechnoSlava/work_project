@@ -14,10 +14,10 @@
             "comment": "-",
             "bearing": {
                 "id": 0,
-                "bearing": 16.04,
+                "bearing": 0,
                 "origin": [
-                    0,
-                    0
+                    60.035509,
+                    29.404907
                 ]
             },
             "path": null,
@@ -37,10 +37,10 @@
             "comment": "-",
             "bearing": {
                 "id": 0,
-                "bearing": 16.04,
+                "bearing": 45,
                 "origin": [
-                    0,
-                    0
+                    60.035509,
+                    29.404907
                 ]
             },
             "path": null,
@@ -60,10 +60,10 @@
             "comment": "-",
             "bearing": {
                 "id": 0,
-                "bearing": 16.04,
+                "bearing": 135,
                 "origin": [
-                    0,
-                    0
+                    60.035509,
+                    29.404907
                 ]
             },
             "path": null,
@@ -83,10 +83,10 @@
             "comment": "-",
             "bearing": {
                 "id": 0,
-                "bearing": 16.04,
+                "bearing": 28,
                 "origin": [
-                    0,
-                    0
+                    60.035509,
+                    29.404907
                 ]
             },
             "path": null,
@@ -106,10 +106,10 @@
             "comment": "-",
             "bearing": {
                 "id": 0,
-                "bearing": 16.04,
+                "bearing": 180,
                 "origin": [
-                    0,
-                    0
+                    60.035509,
+                    29.404907
                 ]
             },
             "path": null,
@@ -129,10 +129,10 @@
             "comment": "-",
             "bearing": {
                 "id": 0,
-                "bearing": 16.04,
+                "bearing": 270,
                 "origin": [
-                    0,
-                    0
+                    60.035509,
+                    29.404907
                 ]
             },
             "path": null,
@@ -152,10 +152,10 @@
             "comment": "-",
             "bearing": {
                 "id": 0,
-                "bearing": 15.74,
+                "bearing": 10,
                 "origin": [
-                    0,
-                    0
+                    60.035509,
+                    29.404907
                 ]
             },
             "path": null,
@@ -175,10 +175,10 @@
             "comment": "-",
             "bearing": {
                 "id": 0,
-                "bearing": 16.04,
+                "bearing": 45,
                 "origin": [
-                    0,
-                    0
+                    60.035509,
+                    29.404907
                 ]
             },
             "path": null,
@@ -198,10 +198,10 @@
             "comment": "-",
             "bearing": {
                 "id": 0,
-                "bearing": 16.04,
+                "bearing": 90,
                 "origin": [
-                    0,
-                    0
+                    60.035509,
+                    29.404907
                 ]
             },
             "path": null,

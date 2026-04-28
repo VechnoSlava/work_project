@@ -21,6 +21,9 @@ import { CoordinatesPanel } from '../components/CoordinatesPanel'
 import { RulerControl } from '../components/RulerControl'
 import { PolygonDrawer } from '../components/PolygonDrawer'
 import { PolygonEditor } from '../components/PolygonEditor'
+import { BearingLayer } from '../components/BearingLayer'
+import { CenterControl } from '../components/CenterControl'
+import config from '../../../../config.json'
 
 /** Слушает resize контейнера карты (splitFrame) и вызывает invalidateSize */
 const MapResizeObserver = () => {
@@ -70,11 +73,14 @@ export const MainMap = () => {
 	 */
 	const polygonsInteractive = !rulerActive && drawingMode === 'idle'
 
+	const initialCenter = ((config as any).workLocation as number[]) ?? [55.75, 37.61]
+	const initialZoom = ((config as any).zoomLocation as number) ?? 4
+
 	return (
 		<div className={styles.map__container}>
 			<MapContainer
-				center={[55.75, 37.61]}
-				zoom={4}
+				center={[initialCenter[0], initialCenter[1]]}
+				zoom={initialZoom}
 				attributionControl={false}
 				zoomControl={false}
 				style={{ height: '100%', width: '100%', boxSizing: 'border-box' }}
@@ -82,10 +88,15 @@ export const MainMap = () => {
 			>
 				<MapResizeObserver />
 				<SvgSprite />
-				<TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+				<TileLayer url={config.mapUrl} />
 
 				<ZoomControl />
 				<CoordinatesPanel />
+				<CenterControl />
+
+				{/* Пеленги и иконка корабля — ниже полигонов, не мешают взаимодействию */}
+				<Pane name="bearingPane" style={{ zIndex: 420 }} />
+				<BearingLayer />
 
 				{/* Полигоны — нижний слой */}
 				<Pane name="polygonsPane" style={{ zIndex: 450 }}>
