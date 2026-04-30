@@ -110,6 +110,7 @@ export const MainMap = () => {
 									color: '#4fc3f7',
 									fillOpacity: 0.15,
 									interactive: polygonsInteractive,
+									weight: 2,
 								}}
 							>
 								{polygonsInteractive && <Popup pane="popupPane">{area.name}</Popup>}

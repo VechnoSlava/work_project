@@ -20,7 +20,7 @@ export const SideMenuFilters = () => {
 				paper: { sx: { backgroundColor: '#0e3753' } },
 			}}
 		>
-			<Box sx={{ width: 500, minHeight: '100vh' }} role="presentation">
+			<Box sx={{ width: 460, minHeight: '100vh' }} role="presentation">
 				<FormFiltersMain />
 			</Box>
 		</Drawer>

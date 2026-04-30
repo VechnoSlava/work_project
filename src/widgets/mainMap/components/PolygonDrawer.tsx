@@ -83,7 +83,7 @@ export const PolygonDrawer = ({ onComplete, onCancel }: PolygonDrawerProps) => {
 			{points.length >= 2 && (
 				<Polygon
 					positions={points.map(p => [p.lat, p.lng])}
-					pathOptions={{ color: '#4fc3f7', dashArray: '6 4', fillOpacity: 0.15 }}
+					pathOptions={{ color: '#4fc3f7', dashArray: '6 4', fillOpacity: 0.15, weight: 2 }}
 				/>
 			)}
 			{points.map((p, i) => (
@@ -103,14 +103,14 @@ export const PolygonDrawer = ({ onComplete, onCancel }: PolygonDrawerProps) => {
 				<>
 					<Polygon
 						positions={pendingPoints.map(p => [p.lat, p.lng])}
-						pathOptions={{ color: '#4fc3f7', fillOpacity: 0.25 }}
+						pathOptions={{ color: '#4fc3f7', fillOpacity: 0.25, weight: 2 }}
 					/>
 					{pendingPoints.map((p, i) => (
 						<CircleMarker
 							key={i}
 							center={[p.lat, p.lng]}
 							radius={5}
-							pathOptions={{ color: '#4fc3f7', fillColor: '#fff', fillOpacity: 1, weight: 2 }}
+							pathOptions={{ color: '#4fc3f7', fillColor: '#fff', fillOpacity: 1, weight: 1 }}
 						/>
 					))}
 				</>
@@ -121,11 +121,22 @@ export const PolygonDrawer = ({ onComplete, onCancel }: PolygonDrawerProps) => {
 						autoClose={false}
 						closeOnClick={false}
 						closeButton={false}
-						minWidth={220}
+						closeOnEscapeKey={false}
+						minWidth={200}
 						pane="drawingPopupPane"
 					>
-						<div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-							<span style={{ fontWeight: 500, fontSize: 13, color: '#111' }}>Название области</span>
+						<div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+							<span
+								style={{
+									fontWeight: 500,
+									fontSize: 14,
+									color: '#111',
+									textAlign: 'center',
+									userSelect: 'none',
+								}}
+							>
+								Название области
+							</span>
 							<input
 								ref={inputRef}
 								value={nameInput}
@@ -146,7 +157,7 @@ export const PolygonDrawer = ({ onComplete, onCancel }: PolygonDrawerProps) => {
 									boxSizing: 'border-box',
 								}}
 							/>
-							<div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+							<div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
 								<button
 									onClick={handleCancel}
 									style={{
@@ -168,10 +179,10 @@ export const PolygonDrawer = ({ onComplete, onCancel }: PolygonDrawerProps) => {
 										fontSize: 12,
 										cursor: nameInput.trim() ? 'pointer' : 'not-allowed',
 										padding: '4px 10px',
-										background: '#4fc3f7',
-										border: 'none',
+										background: '#A3E3FF',
+										border: '1px solid #ccc',
 										borderRadius: 4,
-										color: '#fff',
+										color: '#555',
 										opacity: nameInput.trim() ? 1 : 0.5,
 									}}
 								>

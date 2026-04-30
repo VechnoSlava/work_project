@@ -129,12 +129,23 @@ export const FormSettingsMain = () => {
 				</FieldAccordion>
 
 				{/* ─── Кнопки ─── */}
-				<Stack direction={'row'} justifyContent="center" spacing={2}>
-					<ButtonFormAction startIcon={<AiOutlineFileDone />} type="submit">
+				<Stack direction={'row'} justifyContent="center" spacing={1}>
+					<ButtonFormAction
+						startIcon={<AiOutlineFileDone />}
+						type="submit"
+						size="small"
+						sx={{ padding: '5px 8px' }}
+					>
 						Применить параметры
 					</ButtonFormAction>
-					<ButtonFormAction startIcon={<MdOutlineCancel />} type="button" onClick={handleCancel}>
-						Отмена изменений
+					<ButtonFormAction
+						startIcon={<MdOutlineCancel />}
+						type="button"
+						onClick={handleCancel}
+						size="small"
+						sx={{ padding: '5px 8px' }}
+					>
+						Отменить изменения
 					</ButtonFormAction>
 				</Stack>
 			</form>

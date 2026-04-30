@@ -31,8 +31,8 @@ export const Header = () => {
 				</div>
 				<div className={styles.header__buttons}>
 					<ButtonConnectToServer />
-					<ButtonSideMenuFilters />
 					<ButtonWorkSettings />
+					<ButtonSideMenuFilters />
 					<ButtonTestMessage />
 				</div>
 			</div>

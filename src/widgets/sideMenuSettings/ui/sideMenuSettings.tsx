@@ -19,7 +19,7 @@ export const SideMenuSettings = () => {
 				paper: { sx: { backgroundColor: '#0e3753' } },
 			}}
 		>
-			<Box sx={{ width: 500, minHeight: '100vh' }} role="presentation">
+			<Box sx={{ width: 440, minHeight: '100vh' }} role="presentation">
 				<FormSettingsMain />
 			</Box>
 		</Drawer>

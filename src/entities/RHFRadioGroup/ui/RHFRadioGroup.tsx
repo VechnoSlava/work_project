@@ -11,7 +11,7 @@ import { Option } from '@/shared/constants/selectOptions'
 
 type Props<T extends FieldValues> = {
 	name: Path<T>
-	label: string
+	label?: string
 	options: Option[]
 }
 

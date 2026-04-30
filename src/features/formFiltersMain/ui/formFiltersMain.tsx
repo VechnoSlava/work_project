@@ -336,25 +336,26 @@ export const FormFiltersMain = () => {
 					</FieldAccordion>
 
 					<FieldAccordion nameField="Фильтрация по типу целей" id="targetType_field">
-						<RHFRadioGroup
-							name="selectorFilter.value"
-							label="Тип цели"
-							options={selectorTypeOptions}
-						/>
+						<RHFRadioGroup name="selectorFilter.value" options={selectorTypeOptions} />
 					</FieldAccordion>
 
 					<FieldAccordion nameField="Фильтрация по области" id="geoFilter_field">
 						<GeoFilterSection />
 					</FieldAccordion>
 
-					<Stack direction={'row'} justifyContent="center" spacing={2}>
+					<Stack direction={'row'} justifyContent="center" spacing={1}>
 						<ButtonFormAction startIcon={<AiOutlineFileDone />} type="submit">
 							Применить
 						</ButtonFormAction>
 						<ButtonFormAction startIcon={<MdOutlineCancel />} type="button" onClick={handleCancel}>
 							Отмена
 						</ButtonFormAction>
-						<ButtonFormAction startIcon={<AiOutlineDelete />} type="button" onClick={resetFilters}>
+						<ButtonFormAction
+							startIcon={<AiOutlineDelete />}
+							type="button"
+							onClick={resetFilters}
+							sx={{ padding: '5px 8px' }}
+						>
 							Сброс фильтров
 						</ButtonFormAction>
 					</Stack>

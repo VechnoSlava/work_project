@@ -44,18 +44,18 @@ export const PolygonEditor = ({ area, onSave, onCancel }: PolygonEditorProps) =>
 		const container = map.getContainer()
 		const div = document.createElement('div')
 		div.style.cssText =
-			'position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;gap:8px;pointer-events:all;'
+			'position:absolute;bottom:45px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;gap:8px;pointer-events:all;'
 
 		const cancelBtn = document.createElement('button')
 		cancelBtn.textContent = 'Отмена'
 		cancelBtn.style.cssText =
-			'padding:6px 16px;border-radius:4px;border:1px solid rgba(255,255,255,0.2);background:rgba(9,30,47,0.88);color:#c8d6df;cursor:pointer;font-size:13px;'
+			'padding:6px 16px;border-radius:4px;border:none;background:#5C1818;color:#EBEBEB;cursor:pointer;font-size:13px;user-select: none;'
 		cancelBtn.onclick = onCancel
 
 		const saveBtn = document.createElement('button')
 		saveBtn.textContent = 'Применить'
 		saveBtn.style.cssText =
-			'padding:6px 16px;border-radius:4px;border:none;background:#4fc3f7;color:#fff;cursor:pointer;font-size:13px;font-weight:500;'
+			'padding:6px 16px;border-radius:4px;border:none;background:#013B07;color:#EBEBEB;cursor:pointer;font-size:13px;user-select: none;'
 		saveBtn.onclick = () => onSave(editPoints)
 
 		div.appendChild(cancelBtn)
@@ -71,14 +71,20 @@ export const PolygonEditor = ({ area, onSave, onCancel }: PolygonEditorProps) =>
 		<>
 			<Polygon
 				positions={editPoints.map(p => [p.lat, p.lng])}
-				pathOptions={{ color: '#ffb74d', fillOpacity: 0.2, dashArray: '6 4' }}
+				pathOptions={{
+					color: '#6B6768',
+					fillColor: '#ffb74d',
+					fillOpacity: 0.2,
+					dashArray: '8',
+					weight: 1,
+				}}
 			/>
 			{editPoints.map((p, i) => (
 				<CircleMarker
 					key={i}
 					center={[p.lat, p.lng]}
-					radius={7}
-					pathOptions={{ color: '#ffb74d', fillColor: '#fff', fillOpacity: 1, weight: 2 }}
+					radius={5}
+					pathOptions={{ color: '#6B6768', fillColor: '#ffb74d', fillOpacity: 0.8, weight: 1 }}
 					eventHandlers={{
 						mousedown() {
 							draggingIndexRef.current = i
