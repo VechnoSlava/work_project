@@ -21,7 +21,7 @@ import { formatDateTimeRu, formatNumber } from '@/shared/utils/utils'
 import { IRadarsList, WebSocketMessage } from '@/shared/webSocket/IWebSocket'
 import { selectRadarsList, sendMessage } from '@/shared/webSocket/serverConnectionSlice'
 import { addSelectedRadars } from '../model/radarsTableSlice'
-import { FormCreateRadarCardForm } from '@/features/formCreateRadarCard'
+import { CreateRadarCardForm } from '@/features/formCreateRadarCard'
 
 //Form table DataGrid
 const columns: GridColDef[] = [
@@ -287,7 +287,7 @@ export const RadarsTable = () => {
 				</MenuItem>
 			</MenuContextTable>
 
-			<FormCreateRadarCardForm
+			<CreateRadarCardForm
 				open={modalCreateRadar !== null}
 				radar={modalCreateRadar}
 				onClose={() => setModalCreateRadar(null)}

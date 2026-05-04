@@ -1,1 +1,1 @@
-export { FormCreateRadarCardForm } from './ui/formCreateRadarCard'
+export { CreateRadarCardForm } from './ui/formCreateRadarCard'

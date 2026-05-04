@@ -18,13 +18,13 @@ const disabledFieldSx = {
 	},
 }
 
-interface FormCreateRadarCardProps {
+interface CreateRadarCardFormProps {
 	open: boolean
 	radar: IRadarsList | null
 	onClose: () => void
 }
 
-export const FormCreateRadarCardForm = ({ open, radar, onClose }: FormCreateRadarCardProps) => {
+export const CreateRadarCardForm = ({ open, radar, onClose }: CreateRadarCardFormProps) => {
 	const dispatch = useAppDispatch()
 
 	const methods = useForm<TypeSchemaCreateRadarCardForm>({

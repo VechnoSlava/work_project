@@ -1,6 +1,12 @@
 import styles from './formSettingsMain.module.scss'
 import { useCallback, useEffect, useRef } from 'react'
-import { FormProvider, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
+import {
+	FormProvider,
+	SubmitErrorHandler,
+	SubmitHandler,
+	useForm,
+	useFormContext,
+} from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FieldAccordion } from '@/entities/fieldFilters'
 import { schemaMainSettingsForm, TypeSchemaMainSettingsForm } from '../model/schema'
@@ -11,7 +17,7 @@ import { RHFSwitch } from '@/entities/RHFSwitch'
 import { attenuatorOptions } from '@/shared/constants/selectOptions'
 import { AiOutlineFileDone } from 'react-icons/ai'
 import { MdOutlineCancel } from 'react-icons/md'
-import { Stack } from '@mui/material'
+import { Stack, FormHelperText } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
 import { shallowEqual } from 'react-redux'
 import { closeSideMenuSettings, selectSideMenuSettingsOpened } from '@/widgets/sideMenuSettings'
@@ -21,10 +27,10 @@ import { ButtonFormAction } from '@/shared/buttons'
 import { sendMessage } from '@/shared/webSocket/serverConnectionSlice'
 import type { WebSocketMessage } from '@/shared/webSocket/IWebSocket'
 
-/* ═══════════════════════════════════════════════════════════════════
-   Корневой компонент формы — владеет useForm, обработчиками submit/cancel.
-   Не подписан на отдельные поля → не ререндерится при вводе.
-   ═══════════════════════════════════════════════════════════════════ */
+/** Скрывает встроенный helperText у MUI TextField */
+const hideBuiltInHelper = {
+	'& .MuiFormHelperText-root': { display: 'none' },
+}
 
 export const FormSettingsMain = () => {
 	console.log('render_SettingsForm')
@@ -81,51 +87,13 @@ export const FormSettingsMain = () => {
 				{/* ─── Выбор полос приёма ─── */}
 				<FieldAccordion nameField="Выбор полос приема" id="change_bands">
 					{bands.map((band, index) => (
-						<div key={band.id} className={styles.bandRow}>
-							<RHFCheckbox<TypeSchemaMainSettingsForm>
-								name={`bandsFilter.bands.${index}.checked`}
-								size="medium"
-								sx={{
-									padding: '2px',
-									color: '#5a7a8f',
-									'&.Mui-checked': { color: '#4fc3f7' },
-								}}
-							/>
-							<span className={styles.bandLabel}>{band.band} ГГц</span>
-							<RHFTextField<TypeSchemaMainSettingsForm>
-								name={`bandsFilter.bands.${index}.time`}
-								label="Время, сек"
-								id={`band-time-${index}`}
-								sx={{ maxWidth: 140 }}
-							/>
-							<RHFSelect<TypeSchemaMainSettingsForm>
-								name={`bandsFilter.bands.${index}.attenuator`}
-								options={attenuatorOptions}
-								label="Ослабление"
-								id={`band-att-${index}`}
-								sx={{ minWidth: 100, marginRight: '10px' }}
-							/>
-						</div>
+						<BandRow key={band.id} index={index} bandLabel={band.band} />
 					))}
 				</FieldAccordion>
 
 				{/* ─── Включение тестового сигнала ─── */}
 				<FieldAccordion nameField="Включение тестового сигнала" id="signal_test">
-					<div className={styles.vskRow}>
-						<RHFSwitch<TypeSchemaMainSettingsForm> name="vsk.bands.0.checked" />
-						<RHFTextField<TypeSchemaMainSettingsForm>
-							name="vsk.bands.0.freq"
-							label="Частота"
-							id="vsk-freq"
-							sx={{ maxWidth: 120, marginRight: '5px' }}
-						/>
-						<span className={styles.bandUnit}>ГГц</span>
-					</div>
-					<div className={styles.vskNote}>
-						* Тестовый (непрерывный гармонический) сигнал используется для экспресс проверки
-						работоспособности фидерных трактов изделия. При этом изделие переходит из режима записи
-						импульсов в режим непрерывной регистрации.
-					</div>
+					<VskSection />
 				</FieldAccordion>
 
 				{/* ─── Кнопки ─── */}
@@ -150,6 +118,90 @@ export const FormSettingsMain = () => {
 				</Stack>
 			</form>
 		</FormProvider>
+	)
+}
+
+/**
+ * Строка полосы приёма.
+ * Ошибка поля «Время» выводится под всей строкой, а не под инпутом.
+ */
+const BandRow = ({ index, bandLabel }: { index: number; bandLabel: string }) => {
+	const {
+		formState: { errors },
+	} = useFormContext<TypeSchemaMainSettingsForm>()
+
+	const timeError = errors.bandsFilter?.bands?.[index]?.time?.message
+
+	return (
+		<div className={styles.bandRowWrapper}>
+			<div className={styles.bandRow}>
+				<RHFCheckbox<TypeSchemaMainSettingsForm>
+					name={`bandsFilter.bands.${index}.checked`}
+					size="medium"
+					sx={{
+						padding: '2px',
+						color: '#5a7a8f',
+						'&.Mui-checked': { color: '#4fc3f7' },
+					}}
+				/>
+				<span className={styles.bandLabel}>{bandLabel} ГГц</span>
+				<RHFTextField<TypeSchemaMainSettingsForm>
+					name={`bandsFilter.bands.${index}.time`}
+					label="Время, сек"
+					id={`band-time-${index}`}
+					sx={{ maxWidth: 140, ...hideBuiltInHelper }}
+				/>
+				<RHFSelect<TypeSchemaMainSettingsForm>
+					name={`bandsFilter.bands.${index}.attenuator`}
+					options={attenuatorOptions}
+					label="Ослабление"
+					id={`band-att-${index}`}
+					sx={{ minWidth: 100, marginRight: '10px' }}
+				/>
+			</div>
+			{timeError && (
+				<FormHelperText error sx={{ userSelect: 'none' }}>
+					{timeError}
+				</FormHelperText>
+			)}
+		</div>
+	)
+}
+
+/**
+ * Секция тестового сигнала.
+ * Ошибка поля «Частота» выводится под всей строкой.
+ */
+const VskSection = () => {
+	const {
+		formState: { errors },
+	} = useFormContext<TypeSchemaMainSettingsForm>()
+
+	const freqError = errors.vsk?.bands?.[0]?.freq?.message
+
+	return (
+		<>
+			<div className={styles.vskRow}>
+				<RHFSwitch<TypeSchemaMainSettingsForm> name="vsk.bands.0.checked" />
+				<RHFTextField<TypeSchemaMainSettingsForm>
+					name="vsk.bands.0.freq"
+					label="Частота"
+					id="vsk-freq"
+					sx={{ maxWidth: 120, ...hideBuiltInHelper }}
+				/>
+				<span className={styles.bandUnit}>ГГц</span>
+			</div>
+			{freqError && (
+				<FormHelperText error sx={{ userSelect: 'none' }}>
+					{freqError}
+				</FormHelperText>
+			)}
+			<div className={styles.vskNote}>
+				* Тестовый (непрерывный гармонический) сигнал используется для экспресс проверки
+				работоспособности фидерных трактов изделия. При этом изделие переходит из режима записи
+				импульсов в режим непрерывной регистрации.
+			</div>
+		</>
 	)
 }
 
