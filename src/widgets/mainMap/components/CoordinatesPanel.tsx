@@ -28,15 +28,15 @@ export const CoordinatesPanel = () => {
 				zIndex: 1000,
 				display: 'flex',
 				alignItems: 'center',
-				gap: 8,
+				gap: 4,
 				padding: '4px 10px',
 			}}
 		>
-			<span style={{ fontSize: 12, color: '#c8d6df', fontFamily: 'monospace', minWidth: 160 }}>
+			<span style={{ fontSize: 12, color: '#c8d6df', fontFamily: 'monospace', minWidth: 120 }}>
 				{coords ? `Ш: ${fmtCoord(coords.lat, format)}` : 'Ш: —'}
 			</span>
 			<span style={{ fontSize: 12, color: '#8f8f8f' }}>|</span>
-			<span style={{ fontSize: 12, color: '#c8d6df', fontFamily: 'monospace', minWidth: 160 }}>
+			<span style={{ fontSize: 12, color: '#c8d6df', fontFamily: 'monospace', minWidth: 120 }}>
 				{coords ? `Д: ${fmtCoord(coords.lng, format)}` : 'Д: —'}
 			</span>
 			<button
@@ -48,12 +48,13 @@ export const CoordinatesPanel = () => {
 					borderRadius: 3,
 					color: '#4fc3f7',
 					fontSize: 11,
-					padding: '2px 7px',
+					padding: '2px 6px',
 					cursor: 'pointer',
 					whiteSpace: 'nowrap',
+					minWidth: '40px',
 				}}
 			>
-				{format === 'decimal' ? 'ГМС' : 'DD'}
+				{format === 'decimal' ? 'DMS' : 'DD'}
 			</button>
 		</div>
 	)

@@ -45,7 +45,7 @@ export const CenterControl = () => {
 			style={{
 				...PANEL_STYLE,
 				position: 'absolute',
-				top: 162,
+				top: 172,
 				left: 12,
 				zIndex: 1000,
 				display: 'flex',

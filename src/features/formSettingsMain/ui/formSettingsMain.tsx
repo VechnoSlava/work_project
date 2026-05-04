@@ -84,7 +84,7 @@ export const FormSettingsMain = () => {
 						<div key={band.id} className={styles.bandRow}>
 							<RHFCheckbox<TypeSchemaMainSettingsForm>
 								name={`bandsFilter.bands.${index}.checked`}
-								size="small"
+								size="medium"
 								sx={{
 									padding: '2px',
 									color: '#5a7a8f',
@@ -96,14 +96,14 @@ export const FormSettingsMain = () => {
 								name={`bandsFilter.bands.${index}.time`}
 								label="Время, сек"
 								id={`band-time-${index}`}
-								sx={{ maxWidth: 100, marginRight: '5px' }}
+								sx={{ maxWidth: 140 }}
 							/>
 							<RHFSelect<TypeSchemaMainSettingsForm>
 								name={`bandsFilter.bands.${index}.attenuator`}
 								options={attenuatorOptions}
-								label="Ослаб."
+								label="Ослабление"
 								id={`band-att-${index}`}
-								sx={{ minWidth: 90 }}
+								sx={{ minWidth: 100, marginRight: '10px' }}
 							/>
 						</div>
 					))}

@@ -21,7 +21,7 @@ export const BTN_STYLE: React.CSSProperties = {
 	border: 'none',
 	borderBottom: '1px solid rgba(255,255,255,0.10)',
 	color: '#c8d6df',
-	fontSize: 16,
+	fontSize: 18,
 	cursor: 'pointer',
 }
 

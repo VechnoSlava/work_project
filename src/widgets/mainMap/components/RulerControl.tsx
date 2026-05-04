@@ -253,7 +253,7 @@ export const RulerControl = ({
 				style={{
 					...PANEL_STYLE,
 					position: 'absolute',
-					top: 72,
+					top: 77,
 					left: 12,
 					zIndex: 1000,
 					display: 'flex',
@@ -284,10 +284,17 @@ export const RulerControl = ({
 					onMouseEnter={onHover(true)}
 					onMouseLeave={onHover(false)}
 				>
-					<SvgIcon id="icon-trash" width={13} height={13} />
+					<SvgIcon id="icon-trash" width={15} height={15} />
 				</button>
 				<button
-					style={{ ...BTN_LAST, fontSize: 10, fontFamily: 'monospace', color: '#4fc3f7' }}
+					style={{
+						...BTN_LAST,
+						fontSize: 13,
+						fontFamily: 'monospace',
+						color: '#c8d6df',
+						alignItems: 'center',
+						textAlign: 'center',
+					}}
 					title="Переключить единицы измерения"
 					onClick={() => setUnit(u => units[(units.indexOf(u) + 1) % units.length])}
 					onMouseEnter={onHover(true)}
