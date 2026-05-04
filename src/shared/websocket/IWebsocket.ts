@@ -229,8 +229,24 @@ export interface ISettingsMainMessage extends WebSocketMessageBase {
 	data: IServerSettingsData
 }
 
+// Message id=130 (Create radar to database)
+export interface ICreateRadarToDbData {
+	id: number
+	uid: string
+	pulse_length: number
+	rot_period: number
+	freq: number
+	PRI: number
+	comment: string
+}
+
+export interface ICreateRadarToDbMessage extends WebSocketMessageBase {
+	data: ICreateRadarToDbData
+}
+
 export type WebSocketMessage =
 	| ISelectedRadarsList
 	| ISelectedPulse
 	| IFiltersMainMessage
 	| ISettingsMainMessage
+	| ICreateRadarToDbMessage

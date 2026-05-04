@@ -21,6 +21,7 @@ import { formatDateTimeRu, formatNumber } from '@/shared/utils/utils'
 import { IRadarsList, WebSocketMessage } from '@/shared/webSocket/IWebSocket'
 import { selectRadarsList, sendMessage } from '@/shared/webSocket/serverConnectionSlice'
 import { addSelectedRadars } from '../model/radarsTableSlice'
+import { FormCreateRadarCardForm } from '@/features/formCreateRadarCard'
 
 //Form table DataGrid
 const columns: GridColDef[] = [
@@ -132,6 +133,7 @@ export const RadarsTable = () => {
 	} | null>(null)
 	const [idSelectedRow, setIdSelectedRow] = useState<number>()
 	const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([])
+	const [modalCreateRadar, setModalCreateRadar] = useState<IRadarsList | null>(null)
 	const dispatch = useAppDispatch()
 	const dataRadars = useAppSelector(selectRadarsList)
 
@@ -195,8 +197,8 @@ export const RadarsTable = () => {
 
 	const handleSaveToDatabase = () => {
 		if (idSelectedRow) {
-			// Добавьте здесь код для сохранения в базу данных
-			console.log(`Сохранить в базу данных: объект с ID ${idSelectedRow}`)
+			const radar = dataRadars.find(r => r.id === idSelectedRow)
+			if (radar) setModalCreateRadar(radar)
 		}
 		handleContextMenuClose()
 	}
@@ -284,6 +286,12 @@ export const RadarsTable = () => {
 					Показать объект
 				</MenuItem>
 			</MenuContextTable>
+
+			<FormCreateRadarCardForm
+				open={modalCreateRadar !== null}
+				radar={modalCreateRadar}
+				onClose={() => setModalCreateRadar(null)}
+			/>
 		</div>
 	)
 }
