@@ -23,6 +23,8 @@ export const ModalWindowForm = ({
 	...dialogProps
 }: ModalWindowFormProps) => {
 	const handleClose = (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => {
+		// Закрытие только по Esc или программно, не по клику на backdrop
+		if (reason === 'backdropClick') return
 		onClose?.(event, reason)
 	}
 
@@ -36,6 +38,7 @@ export const ModalWindowForm = ({
 					sx: {
 						backgroundColor: '#0e3753',
 						backgroundImage: 'none',
+						overflow: 'hidden',
 					},
 				},
 			}}
@@ -46,12 +49,12 @@ export const ModalWindowForm = ({
 					display: 'flex',
 					justifyContent: 'space-between',
 					alignItems: 'center',
-					padding: '8px 16px',
+					padding: '12px 16px',
 				}}
 			>
 				{title}
 				<IconButton
-					onClick={e => handleClose(e, 'escapeKeyDown')}
+					onClick={e => onClose?.(e, 'escapeKeyDown')}
 					size="small"
 					sx={{ color: '#8a9baa' }}
 				>
@@ -64,14 +67,14 @@ export const ModalWindowForm = ({
 					display: 'flex',
 					flexDirection: 'column',
 					gap: '16px',
-					padding: '10px 16px 8px 16px',
-					marginTop: '10px',
+					padding: '16px !important',
+					overflow: 'visible',
 				}}
 			>
 				{children}
 			</DialogContent>
 
-			{actions && <DialogActions sx={{ padding: '8px 16px' }}>{actions}</DialogActions>}
+			{actions && <DialogActions sx={{ padding: '8px 16px 16px' }}>{actions}</DialogActions>}
 		</Dialog>
 	)
 }
