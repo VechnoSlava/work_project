@@ -3,6 +3,7 @@ import { combineSlices, configureStore } from '@reduxjs/toolkit'
 import { serverConnectionSlice } from '@/shared/webSocket/serverConnectionSlice'
 import { radarsTableSlice } from '@/widgets/radarsTable'
 import { geoDrawingSlice } from '@/widgets/mainMap'
+import { geoDrawingHistorySlice } from '@/widgets/historyMap'
 import { sideMenuSettingsSlice } from '@/widgets/sideMenuSettings'
 import { mainFiltersSlice } from '@/features/formFiltersMain'
 import { radarPulsesSlice } from '@/widgets/pulsesGridTable'
@@ -16,6 +17,7 @@ import {
 	initStateWithPrevTab,
 	withReduxStateSync,
 } from 'redux-state-sync'
+import { historyFiltersSlice } from '@/features/formFiltersHistory'
 
 const rootReducer = combineSlices(
 	pagesNavigationSlice,
@@ -26,8 +28,10 @@ const rootReducer = combineSlices(
 	radarsTableSlice,
 	radarPulsesSlice,
 	mainFiltersSlice,
+	historyFiltersSlice,
 	formSettingsSlice,
 	geoDrawingSlice,
+	geoDrawingHistorySlice,
 )
 export type RootState = ReturnType<typeof rootReducer>
 

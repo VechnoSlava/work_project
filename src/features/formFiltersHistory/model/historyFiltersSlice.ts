@@ -1,24 +1,26 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import { createAppSlice } from '@/app/store/createAppSlice'
-import { TypeSchemaMainFiltersForm } from './schema'
-import { mainFilterDefaultValues } from './defaultValues'
+import { TypeSchemaHistoryFiltersForm } from './schema'
+import { historyFilterDefaultValues } from './defaultValues'
 
 export type GeoArea = { name: string; latLng: { lat: number; lng: number }[][] }
 
-const initialState: TypeSchemaMainFiltersForm = mainFilterDefaultValues
+const initialState: TypeSchemaHistoryFiltersForm = historyFilterDefaultValues
 
-export const mainFiltersSlice = createAppSlice({
-	name: 'mainFilters',
+export const historyFiltersSlice = createAppSlice({
+	name: 'historyFilters',
 	initialState,
 	reducers: create => ({
-		updateMainFilters: create.reducer((state, action: PayloadAction<TypeSchemaMainFiltersForm>) => {
-			state.freqFilter = action.payload.freqFilter
-			state.pulseDurationFilter = action.payload.pulseDurationFilter
-			state.pulsePeriodFilter = action.payload.pulsePeriodFilter
-			state.calendarFilter = action.payload.calendarFilter
-			state.selectorFilter = action.payload.selectorFilter
-			state.geoFilter = action.payload.geoFilter
-		}),
+		updateHistoryFilters: create.reducer(
+			(state, action: PayloadAction<TypeSchemaHistoryFiltersForm>) => {
+				state.freqFilter = action.payload.freqFilter
+				state.pulseDurationFilter = action.payload.pulseDurationFilter
+				state.pulsePeriodFilter = action.payload.pulsePeriodFilter
+				state.calendarFilter = action.payload.calendarFilter
+				state.selectorFilter = action.payload.selectorFilter
+				state.geoFilter = action.payload.geoFilter
+			},
+		),
 		addGeoArea: create.reducer((state, action: PayloadAction<GeoArea>) => {
 			state.geoFilter.bands.push(action.payload)
 		}),
@@ -34,10 +36,10 @@ export const mainFiltersSlice = createAppSlice({
 		restoreGeoAreas: create.reducer((state, action: PayloadAction<GeoArea[]>) => {
 			state.geoFilter.bands = action.payload
 		}),
-		clearMainFilters: create.reducer(() => initialState),
+		clearHistoryFilters: create.reducer(() => initialState),
 	}),
 	selectors: {
-		selectMainFilters: state => state,
+		selectHistoryFilters: state => state,
 		selectFrequencyFilter: state => state.freqFilter,
 		selectPulseDurationFilter: state => state.pulseDurationFilter,
 		selectPulsePeriodFilter: state => state.pulsePeriodFilter,
@@ -48,12 +50,12 @@ export const mainFiltersSlice = createAppSlice({
 })
 
 export const {
-	updateMainFilters,
-	clearMainFilters,
+	updateHistoryFilters,
+	clearHistoryFilters,
 	addGeoArea,
 	removeGeoArea,
 	updateGeoArea,
 	restoreGeoAreas,
-} = mainFiltersSlice.actions
+} = historyFiltersSlice.actions
 
-export const { selectMainFilters, selectGeoAreas } = mainFiltersSlice.selectors
+export const { selectHistoryFilters, selectGeoAreas } = historyFiltersSlice.selectors

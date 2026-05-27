@@ -1,6 +1,6 @@
-import { TypeSchemaMainFiltersForm } from '@/features/formFiltersMain/model/schema'
+import { TypeSchemaHistoryFiltersForm } from './schema'
 
-export const mainFilterDefaultValues: TypeSchemaMainFiltersForm = {
+export const historyFilterDefaultValues: TypeSchemaHistoryFiltersForm = {
 	freqFilter: {
 		key: 0,
 		filterLabel: 'Фильтрация по частоте',

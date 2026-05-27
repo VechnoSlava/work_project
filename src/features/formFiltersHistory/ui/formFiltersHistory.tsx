@@ -1,98 +1,371 @@
 import styles from './formFiltersHistory.module.scss'
-import { FormProvider, SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
-import { FieldAccordion } from '@/entities/fieldFilters'
-import { ControlledFilterField } from '@/entities/controlledFilterField'
-import { ControlledSelectField } from '@/entities/controlledSelectField'
-import { schemaFiltersHistory, TypeSchemaFiltersHistory } from '../model/schemaFiltersHistory'
+import { useCallback, useEffect, useRef } from 'react'
+import { shallowEqual } from 'react-redux'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import 'dayjs/locale/ru' // или ваш локаль
+import {
+	FormProvider,
+	SubmitErrorHandler,
+	SubmitHandler,
+	useFieldArray,
+	useForm,
+} from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { MdOutlineCancel } from 'react-icons/md'
 import { RiAddLargeFill, RiCloseLargeFill } from 'react-icons/ri'
-import { ButtonAddBand, ButtonDeleteFilter, ButtonSendForm } from '@/shared/buttons'
-import { AiOutlineFileDone } from 'react-icons/ai'
+import { AiOutlineDelete, AiOutlineFileDone } from 'react-icons/ai'
+import { Stack, Box } from '@mui/material'
+import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
+import { sendMessage } from '@/shared/webSocket/serverConnectionSlice'
+import {
+	frequencyOptions,
+	periodPulseOptions,
+	selectorTypeOptions,
+	timeDurationOptions,
+} from '@/shared/constants/selectOptions'
+import { closeSideMenu, selectSideMenuOpened } from '@/widgets/sideMenuFilters'
+import type { IServerFiltersData, WebSocketMessage } from '@/shared/webSocket/IWebSocket'
+import { ButtonAddBand, ButtonDeleteFilter, ButtonFormAction } from '@/shared/buttons'
+import { GeoFilterSection } from './GeoFilterSection'
+import { FieldAccordion } from '@/entities/fieldFilters'
+import { RHFTextField } from '@/entities/RHFTextField'
+import { RHFSelect } from '@/entities/RHFSelect/ui/RHFSelect'
+import { RHFDateTimePicker } from '@/entities/RHFDateTimePicker'
+import { RHFRadioGroup } from '@/entities/RHFRadioGroup'
+import { schemaHistoryFiltersForm, TypeSchemaHistoryFiltersForm } from '../model/schema'
+import {
+	GeoArea,
+	restoreGeoAreas,
+	selectHistoryFilters,
+	updateHistoryFilters,
+} from '../model/historyFiltersSlice'
+import { historyFilterDefaultValues } from '../model/defaultValues'
+
+/**
+ * Трансформирует данные формы (строковые metricPrefix/value)
+ * в серверный формат (числовые metricPrefix/value, без geoFilter).
+ */
+const transformFiltersForServer = (data: TypeSchemaHistoryFiltersForm): IServerFiltersData => ({
+	freqFilter: {
+		...data.freqFilter,
+		bands: data.freqFilter.bands.map(band => ({
+			...band,
+			metricPrefix: Number(band.metricPrefix),
+		})),
+	},
+	pulseDurationFilter: {
+		...data.pulseDurationFilter,
+		bands: data.pulseDurationFilter.bands.map(band => ({
+			...band,
+			metricPrefix: Number(band.metricPrefix),
+		})),
+	},
+	pulsePeriodFilter: {
+		...data.pulsePeriodFilter,
+		bands: data.pulsePeriodFilter.bands.map(band => ({
+			...band,
+			metricPrefix: Number(band.metricPrefix),
+		})),
+	},
+	calendarFilter: data.calendarFilter,
+	selectorFilter: {
+		...data.selectorFilter,
+		value: Number(data.selectorFilter.value),
+	},
+	geoFilter: {
+		...data.geoFilter,
+		bands: data.geoFilter.bands.map(area => ({
+			name: area.name,
+			latLng: area.latLng,
+		})),
+	},
+})
 
 export const FormFiltersHistory = () => {
-	console.log('RenderFormHistory')
-	const methods = useForm<TypeSchemaFiltersHistory>({
-		resolver: zodResolver(schemaFiltersHistory),
-		mode: 'all',
-		defaultValues: {
-			freqFilter: {
-				key: 0,
-				filterLabel: 'Фильтрация по частоте',
-				templateType: 'bands',
-				units: {
-					'1': 'Гц',
-					'1000': 'кГц',
-					'1000000': 'МГц',
-					'1000000000': 'ГГц',
-				},
-				bands: [],
-			},
-		},
-	})
+	console.log('render_HistoryForm')
+	const dispatch = useAppDispatch()
+	const savedFilters = useAppSelector(selectHistoryFilters, shallowEqual)
+	const sideMenuOpened = useAppSelector(selectSideMenuOpened)
 
-	const { fields, append, remove } = useFieldArray({
+	/** Флаг: были ли фильтры применены (submit) в этой сессии открытия меню */
+	const wasSubmittedRef = useRef(false)
+
+	/** Снэпшот гео-областей на момент открытия меню */
+	const geoSnapshotRef = useRef<GeoArea[]>([])
+
+	const methods = useForm<TypeSchemaHistoryFiltersForm>({
+		resolver: zodResolver(schemaHistoryFiltersForm),
+		mode: 'all',
+		defaultValues: savedFilters,
+	})
+	const { control, setValue, getValues, reset } = methods
+
+	/**
+	 * При открытии меню — сбрасываем форму к актуальному состоянию из Redux
+	 * и сохраняем снэпшот гео-областей.
+	 * При закрытии — если не было submit, откатываем форму и гео-области к снэпшоту.
+	 */
+	useEffect(() => {
+		if (sideMenuOpened) {
+			// Меню открылось — синхронизируем форму с Redux и запоминаем гео-снэпшот
+			reset(savedFilters)
+			geoSnapshotRef.current = JSON.parse(JSON.stringify(savedFilters.geoFilter.bands))
+			wasSubmittedRef.current = false
+		} else {
+			// Меню закрылось — если не было submit, откатываем всё
+			if (!wasSubmittedRef.current) {
+				reset(savedFilters)
+				// Восстанавливаем гео-области в Redux из снэпшота,
+				// т.к. они могли быть изменены напрямую (добавление/удаление)
+				dispatch(restoreGeoAreas(geoSnapshotRef.current))
+			}
+		}
+	}, [sideMenuOpened])
+
+	// Управление диапазонами для частотного фильтра
+	const {
+		fields: freqFields,
+		append: appendFreq,
+		remove: removeFreq,
+	} = useFieldArray({
 		control: methods.control,
 		name: 'freqFilter.bands',
 	})
 
-	const handleAddBand = () => {
-		append({ start: '', stop: '', metricPrefix: '1000000000' })
-	}
+	// Управление диапазонами для фильтра длительности импульса
+	const {
+		fields: pulseDurationFields,
+		append: appendPulseDuration,
+		remove: removePulseDuration,
+	} = useFieldArray({
+		control: methods.control,
+		name: 'pulseDurationFilter.bands',
+	})
 
-	const onSubmit: SubmitHandler<TypeSchemaFiltersHistory> = data => {
-		// Преобразуем строки в числа
-		const transformedData = {
-			...data,
-			freqFilter: {
-				...data.freqFilter,
-				bands: data.freqFilter.bands.map(band => ({
-					...band,
-					metricPrefix: Number(band.metricPrefix),
-				})),
-			},
-		}
-		console.log('Submitted data:', transformedData)
-	}
-	const onError = (errors: any) => console.log('Form errors:', errors)
+	// Управление диапазонами для фильтра по периоду импульсов
+	const {
+		fields: pulsePeriodFields,
+		append: appendPeriodPulse,
+		remove: removePeriodPulse,
+	} = useFieldArray({
+		control: methods.control,
+		name: 'pulsePeriodFilter.bands',
+	})
+
+	// Оптимизированные версии функций с useCallback
+	const appendBandFrequency = useCallback(() => {
+		appendFreq({ start: '', stop: '', metricPrefix: '1000000' }, { shouldFocus: false })
+	}, [appendFreq])
+
+	const appendBandPulseDuration = useCallback(() => {
+		appendPulseDuration({ start: '', stop: '', metricPrefix: '0.000001' }, { shouldFocus: false })
+	}, [appendPulseDuration])
+
+	const appendBandPeriodPulse = useCallback(() => {
+		appendPeriodPulse({ start: '', stop: '', metricPrefix: '0.000001' }, { shouldFocus: false })
+	}, [appendPeriodPulse])
+
+	const onSubmit: SubmitHandler<TypeSchemaHistoryFiltersForm> = useCallback(
+		data => {
+			wasSubmittedRef.current = true
+			dispatch(updateHistoryFilters(data))
+
+			const serverData = transformFiltersForServer(data)
+			const message: WebSocketMessage = { id: 110, data: serverData }
+
+			dispatch(sendMessage(message))
+			console.log('Filters sent:', message)
+			dispatch(closeSideMenu())
+		},
+		[dispatch],
+	)
+
+	const onError: SubmitErrorHandler<TypeSchemaHistoryFiltersForm> = data =>
+		console.log('error:', data)
+
+	// Функция для сброса конкретной даты
+	const handleClearDate = useCallback(
+		(index: number) => {
+			const currentBands = [...getValues('calendarFilter.bands')]
+			currentBands[index] = null
+			setValue('calendarFilter.bands', currentBands, { shouldValidate: true })
+		},
+		[getValues, setValue],
+	)
+
+	// Функция сброса всех фильтров
+	const resetFilters = useCallback(() => {
+		reset(historyFilterDefaultValues)
+		wasSubmittedRef.current = true
+		onSubmit(historyFilterDefaultValues)
+	}, [reset, onSubmit])
+
+	/** Отмена — откатываем форму и гео-области к снэпшоту и закрываем меню */
+	const handleCancel = useCallback(() => {
+		reset(savedFilters)
+		dispatch(restoreGeoAreas(geoSnapshotRef.current))
+		dispatch(closeSideMenu())
+	}, [reset, savedFilters, dispatch])
 
 	return (
-		<FormProvider {...methods}>
-			<form className={styles.formFilters} onSubmit={methods.handleSubmit(onSubmit, onError)}>
-				<FieldAccordion nameField="Фильтрация по частоте" id="freqFilter">
-					{fields.map((field, index) => (
-						<div key={field.id} className={styles.item_li}>
-							<ControlledFilterField
-								name={`freqFilter.bands.${index}.start`}
-								label="Начало"
-								placeholder="мин. частота"
-								fullWidth={true}
-							/>
-							<ControlledFilterField
-								name={`freqFilter.bands.${index}.stop`}
-								label="Конец"
-								placeholder="макс. частота"
-								fullWidth={true}
-							/>
-							<ControlledSelectField
-								name={`freqFilter.bands.${index}.metricPrefix`}
-								sx={{ minWidth: '80px' }}
-							/>
-							<ButtonDeleteFilter onClick={() => remove(index)} type="button">
-								<RiCloseLargeFill />
-							</ButtonDeleteFilter>
-						</div>
-					))}
-					<ButtonAddBand
-						variant="outlined"
-						startIcon={<RiAddLargeFill />}
-						onClick={handleAddBand}
-						className={styles.buttonAddBand}
+		<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'ru'}>
+			<FormProvider {...methods}>
+				<form className={styles.formFilters} onSubmit={methods.handleSubmit(onSubmit, onError)}>
+					<FieldAccordion nameField="Фильтрация по частоте" id="frequency_field">
+						{freqFields.map((field, index) => (
+							<div key={field.id} className={styles.formItem}>
+								<RHFTextField
+									name={`freqFilter.bands.${index}.start`}
+									id={`freq-start-${index}`}
+									label="Начало"
+									placeholder="мин. частота"
+								/>
+								<RHFTextField
+									name={`freqFilter.bands.${index}.stop`}
+									id={`freq-stop-${index}`}
+									label="Конец"
+									placeholder="макс. частота"
+								/>
+								<RHFSelect
+									name={`freqFilter.bands.${index}.metricPrefix`}
+									id={`freq-metric-${index}`}
+									label="Ед. изм."
+									options={frequencyOptions}
+								/>
+								<ButtonDeleteFilter onClick={() => removeFreq(index)} type="button">
+									<RiCloseLargeFill />
+								</ButtonDeleteFilter>
+							</div>
+						))}
+						<ButtonAddBand
+							variant="outlined"
+							startIcon={<RiAddLargeFill />}
+							onClick={appendBandFrequency}
+							className={styles.buttonAddBand}
+						>
+							Добавить диапазон
+						</ButtonAddBand>
+					</FieldAccordion>
+
+					<FieldAccordion nameField="Фильтрация по длительности импульса" id="pulseDuration_field">
+						{pulseDurationFields.map((field, index) => (
+							<div key={field.id} className={styles.formItem}>
+								<RHFTextField
+									name={`pulseDurationFilter.bands.${index}.start`}
+									id={`pulseDuration-start-${index}`}
+									label="Начало"
+									placeholder="мин. длительность"
+								/>
+								<RHFTextField
+									name={`pulseDurationFilter.bands.${index}.stop`}
+									id={`pulseDuration-stop-${index}`}
+									label="Конец"
+									placeholder="макс. длительность"
+								/>
+								<RHFSelect
+									name={`pulseDurationFilter.bands.${index}.metricPrefix`}
+									id={`pulseDuration-metric-${index}`}
+									label="Ед. изм."
+									options={timeDurationOptions}
+								/>
+								<ButtonDeleteFilter onClick={() => removePulseDuration(index)} type="button">
+									<RiCloseLargeFill />
+								</ButtonDeleteFilter>
+							</div>
+						))}
+						<ButtonAddBand
+							variant="outlined"
+							startIcon={<RiAddLargeFill />}
+							onClick={appendBandPulseDuration}
+							className={styles.buttonAddBand}
+						>
+							Добавить диапазон
+						</ButtonAddBand>
+					</FieldAccordion>
+
+					<FieldAccordion
+						nameField="Фильтрация по периоду следования импульсов"
+						id="pulsePeriod_field"
 					>
-						Добавить диапазон
-					</ButtonAddBand>
-				</FieldAccordion>
-				<ButtonSendForm startIcon={<AiOutlineFileDone />}>Применить</ButtonSendForm>
-			</form>
-		</FormProvider>
+						{pulsePeriodFields.map((field, index) => (
+							<div key={field.id} className={styles.formItem}>
+								<RHFTextField
+									name={`pulsePeriodFilter.bands.${index}.start`}
+									id={`pulsePeriod-start-${index}`}
+									label="Начало"
+									placeholder="мин. длительность"
+								/>
+								<RHFTextField
+									name={`pulsePeriodFilter.bands.${index}.stop`}
+									id={`pulsePeriod-stop-${index}`}
+									label="Конец"
+									placeholder="макс. длительность"
+								/>
+								<RHFSelect
+									name={`pulsePeriodFilter.bands.${index}.metricPrefix`}
+									id={`pulsePeriod-metric-${index}`}
+									label="Ед. изм."
+									options={periodPulseOptions}
+								/>
+								<ButtonDeleteFilter onClick={() => removePeriodPulse(index)} type="button">
+									<RiCloseLargeFill />
+								</ButtonDeleteFilter>
+							</div>
+						))}
+						<ButtonAddBand
+							variant="outlined"
+							startIcon={<RiAddLargeFill />}
+							onClick={appendBandPeriodPulse}
+							className={styles.buttonAddBand}
+						>
+							Добавить диапазон
+						</ButtonAddBand>
+					</FieldAccordion>
+
+					<FieldAccordion nameField="Фильтрация по дате" id="filterDate_field">
+						<Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+							<RHFDateTimePicker
+								name="calendarFilter.bands[0]"
+								label="Начало периода"
+								index={0}
+								onClear={handleClearDate}
+							/>
+							<RHFDateTimePicker
+								name="calendarFilter.bands[1]"
+								label="Окончание периода"
+								index={1}
+								onClear={handleClearDate}
+							/>
+						</Box>
+					</FieldAccordion>
+
+					<FieldAccordion nameField="Фильтрация по типу целей" id="targetType_field">
+						<RHFRadioGroup name="selectorFilter.value" options={selectorTypeOptions} />
+					</FieldAccordion>
+
+					<FieldAccordion nameField="Фильтрация по области" id="geoFilter_field">
+						<GeoFilterSection />
+					</FieldAccordion>
+
+					<Stack direction={'row'} justifyContent="center" spacing={1}>
+						<ButtonFormAction startIcon={<AiOutlineFileDone />} type="submit">
+							Применить
+						</ButtonFormAction>
+						<ButtonFormAction startIcon={<MdOutlineCancel />} type="button" onClick={handleCancel}>
+							Отмена
+						</ButtonFormAction>
+						<ButtonFormAction
+							startIcon={<AiOutlineDelete />}
+							type="button"
+							onClick={resetFilters}
+							sx={{ padding: '5px 8px' }}
+						>
+							Сброс фильтров
+						</ButtonFormAction>
+					</Stack>
+				</form>
+			</FormProvider>
+		</LocalizationProvider>
 	)
 }

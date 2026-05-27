@@ -5,33 +5,13 @@
 	width: 100%;
 	padding: 10px;
 
-	// align-items: center;
-	// justify-content: center;
-	.item {
-		padding: 5px;
+	.formItem {
 		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		// flex-direction: column;
-	}
-	.addFrequencyBand {
+		flex-direction: row;
+		margin-bottom: 10px;
 		width: 100%;
 	}
-	.buttonSubmit {
-		// width: 100%;
-		align-items: center;
+	.buttonAddBand {
+		width: 100%;
 	}
-}
-
-.item_li {
-	padding: 5px;
-	display: flex;
-	align-items: start;
-	justify-content: center;
-	// margin: auto 0;
-}
-
-.buttonAddBand {
-	display: block;
-	align-items: center;
 }

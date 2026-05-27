@@ -1,9 +1,17 @@
-export const SlaveHistoryPage = () => {
-  console.log("slaveHistoryPage")
+import styles from './slaveHistoryPage.module.css'
+import { useAppSelector } from '@/app/store/hooks'
+import { selectModeIdentification } from '@/widgets/header/model/controlModesSlice'
+import { HistoryMap } from '@/widgets/historyMap'
 
-  return (
-    <div>
-      <h1>SlaveHistoryPage</h1>
-    </div>
-  )
+export const SlaveHistoryPage = () => {
+	console.log('RENDER_SLAVE_HISTORY_PAGE')
+	const identificationMode = useAppSelector(selectModeIdentification)
+
+	return (
+		<div className={styles.container}>
+			<div className={styles.body}>
+				<HistoryMap />
+			</div>
+		</div>
+	)
 }

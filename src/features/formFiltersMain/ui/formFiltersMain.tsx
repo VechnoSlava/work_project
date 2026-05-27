@@ -1,5 +1,6 @@
 import styles from './formFiltersMain.module.scss'
 import { useCallback, useEffect, useRef } from 'react'
+import { shallowEqual } from 'react-redux'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import 'dayjs/locale/ru' // или ваш локаль
@@ -11,32 +12,31 @@ import {
 	useForm,
 } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FieldAccordion } from '@/entities/fieldFilters'
-import { schemaMainFiltersForm, TypeSchemaMainFiltersForm } from '../model/schema'
-import { RHFTextField } from '@/entities/RHFTextField'
-import { ButtonAddBand, ButtonDeleteFilter, ButtonFormAction } from '@/shared/buttons'
+import { MdOutlineCancel } from 'react-icons/md'
 import { RiAddLargeFill, RiCloseLargeFill } from 'react-icons/ri'
 import { AiOutlineDelete, AiOutlineFileDone } from 'react-icons/ai'
-import { MdOutlineCancel } from 'react-icons/md'
-import { RHFSelect } from '@/entities/RHFSelect/ui/RHFSelect'
+import { Stack, Box } from '@mui/material'
+import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
+import { selectMainFilters, updateMainFilters, restoreGeoAreas } from '../model/mainFiltersSlice'
+import { sendMessage } from '@/shared/webSocket/serverConnectionSlice'
+import type { GeoArea } from '../model/mainFiltersSlice'
 import {
 	frequencyOptions,
 	periodPulseOptions,
 	selectorTypeOptions,
 	timeDurationOptions,
 } from '@/shared/constants/selectOptions'
-import { Stack, Box } from '@mui/material'
+import { closeSideMenu, selectSideMenuOpened } from '@/widgets/sideMenuFilters'
+import type { IServerFiltersData, WebSocketMessage } from '@/shared/webSocket/IWebSocket'
+import { ButtonAddBand, ButtonDeleteFilter, ButtonFormAction } from '@/shared/buttons'
+import { schemaMainFiltersForm, TypeSchemaMainFiltersForm } from '../model/schema'
+import { mainFilterDefaultValues } from '../model/defaultValues'
+import { GeoFilterSection } from './GeoFilterSection'
+import { FieldAccordion } from '@/entities/fieldFilters'
+import { RHFTextField } from '@/entities/RHFTextField'
+import { RHFSelect } from '@/entities/RHFSelect/ui/RHFSelect'
 import { RHFDateTimePicker } from '@/entities/RHFDateTimePicker'
 import { RHFRadioGroup } from '@/entities/RHFRadioGroup'
-import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
-import { selectMainFilters, updateMainFilters, restoreGeoAreas } from '../model/mainFiltersSlice'
-import { shallowEqual } from 'react-redux'
-import { closeSideMenu, selectSideMenuOpened } from '@/widgets/sideMenuFilters/model/sideMenuSlice'
-import { mainFilterDefaultValues } from '@/shared/constants/filterDefaults'
-import { GeoFilterSection } from './GeoFilterSection'
-import type { GeoArea } from '../model/mainFiltersSlice'
-import { sendMessage } from '@/shared/webSocket/serverConnectionSlice'
-import type { IServerFiltersData, WebSocketMessage } from '@/shared/webSocket/IWebSocket'
 
 /**
  * Трансформирует данные формы (строковые metricPrefix/value)

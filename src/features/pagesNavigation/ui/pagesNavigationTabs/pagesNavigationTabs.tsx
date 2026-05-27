@@ -2,9 +2,9 @@ import { Tabs, Tab } from '@mui/material'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
 import { type RoutePath, ROUTES_PATH } from '@/shared/constants/routes'
-import { selectPage, setPage } from '@/features/pagesNavigation/model/pagesNavigationSlice'
 import styles from './pagesNavigationTabs.module.css'
 import { useEffect } from 'react'
+import { selectPage, setPage } from '../../model/pagesNavigationSlice'
 
 export const PagesNavigationTabs = () => {
 	const navigate = useNavigate()
@@ -37,11 +37,13 @@ export const PagesNavigationTabs = () => {
 				onChange={handlePageChange}
 				aria-label="navigation tabs"
 				textColor="inherit"
-				TabIndicatorProps={{
-					sx: {
-						backgroundColor: '#fff',
-						height: 3, // Толщина линии подчеркивания
-						bottom: 0, // Полоса по нижнему краю блока
+				slotProps={{
+					indicator: {
+						sx: {
+							backgroundColor: '#fff',
+							height: 3, // Толщина линии подчеркивания
+							bottom: 1, // Полоса по нижнему краю блока
+						},
 					},
 				}}
 				sx={{
