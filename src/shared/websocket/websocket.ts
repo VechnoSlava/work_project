@@ -13,6 +13,7 @@ import { AppDispatch, RootState } from '@/app/store/store'
 import { IWebSocket } from './IWebSocket'
 import { spectrumPanoramaChart } from '@/widgets/spectrumPanorama'
 import { infoPulseChart } from '@/widgets/infoChartRadarPulse'
+import { addLog } from '@/widgets/footer/model/footerSlice'
 
 const socket_URL = config.serverUrl
 
@@ -31,16 +32,19 @@ export const webSocketMiddleware: Middleware<{}, RootState, Dispatch<PayloadActi
 			socket.onopen = () => {
 				console.log('Connection to server is complete!')
 				dispatch(connectToServerSuccess())
+				dispatch(addLog('Подключение к серверу установлено'))
 			}
 
 			socket.onerror = () => {
 				console.log('Connection error!')
 				dispatch(connectToServerFailure('Fault connection!'))
+				dispatch(addLog('Ошибка подключения к серверу'))
 			}
 
 			socket.onclose = () => {
 				console.log('Connection to server is close!')
 				dispatch(disconnectToServer())
+				dispatch(addLog('Соединение с сервером закрыто'))
 			}
 
 			socket.onmessage = event => {

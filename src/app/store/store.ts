@@ -18,6 +18,7 @@ import {
 	withReduxStateSync,
 } from 'redux-state-sync'
 import { historyFiltersSlice } from '@/features/formFiltersHistory'
+import { footerSlice } from '@/widgets/footer'
 
 const rootReducer = combineSlices(
 	pagesNavigationSlice,
@@ -32,6 +33,7 @@ const rootReducer = combineSlices(
 	formSettingsSlice,
 	geoDrawingSlice,
 	geoDrawingHistorySlice,
+	footerSlice,
 )
 export type RootState = ReturnType<typeof rootReducer>
 

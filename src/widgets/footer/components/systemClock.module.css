@@ -1,0 +1,7 @@
+.clock {
+	margin-left: auto;
+	white-space: nowrap;
+	color: #c8d6df;
+	font-size: 13px;
+	font-variant-numeric: tabular-nums;
+}
