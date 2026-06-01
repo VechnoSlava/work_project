@@ -2,5 +2,7 @@
 	"serverUrl": "ws://192.21.16.14:5105/echo",
 	"mapUrl": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 	"workLocation": [60.035509, 29.404907],
-	"zoomLocation": 9
+	"zoomLocation": 9,
+	"login": "platan",
+	"password": "platan"
 }

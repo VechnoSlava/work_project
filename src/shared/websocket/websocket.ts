@@ -52,19 +52,19 @@ export const webSocketMiddleware: Middleware<{}, RootState, Dispatch<PayloadActi
 				if (message['id'] === 0) {
 					console.log('Получены данные:', message)
 					spectrumPanoramaChart.updateData(message)
-					console.log('Данные спектральной панорамы получены')
+					dispatch(addLog('Данные спектральной панорамы получены'))
 				} else if (message['id'] === 1) {
 					console.log('Получены данные:', message)
 					dispatch(updateRadarsList(message))
-					console.log('Данные таблицы целей РЛС получены')
+					dispatch(addLog('Данные таблицы целей РЛС получены'))
 				} else if (message['id'] === 2) {
 					console.log('Получены данные:', message)
 					dispatch(updateTads(message))
-					console.log('Данные импульсов РЛС получены')
+					dispatch(addLog('Данные импульсов РЛС получены'))
 				} else if (message['id'] === 3) {
 					console.log('Получены данные:', message)
 					infoPulseChart.updateDataInfoPulseChart(message)
-					console.log('Данные графиков импульса получены')
+					dispatch(addLog('Данные графиков импульса получены'))
 				}
 			}
 		}
@@ -73,8 +73,10 @@ export const webSocketMiddleware: Middleware<{}, RootState, Dispatch<PayloadActi
 			if (socket && socket.readyState === WebSocket.OPEN) {
 				socket.send(JSON.stringify(action.payload))
 				console.log('Message sent:', action.payload)
+				dispatch(addLog(`Сообщение отправлено на сервер с id:${action.payload.id}`))
 			} else {
 				console.log('WebSocket is not open!')
+				dispatch(addLog('Отправка невозможна, нет соединения с сервером!'))
 			}
 		}
 
