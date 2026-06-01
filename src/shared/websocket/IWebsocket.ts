@@ -244,9 +244,15 @@ export interface ICreateRadarToDbMessage extends WebSocketMessageBase {
 	data: ICreateRadarToDbData
 }
 
+// Технологические команды (id 111, 113, 114, 151, 152)
+export interface ITechCommandMessage extends WebSocketMessageBase {
+	data: Record<string, never>
+}
+
 export type WebSocketMessage =
 	| ISelectedRadarsList
 	| ISelectedPulse
 	| IFiltersMainMessage
 	| ISettingsMainMessage
 	| ICreateRadarToDbMessage
+	| ITechCommandMessage

@@ -8,8 +8,14 @@ import { SwitchIdentificationMode } from '@/features/switchIdentificationMode'
 import { SwitchReferenceMode } from '@/features/switchReferenceMode'
 import { ButtonTestMessage } from '@/features/buttonTestMessage'
 import { ButtonWorkSettings } from '@/features/buttonWorkSettings'
+import { TechModeButton, TechCommandsButton, selectTechModeActive } from '@/features/techMode'
+import { useAppSelector } from '@/app/store/hooks'
 
 export const Header = () => {
+	console.log('RENDER_HEADER')
+
+	const techModeActive = useAppSelector(selectTechModeActive)
+
 	return (
 		<header className={styles.header}>
 			<div className={styles.header__container}>
@@ -34,6 +40,8 @@ export const Header = () => {
 					<ButtonWorkSettings />
 					<ButtonSideMenuFilters />
 					<ButtonTestMessage />
+					{techModeActive && <TechCommandsButton />}
+					<TechModeButton />
 				</div>
 			</div>
 		</header>

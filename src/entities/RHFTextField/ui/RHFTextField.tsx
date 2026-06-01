@@ -4,7 +4,10 @@ import { TextFieldProps } from '@mui/material'
 
 type Props<T extends FieldValues> = {
 	name: Path<T>
-} & Pick<TextFieldProps, 'label' | 'id' | 'placeholder' | 'sx' | 'fullWidth' | 'disabled'>
+} & Pick<
+	TextFieldProps,
+	'label' | 'id' | 'placeholder' | 'sx' | 'fullWidth' | 'disabled' | 'type' | 'autoComplete'
+>
 
 export function RHFTextField<T extends FieldValues>({
 	name,
