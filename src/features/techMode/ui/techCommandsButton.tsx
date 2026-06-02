@@ -2,11 +2,12 @@ import { useRef, useState } from 'react'
 import { MdMiscellaneousServices } from 'react-icons/md'
 import { Popover, Stack } from '@mui/material'
 import { ButtonMenuHead, ButtonFormAction } from '@/shared/buttons'
-import { useAppDispatch } from '@/app/store/hooks'
+import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
 import { sendMessage } from '@/shared/webSocket/serverConnectionSlice'
 import { addLog } from '@/widgets/footer'
 import type { WebSocketMessage } from '@/shared/webSocket/IWebSocket'
 import styles from './techCommandsButton.module.css'
+import { selectTechModeActive } from '../model/techModeSlice'
 
 const COMMANDS: { id: number; label: string; logMessage: string }[] = [
 	{ id: 151, label: 'Сохранить в базу данных', logMessage: 'Команда: Сохранить в базу данных' },
@@ -17,6 +18,7 @@ const COMMANDS: { id: number; label: string; logMessage: string }[] = [
 ]
 
 export const TechCommandsButton = () => {
+	const techModeActive = useAppSelector(selectTechModeActive)
 	const [open, setOpen] = useState(false)
 	const buttonRef = useRef<HTMLDivElement>(null)
 	const dispatch = useAppDispatch()
@@ -39,7 +41,7 @@ export const TechCommandsButton = () => {
 					selected={open}
 					title="Технологические команды"
 					onClick={handleToggle}
-					// disabled={true}
+					disabled={!techModeActive}
 				>
 					<MdMiscellaneousServices size="100%" />
 				</ButtonMenuHead>
