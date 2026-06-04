@@ -9,6 +9,7 @@ import { SwitchReferenceMode } from '@/features/switchReferenceMode'
 import { ButtonTestMessage } from '@/features/buttonTestMessage'
 import { ButtonWorkSettings } from '@/features/buttonWorkSettings'
 import { TechModeButton, TechCommandsButton, selectTechModeActive } from '@/features/techMode'
+import { RecordSignalButton } from '@/features/recordSignalButton'
 
 export const Header = () => {
 	console.log('RENDER_HEADER')
@@ -30,6 +31,7 @@ export const Header = () => {
 					</div>
 					<div className={styles.controls__column}>
 						<SwitchReferenceMode />
+						<RecordSignalButton />
 					</div>
 				</div>
 				<div className={styles.header__buttons}>
