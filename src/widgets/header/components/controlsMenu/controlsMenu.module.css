@@ -1,0 +1,15 @@
+.buttonContainer {
+	display: flex;
+	padding: 5px;
+	align-items: center;
+}
+
+.menuContent {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 5px;
+	padding: 5px;
+	max-width: 220px;
+}

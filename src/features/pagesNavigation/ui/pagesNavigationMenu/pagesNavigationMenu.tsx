@@ -41,7 +41,7 @@ export const PagesNavigationMenu = () => {
 		<div className={styles.navigation__menu}>
 			<List component="nav" aria-label="Nav bar">
 				<ListItemButton
-					sx={{ padding: 0, minWidth: '260px' }}
+					sx={{ padding: 0, minWidth: '200px' }}
 					id="lock-button"
 					aria-haspopup="listbox"
 					aria-controls="lock-menu"
