@@ -1,9 +1,16 @@
 import { type PayloadAction } from '@reduxjs/toolkit/react'
 import { createAppSlice } from '@/app/store/createAppSlice'
-import { type RoutePath, ROUTES_PATH } from '@/shared/constants/routes'
+import {
+	type RoutePath,
+	ROUTES_PATH,
+	MASTER_TO_SLAVE,
+	PAGE_TO_BASE_TAB,
+} from '@/shared/constants/routes'
 
 export interface PageState {
+	/** Базовая вкладка основного окна: '/' или '/history' (без идентификации) */
 	currentMainPage: RoutePath
+	/** Путь второго окна — учитывает режим идентификации */
 	currentSlavePage: RoutePath | ''
 }
 
@@ -17,9 +24,10 @@ export const pagesNavigationSlice = createAppSlice({
 	initialState,
 	reducers: create => ({
 		setPage: create.reducer((state, action: PayloadAction<RoutePath>) => {
-			state.currentMainPage = action.payload
-			state.currentSlavePage =
-				action.payload === ROUTES_PATH.MAIN ? ROUTES_PATH.SLAVEMAIN : ROUTES_PATH.SLAVEHISTORY
+			// currentMainPage — всегда базовая вкладка (для подсветки навигации)
+			state.currentMainPage = PAGE_TO_BASE_TAB[action.payload] ?? ROUTES_PATH.MAIN
+			// slave — из фактического пути (сохраняет режим идентификации)
+			state.currentSlavePage = MASTER_TO_SLAVE[action.payload] ?? ROUTES_PATH.SLAVEMAIN
 		}),
 		setSlavePage: create.reducer((state, action: PayloadAction<RoutePath>) => {
 			state.currentSlavePage = action.payload
