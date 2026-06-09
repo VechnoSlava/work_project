@@ -12,13 +12,17 @@ import { ButtonTestMessage } from '@/features/buttonTestMessage'
 import { ButtonWorkSettings } from '@/features/buttonWorkSettings'
 import { TechModeButton, TechCommandsButton } from '@/features/techMode'
 import { RecordSignalButton } from '@/features/recordSignalButton'
-import { ROUTES_PATH } from '@/shared/constants/routes'
+import { ROUTES_PATH, PAGE_TO_BASE_TAB } from '@/shared/constants/routes'
 import { ControlsMenu } from '../components/controlsMenu/controlsMenu'
 
 export const Header = () => {
 	const { pathname } = useLocation()
-	const isHistoryPage = pathname === ROUTES_PATH.HISTORY
-	const isMainPage = pathname === ROUTES_PATH.MAIN
+
+	// Область определяется базовой вкладкой, а не точным путём,
+	// чтобы под-режимы (идентификация / эталоны) не сбрасывали условия.
+	const baseTab = PAGE_TO_BASE_TAB[pathname] ?? ROUTES_PATH.MAIN
+	const isHistoryArea = baseTab === ROUTES_PATH.HISTORY
+	const isMainArea = baseTab === ROUTES_PATH.MAIN
 
 	// Узкий экран — кнопки управления сворачиваются в выпадающее меню
 	const isNarrow = useMediaQuery('(max-width:1220px)')
@@ -27,9 +31,9 @@ export const Header = () => {
 	const controlButtons = (
 		<>
 			<ButtonConnectToServer />
-			{!isHistoryPage && <ButtonWorkSettings />}
-			{!isHistoryPage && <TechCommandsButton />}
-			{!isMainPage && <ButtonSideMenuFilters />}
+			{!isHistoryArea && <ButtonWorkSettings />}
+			{!isHistoryArea && <TechCommandsButton />}
+			{!isMainArea && <ButtonSideMenuFilters />}
 			<ButtonTestMessage />
 		</>
 	)
@@ -56,7 +60,7 @@ export const Header = () => {
 					</div>
 					<div className={`${styles.controls__column} ${styles.controls__column_reference}`}>
 						<SwitchReferenceMode />
-						{!isHistoryPage && <RecordSignalButton />}
+						{!isHistoryArea && <RecordSignalButton />}
 					</div>
 				</div>
 
@@ -68,7 +72,7 @@ export const Header = () => {
 				)}
 
 				{/* 5. Тех. режим — отдельно в правом краю */}
-				{!isHistoryPage && (
+				{!isHistoryArea && (
 					<div className={styles.header__techMode}>
 						<TechModeButton />
 					</div>

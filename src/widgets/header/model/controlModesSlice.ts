@@ -29,6 +29,9 @@ export const controlModesSlice = createAppSlice({
 		toggleReferenceMode: create.reducer(state => {
 			state.isReferenceMode = !state.isReferenceMode
 		}),
+		setReferenceMode: create.reducer((state, action: PayloadAction<boolean>) => {
+			state.isReferenceMode = action.payload
+		}),
 	}),
 	selectors: {
 		selectModeSecondWindow: state => state.isSecondaryWindowMode,
@@ -42,6 +45,7 @@ export const {
 	toggleIdentificationMode,
 	setIdentificationMode,
 	toggleReferenceMode,
+	setReferenceMode,
 } = controlModesSlice.actions
 export const { selectModeSecondWindow, selectModeIdentification, selectModeReference } =
 	controlModesSlice.selectors

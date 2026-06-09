@@ -27,6 +27,9 @@ const TOGGLE_MAP: Record<string, { on: RoutePath; off: RoutePath }> = {
 const isIdentificationPath = (pathname: string) =>
 	pathname === ROUTES_PATH.IDENTIFICATION || pathname === ROUTES_PATH.HISTORYIDENTIFICATION
 
+/** Путь режима эталонов — в нём идентификация недоступна */
+const isReferencePath = (pathname: string) => pathname === ROUTES_PATH.HISTORYREFERENCE
+
 export const SwitchIdentificationMode = () => {
 	const dispatch = useAppDispatch()
 	const navigate = useNavigate()
@@ -42,7 +45,11 @@ export const SwitchIdentificationMode = () => {
 		}
 	}, [pathname, isIdentificationMode, dispatch])
 
+	// В режиме эталонов вход в идентификацию запрещён
+	const isDisabled = isReferencePath(pathname)
+
 	const handleIdentificationMode = () => {
+		if (isDisabled) return
 		const route = TOGGLE_MAP[pathname]
 		if (!route) return
 
@@ -58,6 +65,7 @@ export const SwitchIdentificationMode = () => {
 			nameSwitch="Режим идентификации"
 			checked={isIdentificationMode}
 			onChange={handleIdentificationMode}
+			disabled={isDisabled}
 			slotProps={{ input: { 'aria-label': 'Режим идентификации' } }}
 		/>
 	)

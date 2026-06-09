@@ -4,10 +4,12 @@ import { MainPage } from '@/pages/mainPage'
 import { HistoryPage } from '@/pages/historyPage'
 import { IdentificationPage } from '@/pages/identificationPage'
 import { IdentificationHistoryPage } from '@/pages/identificationHistoryPage'
+import { ReferencePage } from '@/pages/referencePage'
 import { SlaveMainPage } from '@/pages/slaveMainPage'
 import { SlaveHistoryPage } from '@/pages/slaveHistoryPage'
 import { SlaveIdentificationPage } from '@/pages/slaveIdentificationPage'
 import { SlaveIdentificationHistoryPage } from '@/pages/slaveIdentificationHistoryPage'
+import { SlaveReferencePage } from '@/pages/slaveReferencePage'
 import { ROUTES_PATH } from '@/shared/constants/routes'
 
 export const AppRoutes: React.FC = () => {
@@ -21,6 +23,7 @@ export const AppRoutes: React.FC = () => {
 				{/* База данных */}
 				<Route path={ROUTES_PATH.HISTORY} element={<HistoryPage />} />
 				<Route path={ROUTES_PATH.HISTORYIDENTIFICATION} element={<IdentificationHistoryPage />} />
+				<Route path={ROUTES_PATH.HISTORYREFERENCE} element={<ReferencePage />} />
 			</Route>
 
 			{/* ─── Вторые окна (slave, без хедера/футера) ─── */}
@@ -31,6 +34,7 @@ export const AppRoutes: React.FC = () => {
 				path={ROUTES_PATH.SLAVEHISTORYIDENTIFICATION}
 				element={<SlaveIdentificationHistoryPage />}
 			/>
+			<Route path={ROUTES_PATH.SLAVEHISTORYREFERENCE} element={<SlaveReferencePage />} />
 		</Routes>
 	)
 }
