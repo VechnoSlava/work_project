@@ -20,6 +20,7 @@ import {
 import { historyFiltersSlice } from '@/features/formFiltersHistory'
 import { footerSlice } from '@/widgets/footer'
 import { techModeSlice } from '@/features/techMode'
+import { radarsHistoryTableSlice } from '@/widgets/radarsHistoryTable'
 
 const rootReducer = combineSlices(
 	pagesNavigationSlice,
@@ -28,6 +29,7 @@ const rootReducer = combineSlices(
 	sideMenuSettingsSlice,
 	serverConnectionSlice,
 	radarsTableSlice,
+	radarsHistoryTableSlice,
 	radarPulsesSlice,
 	mainFiltersSlice,
 	historyFiltersSlice,

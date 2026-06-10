@@ -3,8 +3,8 @@ import { Marker, Polyline, useMap } from 'react-leaflet'
 import L, { LatLng } from 'leaflet'
 import { useAppSelector } from '@/app/store/hooks'
 import { selectRadarsList } from '@/shared/webSocket/serverConnectionSlice'
-import { selectSelectedRadars } from '@/widgets/radarsTable/model/radarsTableSlice'
 import type { IRadarsList } from '@/shared/webSocket/IWebSocket'
+import { selectSelectedRadars } from '@/widgets/radarsHistoryTable'
 
 /**
  * Иконка корабля (MarineTraffic-style).

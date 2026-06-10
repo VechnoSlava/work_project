@@ -5,7 +5,6 @@ import { HistoryMap } from '@/widgets/historyMap'
 
 export const SlaveHistoryPage = () => {
 	console.log('RENDER_SLAVE_HISTORY_PAGE')
-	const identificationMode = useAppSelector(selectModeIdentification)
 
 	return (
 		<div className={styles.container}>

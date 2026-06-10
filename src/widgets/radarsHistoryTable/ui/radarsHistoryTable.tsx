@@ -1,4 +1,4 @@
-import styles from './radarsTable.module.css'
+import styles from './radarsHistoryTable.module.css'
 import { useEffect, useState } from 'react'
 import {
 	GridColDef,
@@ -20,7 +20,7 @@ import { useAppDispatch, useAppSelector } from '@/app/store/hooks'
 import { formatDateTimeRu, formatNumber } from '@/shared/utils/utils'
 import { IRadarsList, WebSocketMessage } from '@/shared/webSocket/IWebSocket'
 import { selectRadarsList, sendMessage } from '@/shared/webSocket/serverConnectionSlice'
-import { addSelectedRadars } from '../model/radarsTableSlice'
+import { addSelectedRadars } from '../model/radarsHistoryTableSlice'
 import { CreateRadarCardForm } from '@/features/formCreateRadarCard'
 
 //Form table DataGrid
@@ -126,8 +126,8 @@ function CustomPagination(props: any) {
 }
 
 //Component X-Data-Grid
-export const RadarsTable = () => {
-	console.log('render_RadarsTable')
+export const RadarsHistoryTable = () => {
+	console.log('render_RadarsHistoryTable')
 
 	const [contextMenu, setContextMenu] = useState<{
 		mouseX: number
@@ -157,7 +157,7 @@ export const RadarsTable = () => {
 		console.log('Выбраны радары', selectedRadars)
 
 		const message: WebSocketMessage = {
-			id: 102,
+			id: 105,
 			data: selectedRadars.map(({ uid }) => ({ uid })),
 		}
 		dispatch(sendMessage(message))
